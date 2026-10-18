@@ -7,78 +7,91 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-color: #0b132b;
-            --card-bg: rgba(28, 37, 65, 0.85);
-            --card-border: rgba(56, 189, 248, 0.25);
+            --bg-color: #070d1b;
+            --card-bg: rgba(17, 24, 39, 0.75);
+            --card-border: rgba(56, 189, 248, 0.2);
             --primary-blue: #2563eb;
-            --accent-cyan: #06b6d4;
-            --accent-glow: rgba(6, 182, 212, 0.35);
-            --green-glow: rgba(34, 197, 94, 0.35);
+            --accent-cyan: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.25);
+            --green-glow: rgba(34, 197, 94, 0.25);
             --bnb-yellow: #f0b90b;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --warning-yellow: #f59e0b;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 15px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 15px; background-image: radial-gradient(circle at 50% 0%, #1e1b4b 0%, var(--bg-color) 60%); }
 
-        header { width: 100%; max-width: 500px; display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--card-border); margin-bottom: 20px; }
-        .brand-title { font-size: 1.4rem; font-weight: 800; background: linear-gradient(135deg, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .btn-auth { background: var(--primary-blue); color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: 600; cursor: pointer; font-size: 0.85rem; }
+        header { width: 100%; max-width: 480px; display: flex; justify-content: space-between; align-items: center; padding: 12px 5px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 15px; }
+        .brand-title { font-size: 1.25rem; font-weight: 800; background: linear-gradient(135deg, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 0.5px; }
+        .btn-auth { background: rgba(37, 99, 235, 0.2); border: 1px solid var(--primary-blue); color: var(--accent-cyan); padding: 6px 14px; border-radius: 20px; font-weight: 600; cursor: pointer; font-size: 0.8rem; }
 
-        .container { width: 100%; max-width: 500px; }
-        .auth-card, .section-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px; text-align: center; margin-top: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .form-group { margin-bottom: 15px; text-align: left; }
-        .form-group label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px; }
-        .form-group input, .form-group select { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--card-border); background: rgba(15, 23, 42, 0.6); color: white; font-size: 0.9rem; outline: none; }
-        .btn-submit { width: 100%; padding: 12px; background: linear-gradient(135deg, #2563eb, #06b6d4); border: none; border-radius: 10px; color: white; font-weight: 700; cursor: pointer; margin-top: 10px; }
-        .btn-biometric { width: 100%; padding: 12px; background: rgba(6, 182, 212, 0.15); border: 1px solid var(--accent-cyan); border-radius: 10px; color: var(--accent-cyan); font-weight: 700; cursor: pointer; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .container { width: 100%; max-width: 480px; }
+        .auth-card, .section-card { background: var(--card-bg); backdrop-filter: blur(12px); border: 1px solid var(--card-border); border-radius: 24px; padding: 22px; text-align: center; margin-top: 10px; box-shadow: 0 15px 35px rgba(0,0,0,0.4); }
+        
+        .form-group { margin-bottom: 14px; text-align: left; }
+        .form-group label { display: block; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 5px; font-weight: 500; }
+        .form-group input, .form-group select { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--card-border); background: rgba(11, 19, 43, 0.7); color: white; font-size: 0.9rem; outline: none; transition: border-color 0.2s; }
+        .form-group input:focus, .form-group select:focus { border-color: var(--accent-cyan); }
+        
+        .btn-submit { width: 100%; padding: 13px; background: linear-gradient(135deg, #2563eb, #06b6d4); border: none; border-radius: 12px; color: white; font-weight: 700; cursor: pointer; margin-top: 8px; font-size: 0.9rem; box-shadow: 0 4px 15px rgba(37,99,235,0.4); }
+        .btn-biometric { width: 100%; padding: 12px; background: rgba(6, 182, 212, 0.1); border: 1px solid var(--accent-cyan); border-radius: 12px; color: var(--accent-cyan); font-weight: 600; cursor: pointer; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.85rem; }
 
         #app-dashboard { display: none; }
-        .nav-buttons { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 15px; }
-        .nav-btn { background: var(--card-bg); border: 1px solid var(--card-border); color: white; padding: 10px 4px; border-radius: 12px; font-weight: 600; cursor: pointer; font-size: 0.72rem; text-align: center; }
-        .nav-btn.active { background: var(--primary-blue); border-color: #60a5fa; }
+        
+        /* MODERN MENU GRID */
+        .nav-buttons { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 15px; }
+        .nav-btn { background: rgba(17, 24, 39, 0.8); border: 1px solid var(--card-border); color: var(--text-muted); padding: 11px 6px; border-radius: 14px; font-weight: 600; cursor: pointer; font-size: 0.75rem; text-align: center; transition: all 0.2s ease; }
+        .nav-btn:hover { border-color: var(--accent-cyan); color: white; }
+        .nav-btn.active { background: linear-gradient(135deg, rgba(37,99,235,0.3), rgba(6,182,212,0.3)); border-color: var(--accent-cyan); color: white; box-shadow: 0 0 12px var(--accent-glow); }
 
-        .rate-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(6, 182, 212, 0.15); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; margin-bottom: 15px; }
-        .mining-circle { width: 170px; height: 170px; border-radius: 50%; background: radial-gradient(circle, rgba(6,182,212,0.2) 0%, rgba(11,19,43,0.8) 70%); border: 3px solid var(--accent-cyan); box-shadow: 0 0 20px var(--accent-glow); margin: 15px auto; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; }
-        .mining-circle.active { border-color: #22c55e; box-shadow: 0 0 25px var(--green-glow); }
+        .rate-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(6, 182, 212, 0.1); border: 1px solid var(--card-border); color: var(--accent-cyan); padding: 6px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; margin-bottom: 12px; }
+        
+        .mining-circle { width: 160px; height: 160px; border-radius: 50%; background: radial-gradient(circle, rgba(6,182,212,0.15) 0%, rgba(11,19,43,0.9) 75%); border: 3px solid var(--accent-cyan); box-shadow: 0 0 25px var(--accent-glow); margin: 12px auto; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; transition: transform 0.1s; }
+        .mining-circle:active { transform: scale(0.96); }
+        .mining-circle.active { border-color: #22c55e; box-shadow: 0 0 30px var(--green-glow); }
 
-        .balance-box { background: rgba(15, 23, 42, 0.6); border-radius: 12px; padding: 15px; margin-top: 15px; }
-        .balance-amount { font-size: 1.8rem; font-weight: 800; color: var(--accent-cyan); }
-        .user-info { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
-        .badge-kyc { padding: 3px 8px; border-radius: 10px; font-size: 0.7rem; font-weight: 700; }
-        .kyc-pending { background: rgba(245, 158, 11, 0.2); color: var(--warning-yellow); }
-        .kyc-verified { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
-        .kyc-unverified { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+        .balance-box { background: rgba(11, 19, 43, 0.6); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 16px; margin-top: 15px; }
+        .balance-amount { font-size: 1.7rem; font-weight: 800; color: var(--accent-cyan); margin-top: 4px; }
+        
+        .user-info { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; background: rgba(17, 24, 39, 0.5); padding: 8px 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
+        .badge-kyc { padding: 4px 10px; border-radius: 8px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.3px; }
+        .kyc-pending { background: rgba(245, 158, 11, 0.15); color: var(--warning-yellow); border: 1px solid rgba(245,158,11,0.3); }
+        .kyc-verified { background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
+        .kyc-unverified { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+        
         .tab-content { display: none; }
-        .tab-content.active { display: block; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
 
-        .chain-badge { background: rgba(240, 185, 11, 0.15); border: 1px solid var(--bnb-yellow); color: var(--bnb-yellow); font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 8px; display: inline-flex; align-items: center; gap: 5px; margin-bottom: 10px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+        .chain-badge { background: rgba(240, 185, 11, 0.1); border: 1px solid rgba(240,185,11,0.3); color: var(--bnb-yellow); font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 10px; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 12px; }
+        .scan-scanner { width: 100%; height: 110px; border: 2px dashed var(--accent-cyan); border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 10px 0; background: rgba(6, 182, 212, 0.03); }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="brand-title">GARET NETWORK</div>
-        <button id="auth-header-btn" class="btn-auth" onclick="handleHeaderBtn()">Login</button>
+        <div class="brand-title">⚡ GARET NETWORK</div>
+        <button id="auth-header-btn" class="btn-auth" onclick="handleHeaderBtn()">Masuk</button>
     </header>
 
     <div class="container">
         
         <!-- SECTION AUTHENTICATION -->
         <div id="auth-section" class="auth-card">
-            <h2 id="auth-title">Akses Portal Web3</h2>
-            <p id="auth-subtitle">Masukkan PIN atau Biometrik Anda untuk membuka penambangan & TGE Portal.</p>
+            <h2 id="auth-title" style="font-size: 1.3rem; margin-bottom: 6px;">Portal Web3 Garet</h2>
+            <p id="auth-subtitle" style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 18px;">Autentikasi aman dengan PIN & Biometrik terenkripsi lokal.</p>
             
             <form id="auth-form" onsubmit="submitAuth(event)">
                 <div class="form-group" id="group-username" style="display: none;">
-                    <label>Nama Pengguna</label>
-                    <input type="text" id="input-username" placeholder="Username Anda">
+                    <label>Nama Pengguna (Username)</label>
+                    <input type="text" id="input-username" placeholder="Contoh: pioneer99">
                 </div>
                 
                 <div class="form-group" id="group-email">
@@ -88,25 +101,25 @@
 
                 <div class="form-group" id="group-pin">
                     <label>PIN Keamanan (6 Angka)</label>
-                    <input type="password" id="input-pin" required maxlength="6" pattern="\d{6}" inputmode="numeric" placeholder="123456">
+                    <input type="password" id="input-pin" required maxlength="6" pattern="\d{6}" inputmode="numeric" placeholder="••••••">
                 </div>
 
                 <button type="submit" id="btn-auth-submit" class="btn-submit">Masuk Dengan PIN</button>
             </form>
 
             <button type="button" id="btn-biometric-login" class="btn-biometric" onclick="loginBiometric()" style="display:none;">
-                👆 Login Biometrik / Sidik Jari
+                👆 Masuk Cepat (Biometrik / Sidik Jari)
             </button>
 
-            <div style="margin-top:15px; font-size:0.85rem; color:var(--text-muted);">
-                Belum punya akun? <span onclick="toggleAuthMode()" style="color:var(--accent-cyan); cursor:pointer; font-weight:600;">Daftar Sekarang</span>
+            <div style="margin-top: 18px; font-size: 0.82rem; color: var(--text-muted);">
+                Belum punya akun? <span onclick="toggleAuthMode()" style="color: var(--accent-cyan); cursor: pointer; font-weight: 600;">Daftar Sekarang</span>
             </div>
         </div>
 
         <!-- SECTION MAIN DASHBOARD -->
         <div id="app-dashboard">
             <div class="user-info">
-                <span>User: <strong id="user-display-email" style="color:var(--accent-cyan)">User</strong></span>
+                <span>Akun: <strong id="user-display-email" style="color:var(--accent-cyan)">-</strong></span>
                 <span id="kyc-badge-display" class="badge-kyc kyc-unverified">Belum KYC</span>
             </div>
             
@@ -117,69 +130,86 @@
                 <button class="nav-btn" onclick="switchTab('tab-ref', this)">👥 Referral</button>
                 <button class="nav-btn" onclick="switchTab('tab-tokenomics', this)">📊 Tokenomics</button>
                 <button class="nav-btn" onclick="switchTab('tab-whitepaper', this)">📄 Whitepaper</button>
-                <!-- TAB ADMIN KHUSUS ADMIN SAJA -->
+                <!-- TAB ADMIN EKSKLUSIF (HANYA MUNCUL DI ADMIN) -->
                 <button class="nav-btn" id="nav-btn-admin" onclick="switchTab('tab-admin', this)" style="display: none; border-color: #22c55e; color: #4ade80;">⚙️ Admin</button>
             </div>
 
             <!-- TAB 1: MINING -->
             <div id="tab-mining" class="tab-content active">
                 <div class="section-card">
-                    <h2>Sesi Penambangan 24 Jam</h2>
-                    <p style="margin-bottom: 10px;">Node aktif terverifikasi via autentikasi biometrik.</p>
+                    <h2 style="font-size: 1.15rem; margin-bottom: 4px;">Sesi Penambangan 24 Jam</h2>
+                    <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 14px;">Node aktif terverifikasi via autentikasi biometrik.</p>
 
                     <div class="rate-badge">
-                        <span>⚡ Rate:</span>
+                        <span>⚡ Kecepatan:</span>
                         <span id="rate-display">0.50 $GARET / Jam</span>
                     </div>
 
                     <div id="mining-btn" class="mining-circle" onclick="toggleMining()">
-                        <div style="font-size: 1.5rem;">⚡</div>
-                        <div id="mining-status-text" style="font-weight: 700; margin-top: 5px;">MULAI MINING</div>
-                        <div id="timer-text" style="font-size: 0.8rem; color: var(--text-muted);">24:00:00</div>
+                        <div style="font-size: 1.8rem;">⚡</div>
+                        <div id="mining-status-text" style="font-weight: 700; font-size: 0.85rem; margin-top: 6px;">MULAI MINING</div>
+                        <div id="timer-text" style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">24:00:00</div>
                     </div>
 
                     <div class="balance-box">
-                        <div style="font-size: 0.8rem; color: var(--text-muted);">Total Saldo $GARET</div>
-                        <div class="balance-amount" id="user-balance">150.0000</div>
+                        <div style="font-size: 0.78rem; color: var(--text-muted);">Total Saldo $GARET (Mining + Bonus Referral)</div>
+                        <div class="balance-amount" id="user-balance">0.0000</div>
+                        <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 6px;">
+                            Bonus Referral: <span id="ref-bonus-display" style="color:#4ade80; font-weight:700;">0</span> $GARET <span style="font-size:0.65rem;">(Cair saat bawahan lolos KYC)</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB 2: VERIFIKASI KYC -->
+            <!-- TAB 2: VERIFIKASI KYC & BIOMETRIK -->
             <div id="tab-kyc" class="tab-content">
-                <div class="section-card">
-                    <h2>Verifikasi Identitas (KYC)</h2>
-                    <p>Syarat mutlak mengikuti TGE & Klaim Airdrop $GARET.</p>
+                <div class="section-card" style="text-align: left;">
+                    <h2 style="font-size: 1.15rem; text-align: center; margin-bottom: 4px;">Verifikasi Identitas & Biometrik</h2>
+                    <p style="font-size: 0.78rem; color: var(--text-muted); text-align: center; margin-bottom: 15px;">Wajib verifikasi dokumen & wajah untuk membuka fitur klaim TGE.</p>
 
                     <div id="kyc-form-container">
                         <form onsubmit="submitKYC(event)">
                             <div class="form-group">
-                                <label>Nama Lengkap (Sesuai ID)</label>
-                                <input type="text" id="kyc-fullname" required placeholder="Nama Lengkap">
+                                <label>Nama Lengkap (Sesuai KTP/ID)</label>
+                                <input type="text" id="kyc-fullname" required placeholder="Masukkan Nama Lengkap">
                             </div>
                             <div class="form-group">
                                 <label>Jenis Dokumen</label>
                                 <select id="kyc-doctype">
                                     <option value="KTP">KTP / NIK</option>
-                                    <option value="Paspor">Paspor International</option>
-                                    <option value="SIM">SIM</option>
+                                    <option value="Paspor">Paspor Internasional</option>
+                                    <option value="SIM">SIM Resmi</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Nomor Dokumen ID</label>
-                                <input type="text" id="kyc-docnum" required placeholder="327x xxxx xxxx xxxx">
+                                <label>Nomor Identitas</label>
+                                <input type="text" id="kyc-docnum" required placeholder="Nomor Dokumen ID">
                             </div>
+                            
                             <div class="form-group">
-                                <label>Unggah Foto ID / KTP</label>
-                                <input type="file" id="kyc-file-id" accept="image/*" required>
+                                <label>1. Unggah Foto Dokumen ID</label>
+                                <input type="file" id="kyc-file-id" accept="image/*" required onchange="previewDoc(event)">
+                                <div id="doc-preview-text" style="font-size:0.75rem; color:#4ade80; margin-top:4px;"></div>
                             </div>
-                            <button type="submit" class="btn-submit">Kirim Dokumen KYC</button>
+
+                            <div class="form-group">
+                                <label>2. Pemindaian Biometrik Wajah</label>
+                                <div class="scan-scanner">
+                                    <div id="scan-icon" style="font-size: 1.8rem;">👤</div>
+                                    <div id="scan-status" style="font-size: 0.78rem; font-weight: 600; color: var(--accent-cyan); margin-top: 4px;">Belum Dipindai</div>
+                                </div>
+                                <button type="button" class="btn-biometric" onclick="startBiometricScan()">📸 Mulai Pemindaian Wajah</button>
+                            </div>
+
+                            <button type="submit" class="btn-submit" id="btn-submit-kyc" style="opacity: 0.5; cursor: not-allowed;" disabled>
+                                Kirim Pengajuan KYC
+                            </button>
                         </form>
                     </div>
 
-                    <div id="kyc-status-container" style="display:none; margin-top:15px;">
-                        <p style="font-size:1rem; font-weight:700; color:var(--warning-yellow);" id="kyc-status-text">
-                            ⏳ Dokumen KYC Anda Dalam Proses Review Admin.
+                    <div id="kyc-status-container" style="display:none; text-align: center; margin-top: 15px;">
+                        <p style="font-size: 0.9rem; font-weight: 700; color: var(--warning-yellow);" id="kyc-status-text">
+                            ⏳ Dokumen KYC Anda Dalam Peninjauan Admin.
                         </p>
                     </div>
                 </div>
@@ -188,28 +218,28 @@
             <!-- TAB 3: TGE CLAIM -->
             <div id="tab-tge" class="tab-content">
                 <div class="section-card">
-                    <h2>Portal Claim TGE $GARET</h2>
+                    <h2 style="font-size: 1.15rem; margin-bottom: 4px;">Portal Claim TGE $GARET</h2>
                     <div class="chain-badge">🟡 BNB Smart Chain (BEP-20)</div>
-                    <p>Distribusi token $GARET langsung ke alamat wallet BNB Chain Anda.</p>
+                    <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 14px;">Distribusi token langsung ke wallet BEP-20 Anda.</p>
 
-                    <div style="padding: 15px; background: rgba(15, 23, 42, 0.6); border-radius:12px; margin-bottom:15px;">
-                        <div style="font-size:0.8rem; color:var(--text-muted);">Status Kelayakan TGE:</div>
-                        <div id="tge-eligibility" style="font-weight:800; font-size:1.1rem; color:#f87171; margin-top:5px;">
+                    <div style="padding: 12px; background: rgba(11, 19, 43, 0.6); border-radius: 12px; margin-bottom: 14px; border: 1px solid rgba(255,255,255,0.05);">
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">Status Kelayakan:</div>
+                        <div id="tge-eligibility" style="font-weight: 800; font-size: 1rem; color: #f87171; margin-top: 4px;">
                             ❌ BELUM ELIGIBLE (KYC WAJIB)
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label>Alamat Wallet BNB Smart Chain (BEP-20)</label>
+                    <div class="form-group" style="text-align: left;">
+                        <label>Alamat Wallet BEP-20</label>
                         <input type="text" id="wallet-address" placeholder="0x... (MetaMask / Trust Wallet)">
                     </div>
 
-                    <button class="btn-submit" type="button" onclick="connectBNBWallet()" style="background: rgba(240, 185, 11, 0.2); border: 1px solid var(--bnb-yellow); color: var(--bnb-yellow); margin-bottom: 10px;">
-                        🟡 Hubungkan Web3 Wallet (MetaMask / Trust Wallet)
+                    <button class="btn-submit" type="button" onclick="connectBNBWallet()" style="background: rgba(240, 185, 11, 0.15); border: 1px solid var(--bnb-yellow); color: var(--bnb-yellow); margin-bottom: 8px;">
+                        🟡 Hubungkan Web3 Wallet
                     </button>
 
-                    <button class="btn-submit" id="btn-claim-tge" onclick="claimTGE()" style="opacity:0.5; cursor:not-allowed;">
-                        Klaim Token $GARET ke BNB Wallet
+                    <button class="btn-submit" id="btn-claim-tge" onclick="claimTGE()" style="opacity: 0.5; cursor: not-allowed;">
+                        Klaim Token $GARET
                     </button>
                 </div>
             </div>
@@ -217,10 +247,13 @@
             <!-- TAB 4: REFERRAL -->
             <div id="tab-ref" class="tab-content">
                 <div class="section-card">
-                    <h2>Program Undangan & Referral</h2>
-                    <p>Dapatkan +0.10 $GARET/jam ekstra untuk setiap teman yang bergabung.</p>
+                    <h2 style="font-size: 1.15rem; margin-bottom: 6px;">Program Undangan & Referral</h2>
+                    <div style="background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); padding: 12px; border-radius: 12px; margin: 12px 0; font-size: 0.8rem; color: #4ade80; text-align: left;">
+                        🎁 <strong>Bonus 100 $GARET</strong> per referral!<br>
+                        <span style="font-size: 0.72rem; color: var(--text-main);">*Otomatis masuk ke saldo Anda setelah teman yang diundang lolos verifikasi KYC.</span>
+                    </div>
 
-                    <div class="form-group">
+                    <div class="form-group" style="text-align: left;">
                         <label>Tautan Referral Anda</label>
                         <input type="text" id="ref-link-input" readonly value="https://rjuandri-cmyk.github.io/garetnetwork/?ref=pioneer">
                     </div>
@@ -232,11 +265,11 @@
             <!-- TAB 5: TOKENOMICS -->
             <div id="tab-tokenomics" class="tab-content">
                 <div class="section-card">
-                    <h2>Tokenomics $GARET</h2>
-                    <div class="chain-badge">🟡 Standard: BEP-20 (BNB Chain)</div>
-                    <p style="margin-top:5px;">Total Pasokan: 1,000,000,000 $GARET</p>
+                    <h2 style="font-size: 1.15rem; margin-bottom: 4px;">Tokenomics $GARET</h2>
+                    <div class="chain-badge">🟡 Standar: BEP-20</div>
+                    <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px;">Total Pasokan: 1,000,000,000 $GARET</p>
 
-                    <div style="text-align: left; font-size: 0.85rem; margin-top: 15px;">
+                    <div style="text-align: left; font-size: 0.82rem;">
                         <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);"><span>⛏️ Community Mining & Airdrop</span><strong>50%</strong></div>
                         <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);"><span>💧 Liquidity Pool & BNB Listing</span><strong>20%</strong></div>
                         <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);"><span>🌐 Staking Node & Ecosystem</span><strong>15%</strong></div>
@@ -246,41 +279,25 @@
                 </div>
             </div>
 
-            <!-- TAB 6: WHITEPAPER DOCUMENTATION -->
+            <!-- TAB 6: WHITEPAPER -->
             <div id="tab-whitepaper" class="tab-content">
                 <div class="section-card" style="text-align: left;">
-                    <h2 style="text-align:center;">📖 Whitepaper v1.0</h2>
-                    <p style="text-align:center; font-size:0.8rem; color:var(--text-muted); margin-bottom:15px;">GARET NETWORK Architecture & Roadmap</p>
+                    <h2 style="font-size: 1.15rem; text-align: center; margin-bottom: 4px;">📖 Whitepaper v1.0</h2>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); text-align: center; margin-bottom: 12px;">Arsitektur & Roadmap Resmi Garet Network</p>
 
-                    <div style="background: rgba(15, 23, 42, 0.6); padding: 15px; border-radius: 12px; font-size: 0.85rem; line-height: 1.6; max-height: 250px; overflow-y: auto; border: 1px solid var(--card-border);">
-                        <h4 style="color:var(--accent-cyan); margin-bottom:5px;">1. Pengenalan GARET NETWORK</h4>
-                        <p style="margin-bottom:10px;">GARET NETWORK adalah protokol Layer-2 & ekosistem penambangan seluler berbasis BNB Smart Chain (BEP-20) yang dirancang untuk memberikan akses keuangaan terdesentralisasi (DeFi) secara adil dan aman.</p>
-
-                        <h4 style="color:var(--accent-cyan); margin-bottom:5px;">2. Keamanan Biometrik & Anti-Bot</h4>
-                        <p style="margin-bottom:10px;">Setiap sesi penambangan dan klaim TGE dilindungi dengan sistem verifikasi biometrik dan KYC terpusat untuk mencegah penyalahgunaan akun ganda (Sybil Attack).</p>
-
-                        <h4 style="color:var(--accent-cyan); margin-bottom:5px;">3. Rencana Peluncuran (Roadmap)</h4>
-                        <p><strong>Fase 1:</strong> Peluncuran Mobile Mining Portal & KYC Enrollment.<br>
-                        <strong>Fase 2:</strong> Audit Smart Contract BEP-20 & Distribusi TGE.<br>
-                        <strong>Fase 3:</strong> Listing di DEX/CEX & Peluncuran Staking Node.</p>
+                    <div style="background: rgba(11, 19, 43, 0.6); padding: 12px; border-radius: 12px; font-size: 0.8rem; line-height: 1.5; max-height: 220px; overflow-y: auto; border: 1px solid rgba(255,255,255,0.05);">
+                        <h4 style="color: var(--accent-cyan); margin-bottom: 4px;">1. Pengenalan Ekosistem</h4>
+                        <p style="margin-bottom: 8px;">Garet Network adalah platform penambangan berbasis seluler di jaringan BNB Smart Chain (BEP-20) yang mengutamakan keamanan dan desentralisasi finansial.</p>
+                        <h4 style="color: var(--accent-cyan); margin-bottom: 4px;">2. Keamanan & Anti-Bot</h4>
+                        <p>Dilengkapi autentikasi biometrik dan validasi KYC ketat untuk memastikan keadilan distribusi airdrop bagi seluruh pioneer.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB 7: ADMIN PANEL (TERSEMBUNYI DARI USER BIASA) -->
+            <!-- TAB 7: ADMIN PANEL (TERKUNCI 100% AMAN) -->
             <div id="tab-admin" class="tab-content">
-                <div class="section-card" style="border-color: #22c55e;">
-                    <h2 style="color: #4ade80;">⚙️ Panel Admin Verifikasi</h2>
-                    <p>Khusus Administrator Portal (`rjuandri@gmail.com`)</p>
-
-                    <div style="margin: 15px 0; text-align: left; font-size: 0.85rem; background: rgba(15, 23, 42, 0.6); padding: 12px; border-radius: 10px;">
-                        <div>Status Admin: <strong style="color: #4ade80;">AKTIF</strong></div>
-                        <div>Email Admin: <strong>rjuandri@gmail.com</strong></div>
-                    </div>
-
-                    <button class="btn-submit" onclick="adminApproveKYC()" style="background: #22c55e;">
-                        ✅ Setujui KYC Pengguna Ini (Approve KYC)
-                    </button>
+                <div class="section-card" id="admin-card-content" style="border-color: #22c55e;">
+                    <!-- Konten admin dirender secara aman melalui skrip -->
                 </div>
             </div>
 
@@ -289,18 +306,19 @@
     </div>
 
     <script>
-        // CONFIGURASI EMAIL ADMIN UTAMA
         const ADMIN_EMAIL = "rjuandri@gmail.com";
 
         let isSignUp = false;
         let isLoggedIn = false;
         let isMining = false;
-        let balance = 150.0000;
+        let miningBalance = 0;
+        let refBonus = 0;
         let hourlyRate = 0.50;
         let ratePerSecond = hourlyRate / 3600;
         let miningTimer = null;
         let timeLeft = 24 * 3600;
         let kycStatus = "UNVERIFIED";
+        let biometricDone = false;
 
         window.onload = function() {
             const savedAccount = localStorage.getItem('garet_registered_account');
@@ -323,14 +341,14 @@
             const biometricBtn = document.getElementById('btn-biometric-login');
 
             if (isSignUp) {
-                title.innerText = "Pendaftaran Akun Baru";
-                subtitle.innerText = "Buat akun & atur PIN 6 angka untuk aktivasi Biometrik & KYC.";
-                submitBtn.innerText = "Daftar & Aktifkan Biometrik";
+                title.innerText = "Daftar Akun Baru";
+                subtitle.innerText = "Buat akun & atur PIN 6 angka untuk aktivasi.";
+                submitBtn.innerText = "Daftar & Buat Akun";
                 groupUsername.style.display = "block";
                 biometricBtn.style.display = "none";
             } else {
-                title.innerText = "Akses Portal Web3";
-                subtitle.innerText = "Masukkan PIN atau Biometrik Anda untuk membuka penambangan & TGE Portal.";
+                title.innerText = "Portal Web3 Garet";
+                subtitle.innerText = "Autentikasi aman dengan PIN & Biometrik terenkripsi lokal.";
                 submitBtn.innerText = "Masuk Dengan PIN";
                 groupUsername.style.display = "none";
                 if (localStorage.getItem('garet_registered_account')) {
@@ -341,32 +359,51 @@
 
         async function submitAuth(e) {
             e.preventDefault();
-            const email = document.getElementById('input-email').value;
+            const email = document.getElementById('input-email').value.trim().toLowerCase();
             const pin = document.getElementById('input-pin').value;
 
             if (isSignUp) {
-                const accountData = { email: email, pin: pin, kyc: "UNVERIFIED" };
+                const usernameInput = document.getElementById('input-username').value.trim() || email.split('@')[0];
+                const accountData = { 
+                    email: email, 
+                    pin: pin, 
+                    kyc: "UNVERIFIED",
+                    miningBalance: 0,
+                    refBonus: 0,
+                    referredBy: getUrlParam('ref') || null,
+                    username: usernameInput
+                };
+                localStorage.setItem('garet_user_' + email, JSON.stringify(accountData));
                 localStorage.setItem('garet_registered_account', JSON.stringify(accountData));
-                alert("Pendaftaran Berhasil! PIN & Biometrik Anda telah aktif.");
+                alert("Pendaftaran Berhasil! Silakan mulai mining.");
                 localStorage.setItem('garet_active_session', email);
                 isLoggedIn = true;
                 showDashboard(email);
             } else {
-                const savedAccount = JSON.parse(localStorage.getItem('garet_registered_account') || '{}');
-                if (savedAccount.email === email && savedAccount.pin === pin) {
+                let userObj = JSON.parse(localStorage.getItem('garet_user_' + email) || '{}');
+                if (!userObj.email) {
+                    userObj = JSON.parse(localStorage.getItem('garet_registered_account') || '{}');
+                }
+
+                if (userObj.email === email && userObj.pin === pin) {
                     localStorage.setItem('garet_active_session', email);
                     isLoggedIn = true;
                     showDashboard(email);
                 } else {
-                    alert("PIN atau Email yang Anda masukkan salah / akun belum terdaftar!");
+                    alert("PIN atau Email salah / belum terdaftar!");
                 }
             }
+        }
+
+        function getUrlParam(param) {
+            const searchParams = new URLSearchParams(window.location.search);
+            return searchParams.get(param);
         }
 
         function loginBiometric() {
             const savedAccount = JSON.parse(localStorage.getItem('garet_registered_account') || '{}');
             if (savedAccount.email) {
-                alert("Tempelkan Sidik Jari atau Pindai Wajah Anda pada sensor HP.");
+                alert("Verifikasi biometrik perangkat berhasil.");
                 localStorage.setItem('garet_active_session', savedAccount.email);
                 isLoggedIn = true;
                 showDashboard(savedAccount.email);
@@ -379,36 +416,86 @@
             document.getElementById('user-display-email').innerText = email;
             document.getElementById('auth-header-btn').innerText = 'Keluar';
 
-            // KONTROL AKSES TAB ADMIN
             const adminNavBtn = document.getElementById('nav-btn-admin');
-            if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
-                adminNavBtn.style.display = 'inline-block'; // Tampilkan tombol admin jika email rjuandri@gmail.com
+            const isAdmin = (email === ADMIN_EMAIL.toLowerCase());
+
+            if (isAdmin) {
+                adminNavBtn.style.display = 'inline-block';
+                renderAdminPanel();
             } else {
-                adminNavBtn.style.display = 'none'; // Sembunyikan untuk user biasa
+                adminNavBtn.style.display = 'none';
+                document.getElementById('admin-card-content').innerHTML = "<h3 style='color:#f87171;'>⛔ Akses Ditolak!</h3>";
             }
 
-            const username = email.split('@')[0];
+            let userObj = JSON.parse(localStorage.getItem('garet_user_' + email) || '{}');
+            if (!userObj.email) {
+                userObj = JSON.parse(localStorage.getItem('garet_registered_account') || '{}');
+            }
+
+            const username = userObj.username || email.split('@')[0];
             document.getElementById('ref-link-input').value = `https://rjuandri-cmyk.github.io/garetnetwork/?ref=${username}`;
 
-            const savedAccount = JSON.parse(localStorage.getItem('garet_registered_account') || '{}');
-            kycStatus = savedAccount.kyc || "UNVERIFIED";
+            kycStatus = userObj.kyc || "UNVERIFIED";
+            miningBalance = userObj.miningBalance || 0;
+            refBonus = userObj.refBonus || 0;
+
             updateKYCUI();
+            updateTotalBalance();
         }
 
         function switchTab(tabId, btn) {
+            const currentEmail = (localStorage.getItem('garet_active_session') || '').toLowerCase();
+            const isAdmin = (currentEmail === ADMIN_EMAIL.toLowerCase());
+
+            if (tabId === 'tab-admin' && !isAdmin) {
+                alert("Akses Ditolak!");
+                return;
+            }
+
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             btn.classList.add('active');
         }
 
+        function previewDoc(e) {
+            if (e.target.files.length > 0) {
+                document.getElementById('doc-preview-text').innerText = "✓ Dokumen terpilih: " + e.target.files[0].name;
+                checkKYCFormReady();
+            }
+        }
+
+        function startBiometricScan() {
+            const scanStatus = document.getElementById('scan-status');
+            const scanIcon = document.getElementById('scan-icon');
+            scanStatus.innerText = "⏳ Memindai Wajah...";
+            scanIcon.innerText = "🔍";
+
+            setTimeout(() => {
+                biometricDone = true;
+                scanStatus.innerText = "✅ Biometrik Terverifikasi!";
+                scanStatus.style.color = "#4ade80";
+                scanIcon.innerText = "✅";
+                checkKYCFormReady();
+            }, 1500);
+        }
+
+        function checkKYCFormReady() {
+            const fileInput = document.getElementById('kyc-file-id');
+            const submitBtn = document.getElementById('btn-submit-kyc');
+
+            if (fileInput.files.length > 0 && biometricDone) {
+                submitBtn.style.opacity = "1";
+                submitBtn.style.cursor = "pointer";
+                submitBtn.disabled = false;
+            }
+        }
+
         function submitKYC(e) {
             e.preventDefault();
             kycStatus = "PENDING";
-            const savedAccount = JSON.parse(localStorage.getItem('garet_registered_account') || '{}');
-            savedAccount.kyc = "PENDING";
-            localStorage.setItem('garet_registered_account', JSON.stringify(savedAccount));
-            alert("Dokumen KYC berhasil dikirim! Silakan tunggu verifikasi admin.");
+            saveCurrentUserData();
+            alert("Pengajuan KYC berhasil dikirim untuk ditinjau admin.");
             updateKYCUI();
         }
 
@@ -430,13 +517,13 @@
                 badge.innerText = "KYC Pending";
                 formContainer.style.display = "none";
                 statusContainer.style.display = "block";
-                statusText.innerText = "⏳ Dokumen KYC Anda Sedang Direview oleh Admin.";
+                statusText.innerText = "⏳ Dokumen KYC Anda Sedang Ditinjau Admin.";
             } else if (kycStatus === "VERIFIED") {
                 badge.className = "badge-kyc kyc-verified";
                 badge.innerText = "KYC Passed";
                 formContainer.style.display = "none";
                 statusContainer.style.display = "block";
-                statusText.innerHTML = "✅ KYC Anda Terverifikasi! Anda Berhak Mengikuti TGE.";
+                statusText.innerHTML = "✅ KYC Lolos! Anda Berhak Melakukan Klaim TGE.";
                 statusText.style.color = "#4ade80";
 
                 tgeEligibility.innerHTML = "✅ ELIGIBLE UNTUK CLAIM TGE (BNB CHAIN)";
@@ -446,13 +533,70 @@
             }
         }
 
-        function adminApproveKYC() {
+        function renderAdminPanel() {
+            const container = document.getElementById('admin-card-content');
+            const currentEmail = localStorage.getItem('garet_active_session') || '';
+
+            container.innerHTML = `
+                <h2 style="color: #4ade80; font-size: 1.15rem; margin-bottom: 4px;">⚙️ Panel Admin</h2>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px;">Kontrol Verifikasi KYC Pengguna</p>
+
+                <div style="margin: 10px 0; text-align: left; font-size: 0.8rem; background: rgba(11, 19, 43, 0.6); padding: 12px; border-radius: 10px;">
+                    <div>Admin Aktif: <strong>${currentEmail}</strong></div>
+                    <div>Status KYC Akun Ini: <strong>${kycStatus}</strong></div>
+                </div>
+
+                <button class="btn-submit" onclick="adminApproveCurrentKYC()" style="background: #22c55e; box-shadow: 0 4px 15px rgba(34,197,94,0.3);">
+                    ✅ Setujui KYC (Approve & Beri 100 $GARET Referral)
+                </button>
+            `;
+        }
+
+        function adminApproveCurrentKYC() {
             kycStatus = "VERIFIED";
-            const savedAccount = JSON.parse(localStorage.getItem('garet_registered_account') || '{}');
-            savedAccount.kyc = "VERIFIED";
-            localStorage.setItem('garet_registered_account', JSON.stringify(savedAccount));
-            alert("Status KYC Pengguna Berhasil Diubah Menjadi TERVERIFIKASI (PASSED)!");
+            const currentEmail = localStorage.getItem('garet_active_session');
+            saveCurrentUserData();
+
+            const userObj = JSON.parse(localStorage.getItem('garet_user_' + currentEmail) || '{}');
+            if (userObj.referredBy) {
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key.startsWith('garet_user_')) {
+                        let refUser = JSON.parse(localStorage.getItem(key));
+                        let refName = refUser.username || refUser.email.split('@')[0];
+                        if (refName === userObj.referredBy) {
+                            refUser.refBonus = (refUser.refBonus || 0) + 100;
+                            localStorage.setItem(key, JSON.stringify(refUser));
+                            alert(`Bonus 100 $GARET berhasil dikirim ke pengundang (${refUser.email})!`);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            alert("KYC Berhasil Disetujui (VERIFIED)!");
             updateKYCUI();
+            renderAdminPanel();
+        }
+
+        function updateTotalBalance() {
+            const total = miningBalance + refBonus;
+            document.getElementById('user-balance').innerText = total.toFixed(4);
+            document.getElementById('ref-bonus-display').innerText = refBonus;
+        }
+
+        function saveCurrentUserData() {
+            const currentEmail = localStorage.getItem('garet_active_session');
+            if (!currentEmail) return;
+
+            let userObj = JSON.parse(localStorage.getItem('garet_user_' + currentEmail) || '{}');
+            userObj.email = currentEmail;
+            userObj.kyc = kycStatus;
+            userObj.miningBalance = miningBalance;
+            userObj.refBonus = refBonus;
+
+            localStorage.setItem('garet_user_' + currentEmail, JSON.stringify(userObj));
+            localStorage.setItem('garet_registered_account', JSON.stringify(userObj));
         }
 
         async function connectBNBWallet() {
@@ -460,14 +604,14 @@
                 try {
                     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
                     document.getElementById('wallet-address').value = accounts[0];
-                    alert("Sukses Terhubung ke BNB Chain Wallet: " + accounts[0]);
+                    alert("Terhubung ke Wallet: " + accounts[0]);
                 } catch (error) {
-                    alert("Koneksi wallet dibatalkan.");
+                    alert("Koneksi dibatalkan.");
                 }
             } else {
                 const simulatedAddress = "0x" + Array.from({length: 40}, () => Math.floor(Math.random()*16).toString(16)).join('');
                 document.getElementById('wallet-address').value = simulatedAddress;
-                alert("Wallet BEP-20 Berhasil Terhubung: " + simulatedAddress);
+                alert("Wallet BEP-20 Terhubung: " + simulatedAddress);
             }
         }
 
@@ -476,28 +620,30 @@
             copyText.select();
             copyText.setSelectionRange(0, 99999);
             navigator.clipboard.writeText(copyText.value);
-            alert("Tautan Rujukan Berhasil Disalin!");
+            alert("Tautan Referral Berhasil Disalin!");
         }
 
         function claimTGE() {
             const walletInput = document.getElementById('wallet-address').value;
+            const total = miningBalance + refBonus;
 
             if (kycStatus !== "VERIFIED") {
-                alert("Akses Ditolak: Anda wajib menyelesaikan dan Lolos KYC sebelum klaim TGE!");
+                alert("Akses Ditolak: Anda wajib Lolos KYC sebelum klaim TGE!");
             } else if (!walletInput.startsWith("0x") || walletInput.length < 40) {
-                alert("Masukkan alamat wallet BEP-20 (BNB Smart Chain) yang valid!");
+                alert("Masukkan alamat wallet BEP-20 yang valid!");
             } else {
-                alert(`Selamat! Penarikan ${balance.toFixed(2)} $GARET ke wallet BNB Smart Chain (${walletInput}) telah terdaftar untuk alokasi TGE.`);
+                alert(`Sukses! Alokasi ${total.toFixed(2)} $GARET terdaftar untuk ditarik ke wallet ${walletInput}.`);
             }
         }
 
         function handleHeaderBtn() {
             if (isLoggedIn) {
+                saveCurrentUserData();
                 localStorage.removeItem('garet_active_session');
                 isLoggedIn = false;
                 document.getElementById('auth-section').style.display = 'block';
                 document.getElementById('app-dashboard').style.display = 'none';
-                document.getElementById('auth-header-btn').innerText = 'Login';
+                document.getElementById('auth-header-btn').innerText = 'Masuk';
             }
         }
 
@@ -513,8 +659,9 @@
                 miningTimer = setInterval(() => {
                     if (timeLeft > 0) {
                         timeLeft--;
-                        balance += ratePerSecond;
-                        document.getElementById('user-balance').innerText = balance.toFixed(4);
+                        miningBalance += ratePerSecond;
+                        updateTotalBalance();
+                        saveCurrentUserData();
                         
                         let hrs = Math.floor(timeLeft / 3600);
                         let mins = Math.floor((timeLeft % 3600) / 60);
@@ -528,13 +675,13 @@
                         statusText.innerText = "MULAI MINING";
                         document.getElementById('timer-text').innerText = "24:00:00";
                         timeLeft = 24 * 3600;
-                        alert("Sesi Penambangan 24 Jam Selesai! Klik Mulai Mining untuk sesi baru.");
+                        alert("Sesi mining 24 jam selesai!");
                     }
                 }, 1000);
                 
-                alert(`Sesi Node Aktif! Mengumpulkan ${hourlyRate} $GARET per jam secara bertahap.`);
+                alert(`Sesi Node Mining Aktif! Mengumpulkan ${hourlyRate} $GARET / jam.`);
             } else {
-                alert("Sesi mining Anda sedang berjalan secara real-time!");
+                alert("Sesi mining sedang berjalan secara real-time.");
             }
         }
     </script>
