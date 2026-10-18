@@ -116,7 +116,9 @@
                 <button class="nav-btn" onclick="switchTab('tab-tge', this)">🚀 TGE Claim</button>
                 <button class="nav-btn" onclick="switchTab('tab-ref', this)">👥 Referral</button>
                 <button class="nav-btn" onclick="switchTab('tab-tokenomics', this)">📊 Tokenomics</button>
-                <button class="nav-btn" onclick="switchTab('tab-admin', this)">⚙️ Admin</button>
+                <button class="nav-btn" onclick="switchTab('tab-whitepaper', this)">📄 Whitepaper</button>
+                <!-- TAB ADMIN KHUSUS ADMIN SAJA -->
+                <button class="nav-btn" id="nav-btn-admin" onclick="switchTab('tab-admin', this)" style="display: none; border-color: #22c55e; color: #4ade80;">⚙️ Admin</button>
             </div>
 
             <!-- TAB 1: MINING -->
@@ -183,7 +185,7 @@
                 </div>
             </div>
 
-            <!-- TAB 3: TGE CLAIM (BNB SMART CHAIN) -->
+            <!-- TAB 3: TGE CLAIM -->
             <div id="tab-tge" class="tab-content">
                 <div class="section-card">
                     <h2>Portal Claim TGE $GARET</h2>
@@ -199,7 +201,7 @@
 
                     <div class="form-group">
                         <label>Alamat Wallet BNB Smart Chain (BEP-20)</label>
-                        <input type="text" id="wallet-address" placeholder="0x... (Contoh: MetaMask / Trust Wallet)">
+                        <input type="text" id="wallet-address" placeholder="0x... (MetaMask / Trust Wallet)">
                     </div>
 
                     <button class="btn-submit" type="button" onclick="connectBNBWallet()" style="background: rgba(240, 185, 11, 0.2); border: 1px solid var(--bnb-yellow); color: var(--bnb-yellow); margin-bottom: 10px;">
@@ -212,7 +214,7 @@
                 </div>
             </div>
 
-            <!-- TAB 4: REFERRAL SYSTEM -->
+            <!-- TAB 4: REFERRAL -->
             <div id="tab-ref" class="tab-content">
                 <div class="section-card">
                     <h2>Program Undangan & Referral</h2>
@@ -232,7 +234,7 @@
                 <div class="section-card">
                     <h2>Tokenomics $GARET</h2>
                     <div class="chain-badge">🟡 Standard: BEP-20 (BNB Chain)</div>
-                    <p style="margin-top:5px;">Total Alokasi Pasokan: 1,000,000,000 $GARET</p>
+                    <p style="margin-top:5px;">Total Pasokan: 1,000,000,000 $GARET</p>
 
                     <div style="text-align: left; font-size: 0.85rem; margin-top: 15px;">
                         <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);"><span>⛏️ Community Mining & Airdrop</span><strong>50%</strong></div>
@@ -244,14 +246,40 @@
                 </div>
             </div>
 
-            <!-- TAB 6: ADMIN PANEL -->
+            <!-- TAB 6: WHITEPAPER DOCUMENTATION -->
+            <div id="tab-whitepaper" class="tab-content">
+                <div class="section-card" style="text-align: left;">
+                    <h2 style="text-align:center;">📖 Whitepaper v1.0</h2>
+                    <p style="text-align:center; font-size:0.8rem; color:var(--text-muted); margin-bottom:15px;">GARET NETWORK Architecture & Roadmap</p>
+
+                    <div style="background: rgba(15, 23, 42, 0.6); padding: 15px; border-radius: 12px; font-size: 0.85rem; line-height: 1.6; max-height: 250px; overflow-y: auto; border: 1px solid var(--card-border);">
+                        <h4 style="color:var(--accent-cyan); margin-bottom:5px;">1. Pengenalan GARET NETWORK</h4>
+                        <p style="margin-bottom:10px;">GARET NETWORK adalah protokol Layer-2 & ekosistem penambangan seluler berbasis BNB Smart Chain (BEP-20) yang dirancang untuk memberikan akses keuangaan terdesentralisasi (DeFi) secara adil dan aman.</p>
+
+                        <h4 style="color:var(--accent-cyan); margin-bottom:5px;">2. Keamanan Biometrik & Anti-Bot</h4>
+                        <p style="margin-bottom:10px;">Setiap sesi penambangan dan klaim TGE dilindungi dengan sistem verifikasi biometrik dan KYC terpusat untuk mencegah penyalahgunaan akun ganda (Sybil Attack).</p>
+
+                        <h4 style="color:var(--accent-cyan); margin-bottom:5px;">3. Rencana Peluncuran (Roadmap)</h4>
+                        <p><strong>Fase 1:</strong> Peluncuran Mobile Mining Portal & KYC Enrollment.<br>
+                        <strong>Fase 2:</strong> Audit Smart Contract BEP-20 & Distribusi TGE.<br>
+                        <strong>Fase 3:</strong> Listing di DEX/CEX & Peluncuran Staking Node.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 7: ADMIN PANEL (TERSEMBUNYI DARI USER BIASA) -->
             <div id="tab-admin" class="tab-content">
-                <div class="section-card">
-                    <h2>Panel Admin / Verifikasi</h2>
-                    <p>Fitur pengujian untuk menyetujui KYC pengguna secara cepat.</p>
+                <div class="section-card" style="border-color: #22c55e;">
+                    <h2 style="color: #4ade80;">⚙️ Panel Admin Verifikasi</h2>
+                    <p>Khusus Administrator Portal (`rjuandri@gmail.com`)</p>
+
+                    <div style="margin: 15px 0; text-align: left; font-size: 0.85rem; background: rgba(15, 23, 42, 0.6); padding: 12px; border-radius: 10px;">
+                        <div>Status Admin: <strong style="color: #4ade80;">AKTIF</strong></div>
+                        <div>Email Admin: <strong>rjuandri@gmail.com</strong></div>
+                    </div>
 
                     <button class="btn-submit" onclick="adminApproveKYC()" style="background: #22c55e;">
-                        ✅ Setujui Status KYC (Approve KYC)
+                        ✅ Setujui KYC Pengguna Ini (Approve KYC)
                     </button>
                 </div>
             </div>
@@ -261,6 +289,9 @@
     </div>
 
     <script>
+        // CONFIGURASI EMAIL ADMIN UTAMA
+        const ADMIN_EMAIL = "rjuandri@gmail.com";
+
         let isSignUp = false;
         let isLoggedIn = false;
         let isMining = false;
@@ -348,6 +379,14 @@
             document.getElementById('user-display-email').innerText = email;
             document.getElementById('auth-header-btn').innerText = 'Keluar';
 
+            // KONTROL AKSES TAB ADMIN
+            const adminNavBtn = document.getElementById('nav-btn-admin');
+            if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
+                adminNavBtn.style.display = 'inline-block'; // Tampilkan tombol admin jika email rjuandri@gmail.com
+            } else {
+                adminNavBtn.style.display = 'none'; // Sembunyikan untuk user biasa
+            }
+
             const username = email.split('@')[0];
             document.getElementById('ref-link-input').value = `https://rjuandri-cmyk.github.io/garetnetwork/?ref=${username}`;
 
@@ -416,7 +455,6 @@
             updateKYCUI();
         }
 
-        // FUNGSI KHUSUS BNB SMART CHAIN WALLET
         async function connectBNBWallet() {
             if (window.ethereum) {
                 try {
@@ -427,7 +465,6 @@
                     alert("Koneksi wallet dibatalkan.");
                 }
             } else {
-                // Simulasi jika dibuka dari browser biasa
                 const simulatedAddress = "0x" + Array.from({length: 40}, () => Math.floor(Math.random()*16).toString(16)).join('');
                 document.getElementById('wallet-address').value = simulatedAddress;
                 alert("Wallet BEP-20 Berhasil Terhubung: " + simulatedAddress);
