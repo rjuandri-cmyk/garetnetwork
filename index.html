@@ -1,487 +1,505 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GARET NETWORK | Official Web3 Mining & Airdrop Portal</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GARET NETWORK | Official Web3 Mining & Airdrop Portal</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #0b132b;
+            --card-bg: rgba(28, 37, 65, 0.85);
+            --card-border: rgba(56, 189, 248, 0.25);
+            --primary-blue: #2563eb;
+            --accent-cyan: #06b6d4;
+            --accent-glow: rgba(6, 182, 212, 0.35);
+            --green-glow: rgba(34, 197, 94, 0.35);
+            --bnb-yellow: #f0b90b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --warning-yellow: #f59e0b;
+        }
 
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 15px; }
 
-  <!-- Netlify Identity Widget -->
-  <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+        header { width: 100%; max-width: 500px; display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--card-border); margin-bottom: 20px; }
+        .brand-title { font-size: 1.4rem; font-weight: 800; background: linear-gradient(135deg, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .btn-auth { background: var(--primary-blue); color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: 600; cursor: pointer; font-size: 0.85rem; }
 
-  <style>
-    :root {
-      --bg-color: #0b132b;
-      --card-bg: rgba(28, 37, 65, 0.85);
-      --card-border: rgba(56, 189, 248, 0.25);
-      --primary-blue: #2563eb;
-      --accent-cyan: #06b6d4;
-      --accent-glow: rgba(6, 182, 212, 0.35);
-      --green-glow: rgba(34, 197, 94, 0.35);
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-    }
+        .container { width: 100%; max-width: 500px; }
+        .auth-card, .section-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px; text-align: center; margin-top: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .form-group { margin-bottom: 15px; text-align: left; }
+        .form-group label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px; }
+        .form-group input, .form-group select { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--card-border); background: rgba(15, 23, 42, 0.6); color: white; font-size: 0.9rem; outline: none; }
+        .btn-submit { width: 100%; padding: 12px; background: linear-gradient(135deg, #2563eb, #06b6d4); border: none; border-radius: 10px; color: white; font-weight: 700; cursor: pointer; margin-top: 10px; }
+        .btn-biometric { width: 100%; padding: 12px; background: rgba(6, 182, 212, 0.15); border: 1px solid var(--accent-cyan); border-radius: 10px; color: var(--accent-cyan); font-weight: 700; cursor: pointer; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Inter', sans-serif;
-    }
+        #app-dashboard { display: none; }
+        .nav-buttons { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 15px; }
+        .nav-btn { background: var(--card-bg); border: 1px solid var(--card-border); color: white; padding: 10px 4px; border-radius: 12px; font-weight: 600; cursor: pointer; font-size: 0.72rem; text-align: center; }
+        .nav-btn.active { background: var(--primary-blue); border-color: #60a5fa; }
 
-    body {
-      background: radial-gradient(circle at top center, #1e293b 0%, #0f172a 100%);
-      color: var(--text-main);
-      min-height: 100vh;
-      padding: 15px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+        .rate-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(6, 182, 212, 0.15); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; margin-bottom: 15px; }
+        .mining-circle { width: 170px; height: 170px; border-radius: 50%; background: radial-gradient(circle, rgba(6,182,212,0.2) 0%, rgba(11,19,43,0.8) 70%); border: 3px solid var(--accent-cyan); box-shadow: 0 0 20px var(--accent-glow); margin: 15px auto; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; }
+        .mining-circle.active { border-color: #22c55e; box-shadow: 0 0 25px var(--green-glow); }
 
-    header {
-      width: 100%;
-      max-width: 950px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 0;
-      border-bottom: 1px solid var(--card-border);
-      margin-bottom: 20px;
-      gap: 15px;
-    }
+        .balance-box { background: rgba(15, 23, 42, 0.6); border-radius: 12px; padding: 15px; margin-top: 15px; }
+        .balance-amount { font-size: 1.8rem; font-weight: 800; color: var(--accent-cyan); }
+        .user-info { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .badge-kyc { padding: 3px 8px; border-radius: 10px; font-size: 0.7rem; font-weight: 700; }
+        .kyc-pending { background: rgba(245, 158, 11, 0.2); color: var(--warning-yellow); }
+        .kyc-verified { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
+        .kyc-unverified { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
 
-    .logo-container {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .logo-title {
-      font-size: 1.5rem;
-      font-weight: 800;
-      background: linear-gradient(90deg, #38bdf8, #818cf8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: 1px;
-    }
-
-    nav {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .nav-btn {
-      background: rgba(15, 23, 42, 0.6);
-      border: 1px solid var(--card-border);
-      color: var(--text-muted);
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .nav-btn.active, .nav-btn:hover {
-      background: var(--primary-blue);
-      color: #ffffff;
-      border-color: var(--accent-cyan);
-    }
-
-    .container {
-      width: 100%;
-      max-width: 950px;
-      display: flex;
-      flex-direction: column;
-      gap: 25px;
-    }
-
-    .card {
-      background: var(--card-bg);
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 25px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    }
-
-    .mining-hero {
-      text-align: center;
-      background: linear-gradient(135deg, rgba(37, 99, 235, 0.2) 0%, rgba(6, 182, 212, 0.1) 100%);
-      border: 1px solid rgba(56, 189, 248, 0.4);
-      padding: 35px 20px;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 15px;
-      margin: 25px 0;
-    }
-
-    .stat-box {
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid #334155;
-      padding: 15px;
-      border-radius: 12px;
-      text-align: center;
-    }
-
-    .stat-box .value {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--accent-cyan);
-      margin-top: 5px;
-    }
-
-    .stat-box .label {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    .mining-circle-container {
-      margin: 20px 0;
-    }
-
-    .btn-mine {
-      background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
-      color: #ffffff;
-      border: 2px solid var(--accent-cyan);
-      width: 180px;
-      height: 180px;
-      border-radius: 50%;
-      font-size: 1.2rem;
-      font-weight: 800;
-      cursor: pointer;
-      box-shadow: 0 0 25px var(--accent-glow);
-      transition: all 0.3s ease;
-      display: inline-flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .btn-mine:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 35px var(--accent-glow);
-    }
-
-    .btn-mine.active {
-      background: linear-gradient(135deg, #15803d 0%, #22c55e 100%);
-      border-color: #4ade80;
-      box-shadow: 0 0 25px var(--green-glow);
-    }
-
-    .tokenomics-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 15px;
-      margin-top: 15px;
-    }
-
-    .token-card {
-      background: rgba(15, 23, 42, 0.7);
-      border: 1px solid #334155;
-      padding: 15px;
-      border-radius: 10px;
-    }
-
-    .token-card h4 {
-      color: var(--accent-cyan);
-      margin-bottom: 5px;
-    }
-
-    .token-card p {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
-
-    h2 {
-      color: #38bdf8;
-      font-size: 1.25rem;
-      margin-bottom: 15px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    p {
-      line-height: 1.6;
-      font-size: 0.95rem;
-      color: #cbd5e1;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-top: 15px;
-    }
-
-    input[type="text"], input[type="password"], input[type="number"] {
-      width: 100%;
-      padding: 12px 16px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid #334155;
-      border-radius: 8px;
-      color: #ffffff;
-      font-size: 0.9rem;
-      outline: none;
-    }
-
-    .btn-primary {
-      background: linear-gradient(90deg, #2563eb, #0284c7);
-      color: #ffffff;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .tab-content {
-      display: none;
-    }
-
-    .tab-content.active {
-      display: block;
-    }
-
-    [data-netlify-identity-button] button {
-      background: linear-gradient(90deg, #2563eb, #06b6d4) !important;
-      color: white !important;
-      border-radius: 8px !important;
-      padding: 10px 22px !important;
-      font-weight: 600 !important;
-      border: none !important;
-      cursor: pointer !important;
-    }
-  </style>
+        .chain-badge { background: rgba(240, 185, 11, 0.15); border: 1px solid var(--bnb-yellow); color: var(--bnb-yellow); font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 8px; display: inline-flex; align-items: center; gap: 5px; margin-bottom: 10px; }
+    </style>
 </head>
 <body>
 
-  <header>
-    <div class="logo-container">
-      <div class="logo-title">GARET NETWORK</div>
-    </div>
-    <div data-netlify-identity-button></div>
-  </header>
+    <header>
+        <div class="brand-title">GARET NETWORK</div>
+        <button id="auth-header-btn" class="btn-auth" onclick="handleHeaderBtn()">Login</button>
+    </header>
 
-  <div style="width: 100%; max-width: 950px; margin-bottom: 20px;">
-    <nav>
-      <button class="nav-btn active" onclick="switchTab('tab-mining', this)">⛏️ Mining 24h</button>
-      <button class="nav-btn" onclick="switchTab('tab-tokenomics', this)">📊 Tokenomics</button>
-      <button class="nav-btn" onclick="switchTab('tab-whitepaper', this)">📄 Whitepaper</button>
-      <button class="nav-btn" onclick="switchTab('tab-reward', this)">🎁 Sistem Reward</button>
-      <button class="nav-btn" onclick="switchTab('tab-airdrop', this)">🪂 Portal Airdrop & Admin</button>
-    </nav>
-  </div>
+    <div class="container">
+        
+        <!-- SECTION AUTHENTICATION -->
+        <div id="auth-section" class="auth-card">
+            <h2 id="auth-title">Akses Portal Web3</h2>
+            <p id="auth-subtitle">Masukkan PIN atau Biometrik Anda untuk membuka penambangan & TGE Portal.</p>
+            
+            <form id="auth-form" onsubmit="submitAuth(event)">
+                <div class="form-group" id="group-username" style="display: none;">
+                    <label>Nama Pengguna</label>
+                    <input type="text" id="input-username" placeholder="Username Anda">
+                </div>
+                
+                <div class="form-group" id="group-email">
+                    <label>Alamat Email</label>
+                    <input type="email" id="input-email" required placeholder="nama@email.com">
+                </div>
 
-  <div class="container">
+                <div class="form-group" id="group-pin">
+                    <label>PIN Keamanan (6 Angka)</label>
+                    <input type="password" id="input-pin" required maxlength="6" pattern="\d{6}" inputmode="numeric" placeholder="123456">
+                </div>
 
-    <!-- TAB 1: MINING 24 JAM -->
-    <div id="tab-mining" class="tab-content active">
-      <div class="card mining-hero">
-        <h1>Sesi Penambangan 24 Jam</h1>
-        <p>Aktifkan node penambangan harian Anda untuk mengumpulkan token $GARET secara gratis setiap 24 jam sekali.</p>
+                <button type="submit" id="btn-auth-submit" class="btn-submit">Masuk Dengan PIN</button>
+            </form>
 
-        <div class="mining-circle-container">
-          <button id="mineBtn" class="btn-mine" onclick="startMining()">
-            <span id="mineIcon">⚡</span>
-            <span id="mineText">MULAI MINING</span>
-            <span id="timerText" style="font-size: 0.75rem; opacity: 0.8;">24:00:00</span>
-          </button>
+            <button type="button" id="btn-biometric-login" class="btn-biometric" onclick="loginBiometric()" style="display:none;">
+                👆 Login Biometrik / Sidik Jari
+            </button>
+
+            <div style="margin-top:15px; font-size:0.85rem; color:var(--text-muted);">
+                Belum punya akun? <span onclick="toggleAuthMode()" style="color:var(--accent-cyan); cursor:pointer; font-weight:600;">Daftar Sekarang</span>
+            </div>
         </div>
 
-        <div class="stats-grid">
-          <div class="stat-box">
-            <div class="label">Total Saldo $GARET</div>
-            <div class="value" id="balanceVal">150.00</div>
-          </div>
-          <div class="stat-box">
-            <div class="label">Kecepatan Mining</div>
-            <div class="value">+2.50 / Jam</div>
-          </div>
-          <div class="stat-box">
-            <div class="label">Status Sesi</div>
-            <div class="value" id="statusVal" style="color: #38bdf8;">Siap Dimulai</div>
-          </div>
+        <!-- SECTION MAIN DASHBOARD -->
+        <div id="app-dashboard">
+            <div class="user-info">
+                <span>User: <strong id="user-display-email" style="color:var(--accent-cyan)">User</strong></span>
+                <span id="kyc-badge-display" class="badge-kyc kyc-unverified">Belum KYC</span>
+            </div>
+            
+            <div class="nav-buttons">
+                <button class="nav-btn active" onclick="switchTab('tab-mining', this)">⛏️ Mining</button>
+                <button class="nav-btn" onclick="switchTab('tab-kyc', this)">🆔 KYC TGE</button>
+                <button class="nav-btn" onclick="switchTab('tab-tge', this)">🚀 TGE Claim</button>
+                <button class="nav-btn" onclick="switchTab('tab-ref', this)">👥 Referral</button>
+                <button class="nav-btn" onclick="switchTab('tab-tokenomics', this)">📊 Tokenomics</button>
+                <button class="nav-btn" onclick="switchTab('tab-admin', this)">⚙️ Admin</button>
+            </div>
+
+            <!-- TAB 1: MINING -->
+            <div id="tab-mining" class="tab-content active">
+                <div class="section-card">
+                    <h2>Sesi Penambangan 24 Jam</h2>
+                    <p style="margin-bottom: 10px;">Node aktif terverifikasi via autentikasi biometrik.</p>
+
+                    <div class="rate-badge">
+                        <span>⚡ Rate:</span>
+                        <span id="rate-display">0.50 $GARET / Jam</span>
+                    </div>
+
+                    <div id="mining-btn" class="mining-circle" onclick="toggleMining()">
+                        <div style="font-size: 1.5rem;">⚡</div>
+                        <div id="mining-status-text" style="font-weight: 700; margin-top: 5px;">MULAI MINING</div>
+                        <div id="timer-text" style="font-size: 0.8rem; color: var(--text-muted);">24:00:00</div>
+                    </div>
+
+                    <div class="balance-box">
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Total Saldo $GARET</div>
+                        <div class="balance-amount" id="user-balance">150.0000</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: VERIFIKASI KYC -->
+            <div id="tab-kyc" class="tab-content">
+                <div class="section-card">
+                    <h2>Verifikasi Identitas (KYC)</h2>
+                    <p>Syarat mutlak mengikuti TGE & Klaim Airdrop $GARET.</p>
+
+                    <div id="kyc-form-container">
+                        <form onsubmit="submitKYC(event)">
+                            <div class="form-group">
+                                <label>Nama Lengkap (Sesuai ID)</label>
+                                <input type="text" id="kyc-fullname" required placeholder="Nama Lengkap">
+                            </div>
+                            <div class="form-group">
+                                <label>Jenis Dokumen</label>
+                                <select id="kyc-doctype">
+                                    <option value="KTP">KTP / NIK</option>
+                                    <option value="Paspor">Paspor International</option>
+                                    <option value="SIM">SIM</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Nomor Dokumen ID</label>
+                                <input type="text" id="kyc-docnum" required placeholder="327x xxxx xxxx xxxx">
+                            </div>
+                            <div class="form-group">
+                                <label>Unggah Foto ID / KTP</label>
+                                <input type="file" id="kyc-file-id" accept="image/*" required>
+                            </div>
+                            <button type="submit" class="btn-submit">Kirim Dokumen KYC</button>
+                        </form>
+                    </div>
+
+                    <div id="kyc-status-container" style="display:none; margin-top:15px;">
+                        <p style="font-size:1rem; font-weight:700; color:var(--warning-yellow);" id="kyc-status-text">
+                            ⏳ Dokumen KYC Anda Dalam Proses Review Admin.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: TGE CLAIM (BNB SMART CHAIN) -->
+            <div id="tab-tge" class="tab-content">
+                <div class="section-card">
+                    <h2>Portal Claim TGE $GARET</h2>
+                    <div class="chain-badge">🟡 BNB Smart Chain (BEP-20)</div>
+                    <p>Distribusi token $GARET langsung ke alamat wallet BNB Chain Anda.</p>
+
+                    <div style="padding: 15px; background: rgba(15, 23, 42, 0.6); border-radius:12px; margin-bottom:15px;">
+                        <div style="font-size:0.8rem; color:var(--text-muted);">Status Kelayakan TGE:</div>
+                        <div id="tge-eligibility" style="font-weight:800; font-size:1.1rem; color:#f87171; margin-top:5px;">
+                            ❌ BELUM ELIGIBLE (KYC WAJIB)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Alamat Wallet BNB Smart Chain (BEP-20)</label>
+                        <input type="text" id="wallet-address" placeholder="0x... (Contoh: MetaMask / Trust Wallet)">
+                    </div>
+
+                    <button class="btn-submit" type="button" onclick="connectBNBWallet()" style="background: rgba(240, 185, 11, 0.2); border: 1px solid var(--bnb-yellow); color: var(--bnb-yellow); margin-bottom: 10px;">
+                        🟡 Hubungkan Web3 Wallet (MetaMask / Trust Wallet)
+                    </button>
+
+                    <button class="btn-submit" id="btn-claim-tge" onclick="claimTGE()" style="opacity:0.5; cursor:not-allowed;">
+                        Klaim Token $GARET ke BNB Wallet
+                    </button>
+                </div>
+            </div>
+
+            <!-- TAB 4: REFERRAL SYSTEM -->
+            <div id="tab-ref" class="tab-content">
+                <div class="section-card">
+                    <h2>Program Undangan & Referral</h2>
+                    <p>Dapatkan +0.10 $GARET/jam ekstra untuk setiap teman yang bergabung.</p>
+
+                    <div class="form-group">
+                        <label>Tautan Referral Anda</label>
+                        <input type="text" id="ref-link-input" readonly value="https://rjuandri-cmyk.github.io/garetnetwork/?ref=pioneer">
+                    </div>
+
+                    <button class="btn-submit" onclick="copyRefLink()">📋 Salin Tautan Rujukan</button>
+                </div>
+            </div>
+
+            <!-- TAB 5: TOKENOMICS -->
+            <div id="tab-tokenomics" class="tab-content">
+                <div class="section-card">
+                    <h2>Tokenomics $GARET</h2>
+                    <div class="chain-badge">🟡 Standard: BEP-20 (BNB Chain)</div>
+                    <p style="margin-top:5px;">Total Alokasi Pasokan: 1,000,000,000 $GARET</p>
+
+                    <div style="text-align: left; font-size: 0.85rem; margin-top: 15px;">
+                        <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);"><span>⛏️ Community Mining & Airdrop</span><strong>50%</strong></div>
+                        <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);"><span>💧 Liquidity Pool & BNB Listing</span><strong>20%</strong></div>
+                        <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);"><span>🌐 Staking Node & Ecosystem</span><strong>15%</strong></div>
+                        <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);"><span>👥 Core Team & Development</span><strong>10%</strong></div>
+                        <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);"><span>🛡️ Reserve & Security Audit</span><strong>5%</strong></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 6: ADMIN PANEL -->
+            <div id="tab-admin" class="tab-content">
+                <div class="section-card">
+                    <h2>Panel Admin / Verifikasi</h2>
+                    <p>Fitur pengujian untuk menyetujui KYC pengguna secara cepat.</p>
+
+                    <button class="btn-submit" onclick="adminApproveKYC()" style="background: #22c55e;">
+                        ✅ Setujui Status KYC (Approve KYC)
+                    </button>
+                </div>
+            </div>
+
         </div>
-      </div>
+
     </div>
 
-    <!-- TAB 2: TOKENOMICS -->
-    <div id="tab-tokenomics" class="tab-content">
-      <div class="card">
-        <h2>📊 Tokenomics ($GARET)</h2>
-        <p>Total Pasokan Maksimum: <strong>1.000.000.000 $GARET</strong> (BEP-20 / BNB Smart Chain)</p>
+    <script>
+        let isSignUp = false;
+        let isLoggedIn = false;
+        let isMining = false;
+        let balance = 150.0000;
+        let hourlyRate = 0.50;
+        let ratePerSecond = hourlyRate / 3600;
+        let miningTimer = null;
+        let timeLeft = 24 * 3600;
+        let kycStatus = "UNVERIFIED";
 
-        <div class="tokenomics-grid">
-          <div class="token-card">
-            <h4>⛏️ Mobile Mining (45%)</h4>
-            <p><strong>450.000.000 $GARET</strong> dialokasikan khusus untuk penambangan gratis komunitas melalui aplikasi/portal selama 3 tahun.</p>
-          </div>
-          <div class="token-card">
-            <h4>🪂 Public Airdrop (20%)</h4>
-            <p><strong>200.000.000 $GARET</strong> disiapkan untuk pengadopsi awal, kampanye media sosial, dan verifikasi anggota komunitas.</p>
-          </div>
-          <div class="token-card">
-            <h4>💧 Likuiditas DEX/CEX (15%)</h4>
-            <p><strong>150.000.000 $GARET</strong> dikunci untuk penyediaan likuiditas saat pendaftaran bursa (<em>exchange listing</em>).</p>
-          </div>
-          <div class="token-card">
-            <h4>👥 Tim & Pengembang (10%)</h4>
-            <p><strong>100.000.000 $GARET</strong> dengan skema <em>vesting</em> bertahap selama 24 bulan untuk mendukung pengembangan jaringan.</p>
-          </div>
-          <div class="token-card">
-            <h4>🛡️ Cadangan Ekosistem (10%)</h4>
-            <p><strong>100.000.000 $GARET</strong> untuk dana darurat, audit keamanan smart contract, dan kemitraan strategis.</p>
-          </div>
-        </div>
-      </div>
-    </div>
+        window.onload = function() {
+            const savedAccount = localStorage.getItem('garet_registered_account');
+            const savedSession = localStorage.getItem('garet_active_session');
 
-    <!-- TAB 3: WHITEPAPER -->
-    <div id="tab-whitepaper" class="tab-content">
-      <div class="card">
-        <h2>📄 Whitepaper Ringkas - Garet Network</h2>
-        <br>
-        <h3>1. Pengantar</h3>
-        <p>Garet Network dirancang sebagai protokol terdesentralisasi berbasis BNB Smart Chain yang memungkinkan distribusi aset mikro secara adil, cepat, dan transparan melalui partisipasi aktif komunitas.</p>
-        <br>
-        <h3>2. Visi & Misi</h3>
-        <p>Menciptakan ekosistem Web3 yang mudah diakses oleh semua pengguna tanpa memerlukan perangkat keras berat. Penambangan berbasis waktu (24-hour cycle) memastikan distribusi token terjadi secara merata tanpa dominasi pihak tertentu.</p>
-        <br>
-        <h3>3. Keamanan & Transparansi</h3>
-        <p>Seluruh distribusi airdrop dan reward penambangan dicatat dan dapat diverifikasi langsung melalui <em>Block Explorer</em> BEP-20. Pengguna selalu memegang kendali penuh atas alamat dompet pribadi mereka.</p>
-      </div>
-    </div>
+            if (savedSession) {
+                isLoggedIn = true;
+                showDashboard(savedSession);
+            } else if (savedAccount) {
+                document.getElementById('btn-biometric-login').style.display = 'flex';
+            }
+        };
 
-    <!-- TAB 4: SISTEM REWARD -->
-    <div id="tab-reward" class="tab-content">
-      <div class="card">
-        <h2>🎁 Aturan & Sistem Reward</h2>
-        <br>
-        <ul>
-          <li style="margin-bottom: 12px;"><strong>Sesi 24 Jam:</strong> Setiap pengguna wajib menekan tombol mining sekali setiap 24 jam untuk menjaga node penambangan tetap aktif.</li>
-          <li style="margin-bottom: 12px;"><strong>Streak Bonus:</strong> Penambangan berturut-turut selama 7 hari memberikan bonus tambahan sebesar +10% rate penambangan.</li>
-          <li style="margin-bottom: 12px;"><strong>Referral Network:</strong> Dapatkan tambahan +0.50 $GARET/jam untuk setiap kawan aktif yang Anda undang menggunakan link rujukan Anda.</li>
-        </ul>
-      </div>
-    </div>
+        function toggleAuthMode() {
+            isSignUp = !isSignUp;
+            const title = document.getElementById('auth-title');
+            const subtitle = document.getElementById('auth-subtitle');
+            const submitBtn = document.getElementById('btn-auth-submit');
+            const groupUsername = document.getElementById('group-username');
+            const biometricBtn = document.getElementById('btn-biometric-login');
 
-    <!-- TAB 5: PORTAL AIRDROP & ADMIN -->
-    <div id="tab-airdrop" class="tab-content">
-      <div class="card" style="margin-bottom: 20px;">
-        <h2>🔐 Panel Akses Administrator</h2>
-        <div class="form-group">
-          <input type="password" placeholder="Kata Sandi Admin">
-          <button class="btn-primary" style="align-self: flex-start;">Masuk Admin</button>
-        </div>
-      </div>
-
-      <div class="card" style="margin-bottom: 20px;">
-        <h2>➕ Tambahkan Penerima Airdrop</h2>
-        <div class="form-group">
-          <input type="text" placeholder="Alamat Dompet (BEP-20)">
-          <input type="number" placeholder="Jumlah Token (GARET)">
-          <input type="text" placeholder="Catatan Kampanye (Opsional)">
-          <button class="btn-primary">+ Tambahkan Penerima</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <h2>📋 Catatan Distribusi</h2>
-        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px;">Pelacakan manual status klaim dan hash transaksi.</p>
-        <div style="overflow-x: auto;">
-          <table style="width: 100%; border-collapse: collapse;">
-            <thead>
-              <tr style="border-bottom: 1px solid #334155; text-align: left; color: var(--text-muted);">
-                <th style="padding: 10px;">Alamat Dompet</th>
-                <th style="padding: 10px;">Jumlah</th>
-                <th style="padding: 10px;">Status</th>
-                <th style="padding: 10px;">Tx Hash</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td colspan="4" style="text-align: center; color: var(--text-muted); padding: 20px;">
-                  Belum ada data distribusi terdaftar.
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <script>
-    function switchTab(tabId, clickedButton) {
-      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-
-      document.getElementById(tabId).classList.add('active');
-      clickedButton.classList.add('active');
-    }
-
-    let isMining = false;
-    let balance = 150.00;
-    let timerSeconds = 86400;
-    let intervalId = null;
-
-    function startMining() {
-      if (isMining) return;
-
-      isMining = true;
-      document.getElementById('mineBtn').classList.add('active');
-      document.getElementById('mineIcon').innerText = "⛏️";
-      document.getElementById('mineText').innerText = "MINING AKTIF";
-      document.getElementById('statusVal').innerText = "Berjalan";
-      document.getElementById('statusVal').style.color = "#22c55e";
-
-      intervalId = setInterval(() => {
-        if (timerSeconds > 0) {
-          timerSeconds--;
-          balance += (2.50 / 3600);
-
-          document.getElementById('balanceVal').innerText = balance.toFixed(2);
-
-          let hrs = Math.floor(timerSeconds / 3600);
-          let mins = Math.floor((timerSeconds % 3600) / 60);
-          let secs = timerSeconds % 60;
-
-          document.getElementById('timerText').innerText =
-            `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        } else {
-          clearInterval(intervalId);
-          isMining = false;
-          document.getElementById('mineBtn').classList.remove('active');
-          document.getElementById('mineText').innerText = "KLAIM REWARD";
-          document.getElementById('statusVal').innerText = "Selesai";
+            if (isSignUp) {
+                title.innerText = "Pendaftaran Akun Baru";
+                subtitle.innerText = "Buat akun & atur PIN 6 angka untuk aktivasi Biometrik & KYC.";
+                submitBtn.innerText = "Daftar & Aktifkan Biometrik";
+                groupUsername.style.display = "block";
+                biometricBtn.style.display = "none";
+            } else {
+                title.innerText = "Akses Portal Web3";
+                subtitle.innerText = "Masukkan PIN atau Biometrik Anda untuk membuka penambangan & TGE Portal.";
+                submitBtn.innerText = "Masuk Dengan PIN";
+                groupUsername.style.display = "none";
+                if (localStorage.getItem('garet_registered_account')) {
+                    biometricBtn.style.display = "flex";
+                }
+            }
         }
-      }, 1000);
-    }
 
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on("init", user => {
-        if (!user) {
-          window.netlifyIdentity.on("login", () => {
-            document.location.href = "/";
-          });
+        async function submitAuth(e) {
+            e.preventDefault();
+            const email = document.getElementById('input-email').value;
+            const pin = document.getElementById('input-pin').value;
+
+            if (isSignUp) {
+                const accountData = { email: email, pin: pin, kyc: "UNVERIFIED" };
+                localStorage.setItem('garet_registered_account', JSON.stringify(accountData));
+                alert("Pendaftaran Berhasil! PIN & Biometrik Anda telah aktif.");
+                localStorage.setItem('garet_active_session', email);
+                isLoggedIn = true;
+                showDashboard(email);
+            } else {
+                const savedAccount = JSON.parse(localStorage.getItem('garet_registered_account') || '{}');
+                if (savedAccount.email === email && savedAccount.pin === pin) {
+                    localStorage.setItem('garet_active_session', email);
+                    isLoggedIn = true;
+                    showDashboard(email);
+                } else {
+                    alert("PIN atau Email yang Anda masukkan salah / akun belum terdaftar!");
+                }
+            }
         }
-      });
-    }
-  </script>
 
+        function loginBiometric() {
+            const savedAccount = JSON.parse(localStorage.getItem('garet_registered_account') || '{}');
+            if (savedAccount.email) {
+                alert("Tempelkan Sidik Jari atau Pindai Wajah Anda pada sensor HP.");
+                localStorage.setItem('garet_active_session', savedAccount.email);
+                isLoggedIn = true;
+                showDashboard(savedAccount.email);
+            }
+        }
+
+        function showDashboard(email) {
+            document.getElementById('auth-section').style.display = 'none';
+            document.getElementById('app-dashboard').style.display = 'block';
+            document.getElementById('user-display-email').innerText = email;
+            document.getElementById('auth-header-btn').innerText = 'Keluar';
+
+            const username = email.split('@')[0];
+            document.getElementById('ref-link-input').value = `https://rjuandri-cmyk.github.io/garetnetwork/?ref=${username}`;
+
+            const savedAccount = JSON.parse(localStorage.getItem('garet_registered_account') || '{}');
+            kycStatus = savedAccount.kyc || "UNVERIFIED";
+            updateKYCUI();
+        }
+
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        function submitKYC(e) {
+            e.preventDefault();
+            kycStatus = "PENDING";
+            const savedAccount = JSON.parse(localStorage.getItem('garet_registered_account') || '{}');
+            savedAccount.kyc = "PENDING";
+            localStorage.setItem('garet_registered_account', JSON.stringify(savedAccount));
+            alert("Dokumen KYC berhasil dikirim! Silakan tunggu verifikasi admin.");
+            updateKYCUI();
+        }
+
+        function updateKYCUI() {
+            const badge = document.getElementById('kyc-badge-display');
+            const formContainer = document.getElementById('kyc-form-container');
+            const statusContainer = document.getElementById('kyc-status-container');
+            const statusText = document.getElementById('kyc-status-text');
+            const tgeEligibility = document.getElementById('tge-eligibility');
+            const claimBtn = document.getElementById('btn-claim-tge');
+
+            if (kycStatus === "UNVERIFIED") {
+                badge.className = "badge-kyc kyc-unverified";
+                badge.innerText = "Belum KYC";
+                formContainer.style.display = "block";
+                statusContainer.style.display = "none";
+            } else if (kycStatus === "PENDING") {
+                badge.className = "badge-kyc kyc-pending";
+                badge.innerText = "KYC Pending";
+                formContainer.style.display = "none";
+                statusContainer.style.display = "block";
+                statusText.innerText = "⏳ Dokumen KYC Anda Sedang Direview oleh Admin.";
+            } else if (kycStatus === "VERIFIED") {
+                badge.className = "badge-kyc kyc-verified";
+                badge.innerText = "KYC Passed";
+                formContainer.style.display = "none";
+                statusContainer.style.display = "block";
+                statusText.innerHTML = "✅ KYC Anda Terverifikasi! Anda Berhak Mengikuti TGE.";
+                statusText.style.color = "#4ade80";
+
+                tgeEligibility.innerHTML = "✅ ELIGIBLE UNTUK CLAIM TGE (BNB CHAIN)";
+                tgeEligibility.style.color = "#4ade80";
+                claimBtn.style.opacity = "1";
+                claimBtn.style.cursor = "pointer";
+            }
+        }
+
+        function adminApproveKYC() {
+            kycStatus = "VERIFIED";
+            const savedAccount = JSON.parse(localStorage.getItem('garet_registered_account') || '{}');
+            savedAccount.kyc = "VERIFIED";
+            localStorage.setItem('garet_registered_account', JSON.stringify(savedAccount));
+            alert("Status KYC Pengguna Berhasil Diubah Menjadi TERVERIFIKASI (PASSED)!");
+            updateKYCUI();
+        }
+
+        // FUNGSI KHUSUS BNB SMART CHAIN WALLET
+        async function connectBNBWallet() {
+            if (window.ethereum) {
+                try {
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    document.getElementById('wallet-address').value = accounts[0];
+                    alert("Sukses Terhubung ke BNB Chain Wallet: " + accounts[0]);
+                } catch (error) {
+                    alert("Koneksi wallet dibatalkan.");
+                }
+            } else {
+                // Simulasi jika dibuka dari browser biasa
+                const simulatedAddress = "0x" + Array.from({length: 40}, () => Math.floor(Math.random()*16).toString(16)).join('');
+                document.getElementById('wallet-address').value = simulatedAddress;
+                alert("Wallet BEP-20 Berhasil Terhubung: " + simulatedAddress);
+            }
+        }
+
+        function copyRefLink() {
+            const copyText = document.getElementById("ref-link-input");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(copyText.value);
+            alert("Tautan Rujukan Berhasil Disalin!");
+        }
+
+        function claimTGE() {
+            const walletInput = document.getElementById('wallet-address').value;
+
+            if (kycStatus !== "VERIFIED") {
+                alert("Akses Ditolak: Anda wajib menyelesaikan dan Lolos KYC sebelum klaim TGE!");
+            } else if (!walletInput.startsWith("0x") || walletInput.length < 40) {
+                alert("Masukkan alamat wallet BEP-20 (BNB Smart Chain) yang valid!");
+            } else {
+                alert(`Selamat! Penarikan ${balance.toFixed(2)} $GARET ke wallet BNB Smart Chain (${walletInput}) telah terdaftar untuk alokasi TGE.`);
+            }
+        }
+
+        function handleHeaderBtn() {
+            if (isLoggedIn) {
+                localStorage.removeItem('garet_active_session');
+                isLoggedIn = false;
+                document.getElementById('auth-section').style.display = 'block';
+                document.getElementById('app-dashboard').style.display = 'none';
+                document.getElementById('auth-header-btn').innerText = 'Login';
+            }
+        }
+
+        function toggleMining() {
+            const circle = document.getElementById('mining-btn');
+            const statusText = document.getElementById('mining-status-text');
+            
+            if (!isMining) {
+                isMining = true;
+                circle.classList.add('active');
+                statusText.innerText = "MINING AKTIF";
+                
+                miningTimer = setInterval(() => {
+                    if (timeLeft > 0) {
+                        timeLeft--;
+                        balance += ratePerSecond;
+                        document.getElementById('user-balance').innerText = balance.toFixed(4);
+                        
+                        let hrs = Math.floor(timeLeft / 3600);
+                        let mins = Math.floor((timeLeft % 3600) / 60);
+                        let secs = timeLeft % 60;
+                        document.getElementById('timer-text').innerText = 
+                            `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                    } else {
+                        clearInterval(miningTimer);
+                        isMining = false;
+                        circle.classList.remove('active');
+                        statusText.innerText = "MULAI MINING";
+                        document.getElementById('timer-text').innerText = "24:00:00";
+                        timeLeft = 24 * 3600;
+                        alert("Sesi Penambangan 24 Jam Selesai! Klik Mulai Mining untuk sesi baru.");
+                    }
+                }, 1000);
+                
+                alert(`Sesi Node Aktif! Mengumpulkan ${hourlyRate} $GARET per jam secara bertahap.`);
+            } else {
+                alert("Sesi mining Anda sedang berjalan secara real-time!");
+            }
+        }
+    </script>
 </body>
 </html>
