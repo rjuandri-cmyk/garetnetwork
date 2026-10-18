@@ -757,3 +757,28 @@
             <button onclick="saveSettings()" class="btn-submit" style="margin-top: 15px;">💾 Simpan Pengaturan</button>
         </div>
     </div>
+<script>
+    function changeLanguage(lang) {
+        localStorage.setItem('garet_lang', lang);
+        alert(lang === 'id' ? "Bahasa diubah ke Bahasa Indonesia" : "Language changed to English");
+        // Tambahkan logika terjemahan teks di sini jika diperlukan
+    }
+
+    function saveSettings() {
+        const lang = document.getElementById('language-selector').value;
+        const notif = document.getElementById('notif-selector').value;
+        
+        localStorage.setItem('garet_lang', lang);
+        localStorage.setItem('garet_notif', notif);
+        
+        alert("💾 Pengaturan berhasil disimpan!");
+    }
+
+    // Memuat pengaturan yang tersimpan saat halaman dibuka
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedLang = localStorage.getItem('garet_lang');
+        const savedNotif = localStorage.getItem('garet_notif');
+        if (savedLang) document.getElementById('language-selector').value = savedLang;
+        if (savedNotif) document.getElementById('notif-selector').value = savedNotif;
+    });
+</script>
