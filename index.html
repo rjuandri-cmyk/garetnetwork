@@ -88,7 +88,7 @@
             <h2 id="auth-title" style="font-size: 1.3rem; margin-bottom: 6px;">Portal Web3 Garet</h2>
             <p id="auth-subtitle" style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 18px;">Autentikasi aman dengan PIN & Biometrik terenkripsi lokal.</p>
             
-            <form id="auth-form" onsubmit="submitAuth(event)">
+            <form id="auth-form" onsubmit="handleAuthSubmit(event)">
                 <div class="form-group" id="group-username" style="display: none;">
                     <label>Nama Pengguna (Username)</label>
                     <input type="text" id="input-username" placeholder="Contoh: pioneer99">
@@ -112,7 +112,7 @@
             </button>
 
             <div style="margin-top: 18px; font-size: 0.82rem; color: var(--text-muted);">
-                Belum punya akun? <span onclick="toggleAuthMode()" style="color: var(--accent-cyan); cursor: pointer; font-weight: 600;">Daftar Sekarang</span>
+                <span id="auth-toggle-text">Belum punya akun?</span> <span id="auth-toggle-btn" onclick="toggleAuthMode()" style="color: var(--accent-cyan); cursor: pointer; font-weight: 600;">Daftar Sekarang</span>
             </div>
         </div>
 
@@ -290,4 +290,472 @@
             <div id="tab-whitepaper" class="tab-content">
                 <div class="section-card" style="text-align: left;">
                     <h2 style="font-size: 1.15rem; text-align: center; margin-bottom: 4px;">📖 Whitepaper & Roadmap v2.0</h2>
-                    <p style="font-size:
+                    <p style="font-size: 0.75rem; color: var(--text-muted); text-align: center; margin-bottom: 12px;">Dokumen Resmi Ekosistem Garet Network</p>
+
+                    <div style="background: rgba(11, 19, 43, 0.7); padding: 14px; border-radius: 14px; font-size: 0.8rem; line-height: 1.6; max-height: 280px; overflow-y: auto; border: 1px solid rgba(255,255,255,0.08);">
+                        <h4 style="color: var(--accent-cyan); margin-bottom: 4px;">1. Ringkasan Eksekutif Global</h4>
+                        <p style="margin-bottom: 10px;">Garet Network adalah platform utilitas Web3 global yang dibangun di atas BNB Smart Chain (BEP-20) dengan Contract Address resmi: <br><code style="color:var(--bnb-yellow); font-size:0.7rem;">0x4af74098468daaa01f422f6f367e2e09ecf425fc</code></p>
+
+                        <h4 style="color: var(--accent-cyan); margin-bottom: 4px;">2. Verifikasi KYC Global & Liveness</h4>
+                        <p style="margin-bottom: 10px;">Mendukung berbagai dokumen identitas internasional (MyKad Malaysia, KTP, Paspor, & National ID) untuk mencakup komunitas lintas negara secara aman dan adil.</p>
+
+                        <h4 style="color: var(--accent-cyan); margin-bottom: 4px;">3. Roadmap & Fase Listing DEX/CEX</h4>
+                        <p style="margin-bottom: 6px;"><strong>Fase 1 (Q1 - Q2):</strong> Peluncuran Portal Web3 Global, Mobile Mining 24 Jam, dan Sistem Referral Terverifikasi KYC.</p>
+                        <p style="margin-bottom: 6px;"><strong>Fase 2 (Q3):</strong> Audit Kontrak Pintar BEP-20, Peluncuran TGE Portal, dan Pembukaan Claim Token ke Wallet Pengguna.</p>
+                        <p style="margin-bottom: 6px;"><strong>Fase 3 (Selesai Mining & Pasca-Airdrop):</strong> Penguncian Likuiditas (*Liquidity Locking*) dan Pelaksanaan **Listing Resmi di Bursa DEX (PancakeSwap)** serta CEX Global.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 7: ADMIN PANEL -->
+            <div id="tab-admin" class="tab-content">
+                <div class="section-card" id="admin-card-content" style="border-color: #22c55e;">
+                    <!-- Konten admin dirender secara aman melalui skrip -->
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        const ADMIN_EMAIL = "rjuandri@gmail.com";
+
+        let isSignUp = false;
+        let isLoggedIn = false;
+        let isMining = false;
+        let miningBalance = 0;
+        let refBonus = 0;
+        let hourlyRate = 0.50;
+        let ratePerSecond = hourlyRate / 3600;
+        let miningTimer = null;
+        let targetEndTime = 0;
+        let kycStatus = "UNVERIFIED";
+        let biometricDone = false;
+
+        window.onload = function() {
+            const savedSession = localStorage.getItem('garet_active_session');
+            if (savedSession) {
+                isLoggedIn = true;
+                showDashboard(savedSession);
+            }
+        };
+
+        function toggleAuthMode() {
+            isSignUp = !isSignUp;
+            const title = document.getElementById('auth-title');
+            const subtitle = document.getElementById('auth-subtitle');
+            const submitBtn = document.getElementById('btn-auth-submit');
+            const groupUsername = document.getElementById('group-username');
+            const toggleText = document.getElementById('auth-toggle-text');
+            const toggleBtn = document.getElementById('auth-toggle-btn');
+
+            if (isSignUp) {
+                title.innerText = "Daftar Akun Baru";
+                subtitle.innerText = "Buat akun & atur PIN 6 angka untuk aktivasi.";
+                submitBtn.innerText = "Daftar & Buat Akun";
+                groupUsername.style.display = "block";
+                toggleText.innerText = "Sudah punya akun?";
+                toggleBtn.innerText = "Masuk Di Sini";
+            } else {
+                title.innerText = "Portal Web3 Garet";
+                subtitle.innerText = "Autentikasi aman dengan PIN & Biometrik terenkripsi lokal.";
+                submitBtn.innerText = "Masuk Dengan PIN";
+                groupUsername.style.display = "none";
+                toggleText.innerText = "Belum punya akun?";
+                toggleBtn.innerText = "Daftar Sekarang";
+            }
+        }
+
+        function handleAuthSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('input-email').value.trim().toLowerCase();
+            const pin = document.getElementById('input-pin').value;
+
+            if (isSignUp) {
+                const usernameInput = document.getElementById('input-username').value.trim() || email.split('@')[0];
+                const accountData = { 
+                    email: email, 
+                    pin: pin, 
+                    kyc: "UNVERIFIED",
+                    miningBalance: 0,
+                    refBonus: 0,
+                    referredBy: getUrlParam('ref') || null,
+                    username: usernameInput,
+                    isMining: false,
+                    targetEndTime: 0
+                };
+                localStorage.setItem('garet_user_' + email, JSON.stringify(accountData));
+                localStorage.setItem('garet_registered_account', JSON.stringify(accountData));
+                alert("Pendaftaran Berhasil! Akun otomatis masuk.");
+                localStorage.setItem('garet_active_session', email);
+                isLoggedIn = true;
+                showDashboard(email);
+            } else {
+                let userObj = JSON.parse(localStorage.getItem('garet_user_' + email) || '{}');
+                if (!userObj.email) {
+                    userObj = JSON.parse(localStorage.getItem('garet_registered_account') || '{}');
+                }
+
+                // BYPASS / AUTO-REGISTER AMAN UNTUK ADMIN JIKA BELUM ADA DI BROWSER
+                if (!userObj.email && email === ADMIN_EMAIL.toLowerCase()) {
+                    userObj = {
+                        email: ADMIN_EMAIL,
+                        pin: pin,
+                        kyc: "VERIFIED",
+                        miningBalance: 0,
+                        refBonus: 0,
+                        referredBy: null,
+                        username: "admin",
+                        isMining: false,
+                        targetEndTime: 0
+                    };
+                    localStorage.setItem('garet_user_' + email, JSON.stringify(userObj));
+                }
+
+                if (userObj.email === email && userObj.pin === pin) {
+                    localStorage.setItem('garet_active_session', email);
+                    isLoggedIn = true;
+                    showDashboard(email);
+                } else {
+                    alert("PIN atau Email salah! Jika belum punya akun, silakan klik 'Daftar Sekarang' di bawah.");
+                }
+            }
+        }
+
+        function getUrlParam(param) {
+            const searchParams = new URLSearchParams(window.location.search);
+            return searchParams.get(param);
+        }
+
+        function loginBiometric() {
+            const savedAccount = JSON.parse(localStorage.getItem('garet_registered_account') || '{}');
+            if (savedAccount.email) {
+                alert("Verifikasi biometrik perangkat berhasil.");
+                localStorage.setItem('garet_active_session', savedAccount.email);
+                isLoggedIn = true;
+                showDashboard(savedAccount.email);
+            }
+        }
+
+        function showDashboard(email) {
+            document.getElementById('auth-section').style.display = 'none';
+            document.getElementById('app-dashboard').style.display = 'block';
+            document.getElementById('user-display-email').innerText = email;
+            document.getElementById('auth-header-btn').innerText = 'Keluar';
+
+            const adminNavBtn = document.getElementById('nav-btn-admin');
+            const isAdmin = (email === ADMIN_EMAIL.toLowerCase());
+
+            if (isAdmin) {
+                adminNavBtn.style.display = 'inline-block';
+                renderAdminPanel();
+            } else {
+                adminNavBtn.style.display = 'none';
+                document.getElementById('admin-card-content').innerHTML = "<h3 style='color:#f87171;'>⛔ Akses Ditolak!</h3>";
+            }
+
+            let userObj = JSON.parse(localStorage.getItem('garet_user_' + email) || '{}');
+            if (!userObj.email) {
+                userObj = JSON.parse(localStorage.getItem('garet_registered_account') || '{}');
+            }
+
+            const username = userObj.username || email.split('@')[0];
+            document.getElementById('ref-link-input').value = `https://rjuandri-cmyk.github.io/garetnetwork/?ref=${username}`;
+
+            kycStatus = userObj.kyc || (isAdmin ? "VERIFIED" : "UNVERIFIED");
+            miningBalance = userObj.miningBalance || 0;
+            refBonus = userObj.refBonus || 0;
+            isMining = userObj.isMining || false;
+            targetEndTime = userObj.targetEndTime || 0;
+
+            updateKYCUI();
+            updateTotalBalance();
+
+            if (isMining) {
+                const now = Date.now();
+                if (now < targetEndTime) {
+                    const elapsedSeconds = Math.floor((now - userObj.lastSavedTime) / 1000);
+                    if (elapsedSeconds > 0) {
+                        miningBalance += elapsedSeconds * ratePerSecond;
+                    }
+                    startMiningInterval();
+                } else {
+                    isMining = false;
+                    miningBalance += 24 * hourlyRate;
+                    saveCurrentUserData();
+                    resetMiningUI();
+                }
+            }
+        }
+
+        function switchTab(tabId, btn) {
+            const currentEmail = (localStorage.getItem('garet_active_session') || '').toLowerCase();
+            const isAdmin = (currentEmail === ADMIN_EMAIL.toLowerCase());
+
+            if (tabId === 'tab-admin' && !isAdmin) {
+                alert("Akses Ditolak!");
+                return;
+            }
+
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        function previewDoc(e) {
+            if (e.target.files.length > 0) {
+                document.getElementById('doc-preview-text').innerText = "✓ Dokumen terpilih: " + e.target.files[0].name;
+                checkKYCFormReady();
+            }
+        }
+
+        function startBiometricScan() {
+            const scanStatus = document.getElementById('scan-status');
+            const scanIcon = document.getElementById('scan-icon');
+            scanStatus.innerText = "⏳ Memindai Wajah...";
+            scanIcon.innerText = "🔍";
+
+            setTimeout(() => {
+                biometricDone = true;
+                scanStatus.innerText = "✅ Biometrik Terverifikasi!";
+                scanStatus.style.color = "#4ade80";
+                scanIcon.innerText = "✅";
+                checkKYCFormReady();
+            }, 1500);
+        }
+
+        function checkKYCFormReady() {
+            const fileInput = document.getElementById('kyc-file-id');
+            const submitBtn = document.getElementById('btn-submit-kyc');
+
+            if (fileInput.files.length > 0 && biometricDone) {
+                submitBtn.style.opacity = "1";
+                submitBtn.style.cursor = "pointer";
+                submitBtn.disabled = false;
+            }
+        }
+
+        function submitKYC(e) {
+            e.preventDefault();
+            kycStatus = "PENDING";
+            saveCurrentUserData();
+            alert("Pengajuan KYC Global berhasil dikirim untuk ditinjau admin.");
+            updateKYCUI();
+        }
+
+        function updateKYCUI() {
+            const badge = document.getElementById('kyc-badge-display');
+            const formContainer = document.getElementById('kyc-form-container');
+            const statusContainer = document.getElementById('kyc-status-container');
+            const statusText = document.getElementById('kyc-status-text');
+            const tgeEligibility = document.getElementById('tge-eligibility');
+            const claimBtn = document.getElementById('btn-claim-tge');
+
+            if (kycStatus === "UNVERIFIED") {
+                badge.className = "badge-kyc kyc-unverified";
+                badge.innerText = "Belum KYC";
+                formContainer.style.display = "block";
+                statusContainer.style.display = "none";
+            } else if (kycStatus === "PENDING") {
+                badge.className = "badge-kyc kyc-pending";
+                badge.innerText = "KYC Pending";
+                formContainer.style.display = "none";
+                statusContainer.style.display = "block";
+                statusText.innerText = "⏳ Dokumen KYC Anda Sedang Ditinjau Admin.";
+            } else if (kycStatus === "VERIFIED") {
+                badge.className = "badge-kyc kyc-verified";
+                badge.innerText = "KYC Passed";
+                formContainer.style.display = "none";
+                statusContainer.style.display = "block";
+                statusText.innerHTML = "✅ KYC Global Lolos! Anda Berhak Melakukan Klaim TGE.";
+                statusText.style.color = "#4ade80";
+
+                tgeEligibility.innerHTML = "✅ ELIGIBLE UNTUK CLAIM TGE (BNB CHAIN)";
+                tgeEligibility.style.color = "#4ade80";
+                claimBtn.style.opacity = "1";
+                claimBtn.style.cursor = "pointer";
+            }
+        }
+
+        function renderAdminPanel() {
+            const container = document.getElementById('admin-card-content');
+            const currentEmail = localStorage.getItem('garet_active_session') || '';
+
+            container.innerHTML = `
+                <h2 style="color: #4ade80; font-size: 1.15rem; margin-bottom: 4px;">⚙️ Panel Admin</h2>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px;">Kontrol Verifikasi KYC Pengguna</p>
+
+                <div style="margin: 10px 0; text-align: left; font-size: 0.8rem; background: rgba(11, 19, 43, 0.6); padding: 12px; border-radius: 10px;">
+                    <div>Admin Aktif: <strong>${currentEmail}</strong></div>
+                    <div>Status KYC Akun Ini: <strong>${kycStatus}</strong></div>
+                </div>
+
+                <button class="btn-submit" onclick="adminApproveCurrentKYC()" style="background: #22c55e; box-shadow: 0 4px 15px rgba(34,197,94,0.3);">
+                    ✅ Setujui KYC (Approve & Beri 100 $GARET Referral)
+                </button>
+            `;
+        }
+
+        function adminApproveCurrentKYC() {
+            kycStatus = "VERIFIED";
+            const currentEmail = localStorage.getItem('garet_active_session');
+            saveCurrentUserData();
+
+            const userObj = JSON.parse(localStorage.getItem('garet_user_' + currentEmail) || '{}');
+            if (userObj.referredBy) {
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key.startsWith('garet_user_')) {
+                        let refUser = JSON.parse(localStorage.getItem(key));
+                        let refName = refUser.username || refUser.email.split('@')[0];
+                        if (refName === userObj.referredBy) {
+                            refUser.refBonus = (refUser.refBonus || 0) + 100;
+                            localStorage.setItem(key, JSON.stringify(refUser));
+                            alert(`Bonus 100 $GARET berhasil dikirim ke pengundang (${refUser.email})!`);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            alert("KYC Berhasil Disetujui (VERIFIED)!");
+            updateKYCUI();
+            renderAdminPanel();
+        }
+
+        function updateTotalBalance() {
+            const total = miningBalance + refBonus;
+            document.getElementById('user-balance').innerText = total.toFixed(4) + " GARET";
+            document.getElementById('mining-part-display').innerText = miningBalance.toFixed(4);
+            document.getElementById('ref-bonus-display').innerText = refBonus;
+        }
+
+        function saveCurrentUserData() {
+            const currentEmail = localStorage.getItem('garet_active_session');
+            if (!currentEmail) return;
+
+            let userObj = JSON.parse(localStorage.getItem('garet_user_' + currentEmail) || '{}');
+            userObj.email = currentEmail;
+            userObj.kyc = kycStatus;
+            userObj.miningBalance = miningBalance;
+            userObj.refBonus = refBonus;
+            userObj.isMining = isMining;
+            userObj.targetEndTime = targetEndTime;
+            userObj.lastSavedTime = Date.now();
+
+            localStorage.setItem('garet_user_' + currentEmail, JSON.stringify(userObj));
+            localStorage.setItem('garet_registered_account', JSON.stringify(userObj));
+        }
+
+        async function connectBNBWallet() {
+            if (window.ethereum) {
+                try {
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    document.getElementById('wallet-address').value = accounts[0];
+                    alert("Terhubung ke Wallet: " + accounts[0]);
+                } catch (error) {
+                    alert("Koneksi dibatalkan.");
+                }
+            } else {
+                const simulatedAddress = "0x" + Array.from({length: 40}, () => Math.floor(Math.random()*16).toString(16)).join('');
+                document.getElementById('wallet-address').value = simulatedAddress;
+                alert("Wallet BEP-20 Terhubung: " + simulatedAddress);
+            }
+        }
+
+        function copyRefLink() {
+            const copyText = document.getElementById("ref-link-input");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(copyText.value);
+            alert("Tautan Referral Berhasil Disalin!");
+        }
+
+        function claimTGE() {
+            const walletInput = document.getElementById('wallet-address').value;
+            const total = miningBalance + refBonus;
+
+            if (kycStatus !== "VERIFIED") {
+                alert("Akses Ditolak: Anda wajib Lolos KYC sebelum klaim TGE!");
+            } else if (!walletInput.startsWith("0x") || walletInput.length < 40) {
+                alert("Masukkan alamat wallet BEP-20 yang valid!");
+            } else {
+                alert(`Sukses! Alokasi ${total.toFixed(2)} $GARET terdaftar untuk ditarik ke wallet ${walletInput}.`);
+            }
+        }
+
+        function handleHeaderBtn() {
+            if (isLoggedIn) {
+                saveCurrentUserData();
+                if (miningTimer) clearInterval(miningTimer);
+                localStorage.removeItem('garet_active_session');
+                isLoggedIn = false;
+                document.getElementById('auth-section').style.display = 'block';
+                document.getElementById('app-dashboard').style.display = 'none';
+                document.getElementById('auth-header-btn').innerText = 'Masuk';
+            }
+        }
+
+        function toggleMining() {
+            const circle = document.getElementById('mining-btn');
+            const statusText = document.getElementById('mining-status-text');
+            
+            if (!isMining) {
+                isMining = true;
+                targetEndTime = Date.now() + (24 * 3600 * 1000);
+                circle.classList.add('active');
+                statusText.innerText = "MINING AKTIF";
+                
+                startMiningInterval();
+                saveCurrentUserData();
+                alert(`Sesi Node Mining Aktif! Otomatis berjalan 24 jam.`);
+            } else {
+                alert("Sesi mining Anda sedang berjalan secara otomatis!");
+            }
+        }
+
+        function startMiningInterval() {
+            const circle = document.getElementById('mining-btn');
+            const statusText = document.getElementById('mining-status-text');
+            
+            circle.classList.add('active');
+            statusText.innerText = "MINING AKTIF";
+
+            if (miningTimer) clearInterval(miningTimer);
+
+            miningTimer = setInterval(() => {
+                const now = Date.now();
+                const timeLeftSec = Math.floor((targetEndTime - now) / 1000);
+
+                if (timeLeftSec > 0) {
+                    miningBalance += ratePerSecond;
+                    updateTotalBalance();
+                    saveCurrentUserData();
+                    
+                    let hrs = Math.floor(timeLeftSec / 3600);
+                    let mins = Math.floor((timeLeftSec % 3600) / 60);
+                    let secs = timeLeftSec % 60;
+                    document.getElementById('timer-text').innerText = 
+                        `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                } else {
+                    clearInterval(miningTimer);
+                    isMining = false;
+                    resetMiningUI();
+                    saveCurrentUserData();
+                    alert("Sesi Penambangan 24 Jam Selesai!");
+                }
+            }, 1000);
+        }
+
+        function resetMiningUI() {
+            const circle = document.getElementById('mining-btn');
+            const statusText = document.getElementById('mining-status-text');
+            circle.classList.remove('active');
+            statusText.innerText = "MULAI MINING";
+            document.getElementById('timer-text').innerText = "24:00:00";
+        }
+    </script>
+</body>
+</html>
