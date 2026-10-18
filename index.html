@@ -83,6 +83,11 @@
         .scan-scanner { width: 100%; height: 110px; border: 2px dashed var(--accent-cyan); border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 10px 0; background: rgba(6, 182, 212, 0.03); position: relative; overflow: hidden; }
         .ca-box { background: rgba(11, 19, 43, 0.8); border: 1px solid var(--bnb-yellow); padding: 10px; border-radius: 10px; font-size: 0.72rem; word-break: break-all; color: var(--bnb-yellow); margin: 10px 0; text-align: left; }
 
+        /* TABLE STYLES (DIPAKAI DI ADMIN & REFERRAL MONITORING) */
+        .custom-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.75rem; text-align: left; }
+        .custom-table th, .custom-table td { padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .custom-table th { color: var(--accent-cyan); font-weight: 700; background: rgba(11,19,43,0.5); }
+
         #wallet-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
         .wallet-modal-card { background: #111827; border: 1px solid var(--card-border); width: 90%; max-width: 360px; border-radius: 20px; padding: 20px; text-align: center; }
         .wallet-option { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 12px 16px; border-radius: 12px; margin: 10px 0; cursor: pointer; border: 1px solid rgba(255,255,255,0.08); transition: all 0.2s; font-weight: 600; font-size: 0.9rem; text-align: left; }
@@ -203,7 +208,7 @@
                         <div class="balance-amount" id="user-balance">0.0000 GARET</div>
                         <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 8px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 8px;">
                             • Hasil Mining Aktif: <span id="mining-part-display" style="color:var(--text-main); font-weight:600;">0.0000</span><br>
-                            • Bonus Referral & Welcome (KYC Lolos): <span id="ref-bonus-display" style="color:#4ade80; font-weight:700;">0</span> GARET
+                            • Bonus Referral & Welcome: <span id="ref-bonus-display" style="color:#4ade80; font-weight:700;">0</span> GARET
                         </div>
                     </div>
                 </div>
@@ -292,23 +297,52 @@
                 </div>
             </div>
 
-            <!-- TAB 4: REFERRAL -->
+            <!-- TAB 4: REFERRAL (DENGAN AKTIMIN/MONITORING USER) -->
             <div id="tab-ref" class="tab-content">
-                <div class="section-card">
-                    <h2 style="font-size: 1.15rem; margin-bottom: 6px;">Program Undangan & Bonus Ganda</h2>
-                    <div style="background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); padding: 12px; border-radius: 12px; margin: 12px 0; font-size: 0.8rem; color: #4ade80; text-align: left;">
-                        🎁 <strong>Bonus Ganda 100 $GARET!</strong><br>
-                        • Pengundang mendapat <strong>100 $GARET</strong><br>
-                        • Teman yang diundang mendapat <strong>100 $GARET</strong><br>
-                        <span style="font-size: 0.72rem; color: var(--text-main);">*Bonus otomatis masuk ke saldo dompet kedua belah pihak setelah akun baru lolos verifikasi KYC Global.</span>
+                <div class="section-card" style="text-align: left;">
+                    <h2 style="font-size: 1.15rem; text-align: center; margin-bottom: 6px;">Program Undangan & Referral</h2>
+                    <div style="background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); padding: 12px; border-radius: 12px; margin: 10px 0; font-size: 0.8rem; color: #4ade80;">
+                        🎁 <strong>Bonus 100 $GARET</strong> per referral global!<br>
+                        <span style="font-size: 0.72rem; color: var(--text-main);">*Otomatis cair setelah teman yang Anda undang Lolos Verifikasi KYC.</span>
                     </div>
 
-                    <div class="form-group" style="text-align: left;">
+                    <div class="form-group">
                         <label>Tautan Referral Anda</label>
                         <input type="text" id="ref-link-input" readonly value="https://rjuandri-cmyk.github.io/garetnetwork/?ref=pioneer">
                     </div>
 
-                    <button class="btn-submit" onclick="copyRefLink()">📋 Salin Tautan Rujukan</button>
+                    <button class="btn-submit" onclick="copyRefLink()" style="margin-bottom: 15px;">📋 Salin Tautan Rujukan</button>
+
+                    <!-- MONITORING DASHBOARD KHUSUS USER -->
+                    <div style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 12px;">
+                        <h3 style="font-size: 0.9rem; color: var(--accent-cyan); margin-bottom: 6px;">📊 Monitoring Teman Yang Diundang</h3>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px;">
+                            <div style="background: rgba(11,19,43,0.7); padding: 8px; border-radius: 8px; border:1px solid rgba(255,255,255,0.05);">
+                                <div style="font-size:0.7rem; color:var(--text-muted);">Total Diundang:</div>
+                                <div style="font-size:1rem; font-weight:800; color:var(--accent-cyan);" id="user-ref-count">0 Orang</div>
+                            </div>
+                            <div style="background: rgba(11,19,43,0.7); padding: 8px; border-radius: 8px; border:1px solid rgba(255,255,255,0.05);">
+                                <div style="font-size:0.7rem; color:var(--text-muted);">Bonus Cair:</div>
+                                <div style="font-size:1rem; font-weight:800; color:#4ade80;" id="user-ref-earned">0 $GARET</div>
+                            </div>
+                        </div>
+
+                        <div style="max-height: 180px; overflow-y: auto;">
+                            <table class="custom-table">
+                                <thead>
+                                    <tr>
+                                        <th>Email Teman</th>
+                                        <th>Status KYC</th>
+                                        <th>Status Bonus</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="user-ref-table-body">
+                                    <tr><td colspan="3" style="text-align:center; color:var(--text-muted)">Belum ada teman mendaftar pakai link Anda.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -358,8 +392,8 @@
 
             <!-- TAB 7: ADMIN PANEL -->
             <div id="tab-admin" class="tab-content">
-                <div class="section-card" id="admin-card-content" style="border-color: #22c55e;">
-                    <!-- Konten admin dirender secara aman melalui skrip -->
+                <div class="section-card" id="admin-card-content" style="border-color: #22c55e; text-align: left;">
+                    <!-- Konten Monitoring Admin dirender dinamis via script -->
                 </div>
             </div>
 
@@ -497,7 +531,7 @@
                     email: email,
                     kyc: email === ADMIN_EMAIL.toLowerCase() ? "VERIFIED" : "UNVERIFIED",
                     miningBalance: 0,
-                    refBonus: 0,
+                    refBonus: 200,
                     username: email.split('@')[0],
                     isMining: false,
                     targetEndTime: 0
@@ -524,7 +558,7 @@
                     pin: pin, 
                     kyc: "UNVERIFIED",
                     miningBalance: 0,
-                    refBonus: 0,
+                    refBonus: 200,
                     referredBy: getUrlParam('ref') || null,
                     username: usernameInput,
                     isMining: false,
@@ -548,7 +582,7 @@
                         pin: pin,
                         kyc: "VERIFIED",
                         miningBalance: 0,
-                        refBonus: 0,
+                        refBonus: 200,
                         referredBy: null,
                         username: "admin",
                         isMining: false,
@@ -609,12 +643,13 @@
 
             kycStatus = userObj.kyc || (isAdmin ? "VERIFIED" : "UNVERIFIED");
             miningBalance = userObj.miningBalance || 0;
-            refBonus = userObj.refBonus || 0;
+            refBonus = userObj.refBonus !== undefined ? userObj.refBonus : 200;
             isMining = userObj.isMining || false;
             targetEndTime = userObj.targetEndTime || 0;
 
             updateKYCUI();
             updateTotalBalance();
+            renderUserReferralTable(username);
 
             if (isMining) {
                 const now = Date.now();
@@ -637,15 +672,60 @@
             const currentEmail = (localStorage.getItem('garet_active_session') || '').toLowerCase();
             const isAdmin = (currentEmail === ADMIN_EMAIL.toLowerCase());
 
-            if (tabId === 'tab-admin' && !isAdmin) {
-                alert("Akses Ditolak!");
-                return;
+            if (tabId === 'tab-admin') {
+                if (!isAdmin) {
+                    alert("Akses Ditolak!");
+                    return;
+                }
+                renderAdminPanel();
+            } else if (tabId === 'tab-ref') {
+                let userObj = JSON.parse(localStorage.getItem('garet_user_' + currentEmail) || '{}');
+                let username = userObj.username || currentEmail.split('@')[0];
+                renderUserReferralTable(username);
             }
 
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             btn.classList.add('active');
+        }
+
+        // FUNGSI RENDER DASHBOARD MONITORING REFERRAL KHUSUS PENGGUNA
+        function renderUserReferralTable(username) {
+            const tbody = document.getElementById('user-ref-table-body');
+            let count = 0;
+            let earnedBonus = 0;
+            let rowsHTML = "";
+
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('garet_user_')) {
+                    let uData = JSON.parse(localStorage.getItem(key));
+                    if (uData.referredBy === username) {
+                        count++;
+                        let uKyc = uData.kyc || "UNVERIFIED";
+                        let bonusStatus = (uKyc === "VERIFIED") ? "✅ +100 GARET" : "⏳ Menunggu KYC";
+                        if (uKyc === "VERIFIED") earnedBonus += 100;
+
+                        rowsHTML += `
+                            <tr>
+                                <td>${uData.email}</td>
+                                <td><b>${uKyc}</b></td>
+                                <td><span style="color:${uKyc === 'VERIFIED' ? '#4ade80' : 'var(--warning-yellow)'}">${bonusStatus}</span></td>
+                            </tr>
+                        `;
+                    }
+                }
+            }
+
+            document.getElementById('user-ref-count').innerText = `${count} Orang`;
+            document.getElementById('user-ref-earned').innerText = `${earnedBonus} $GARET`;
+
+            if (count > 0) {
+                tbody.innerHTML = rowsHTML;
+            } else {
+                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-muted)">Belum ada teman mendaftar pakai link Anda.</td></tr>`;
+            }
         }
 
         function previewDoc(e) {
@@ -678,268 +758,4 @@
                         biometricDone = true;
                         scanStatus.innerText = "✅ Biometrik Liveness Lolos!";
                         scanStatus.style.color = "#4ade80";
-                        scanIcon.innerText = "✅";
-                        scanBtn.innerText = "✅ Pemindaian Wajah Selesai";
-                        checkKYCFormReady();
-                    }, 1200);
-                }, 1200);
-            }, 1200);
-        }
-
-        function checkKYCFormReady() {
-            const fileInput = document.getElementById('kyc-file-id');
-            const submitBtn = document.getElementById('btn-submit-kyc');
-
-            if (fileInput.files.length > 0 && biometricDone) {
-                submitBtn.style.opacity = "1";
-                submitBtn.style.cursor = "pointer";
-                submitBtn.disabled = false;
-            }
-        }
-
-        function submitKYC(e) {
-            e.preventDefault();
-            kycStatus = "PENDING";
-            saveCurrentUserData();
-            alert("Pengajuan KYC Global berhasil dikirim untuk ditinjau admin.");
-            updateKYCUI();
-        }
-
-        function updateKYCUI() {
-            const badge = document.getElementById('kyc-badge-display');
-            const formContainer = document.getElementById('kyc-form-container');
-            const statusContainer = document.getElementById('kyc-status-container');
-            const statusText = document.getElementById('kyc-status-text');
-            const tgeEligibility = document.getElementById('tge-eligibility');
-            const claimBtn = document.getElementById('btn-claim-tge');
-
-            if (kycStatus === "UNVERIFIED") {
-                badge.className = "badge-kyc kyc-unverified";
-                badge.innerText = "Belum KYC";
-                formContainer.style.display = "block";
-                statusContainer.style.display = "none";
-            } else if (kycStatus === "PENDING") {
-                badge.className = "badge-kyc kyc-pending";
-                badge.innerText = "KYC Pending";
-                formContainer.style.display = "none";
-                statusContainer.style.display = "block";
-                statusText.innerText = "⏳ Dokumen KYC Anda Sedang Ditinjau Admin.";
-            } else if (kycStatus === "VERIFIED") {
-                badge.className = "badge-kyc kyc-verified";
-                badge.innerText = "KYC Passed";
-                formContainer.style.display = "none";
-                statusContainer.style.display = "block";
-                statusText.innerHTML = "✅ KYC Global Lolos! Anda Berhak Melakukan Klaim TGE.";
-                statusText.style.color = "#4ade80";
-
-                tgeEligibility.innerHTML = "✅ ELIGIBLE UNTUK CLAIM TGE (BNB CHAIN)";
-                tgeEligibility.style.color = "#4ade80";
-                claimBtn.style.opacity = "1";
-                claimBtn.style.cursor = "pointer";
-            }
-        }
-
-        function renderAdminPanel() {
-            const container = document.getElementById('admin-card-content');
-            const currentEmail = localStorage.getItem('garet_active_session') || '';
-
-            container.innerHTML = `
-                <h2 style="color: #4ade80; font-size: 1.15rem; margin-bottom: 4px;">⚙️ Panel Admin</h2>
-                <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px;">Kontrol Verifikasi KYC Pengguna</p>
-
-                <div style="margin: 10px 0; text-align: left; font-size: 0.8rem; background: rgba(11, 19, 43, 0.6); padding: 12px; border-radius: 10px;">
-                    <div>Admin Aktif: <strong>${currentEmail}</strong></div>
-                    <div>Status KYC Akun Ini: <strong>${kycStatus}</strong></div>
-                </div>
-
-                <button class="btn-submit" onclick="adminApproveCurrentKYC()" style="background: #22c55e; box-shadow: 0 4px 15px rgba(34,197,94,0.3);">
-                    ✅ Setujui KYC (Approve & Transfer Bonus Ganda 100 $GARET)
-                </button>
-            `;
-        }
-
-        // FUNGSI UTAMA PERBAIKAN: BONUS GANDA DUA ARAH (100 $GARET KE PENGUNDANG + 100$GARET KE YANG DIUNDANG)
-        function adminApproveCurrentKYC() {
-            kycStatus = "VERIFIED";
-            const currentEmail = localStorage.getItem('garet_active_session');
-
-            const userObj = JSON.parse(localStorage.getItem('garet_user_' + currentEmail) || '{}');
-            
-            // Jika akun ini mendaftar via rujukan, berikan Welcome Bonus 100 $GARET ke akun ini
-            if (userObj.referredBy) {
-                refBonus = (refBonus || 0) + 100;
-                userObj.refBonus = refBonus;
-
-                // Cari akun pengundang & berikan Bonus 100 $GARET juga ke pengundang
-                for (let i = 0; i < localStorage.length; i++) {
-                    const key = localStorage.key(i);
-                    if (key.startsWith('garet_user_')) {
-                        let refUser = JSON.parse(localStorage.getItem(key));
-                        let refName = refUser.username || refUser.email.split('@')[0];
-                        if (refName === userObj.referredBy) {
-                            refUser.refBonus = (refUser.refBonus || 0) + 100;
-                            localStorage.setItem(key, JSON.stringify(refUser));
-                            alert(`🎁 BONUS GANDA SUKSES!\n\n1. Bonus 100 $GARET masuk ke akun ini (${currentEmail})\n2. Bonus 100 $GARET masuk ke pengundang (${refUser.email})`);
-                            break;
-                        }
-                    }
-                }
-            } else {
-                alert("KYC Berhasil Disetujui (VERIFIED)!");
-            }
-
-            saveCurrentUserData();
-            updateKYCUI();
-            updateTotalBalance();
-            renderAdminPanel();
-        }
-
-        function updateTotalBalance() {
-            const total = miningBalance + refBonus;
-            document.getElementById('user-balance').innerText = total.toFixed(4) + " GARET";
-            document.getElementById('mining-part-display').innerText = miningBalance.toFixed(4);
-            document.getElementById('ref-bonus-display').innerText = refBonus;
-        }
-
-        function saveCurrentUserData() {
-            const currentEmail = localStorage.getItem('garet_active_session');
-            if (!currentEmail) return;
-
-            let userObj = JSON.parse(localStorage.getItem('garet_user_' + currentEmail) || '{}');
-            userObj.email = currentEmail;
-            userObj.kyc = kycStatus;
-            userObj.miningBalance = miningBalance;
-            userObj.refBonus = refBonus;
-            userObj.isMining = isMining;
-            userObj.targetEndTime = targetEndTime;
-            userObj.lastSavedTime = Date.now();
-
-            localStorage.setItem('garet_user_' + currentEmail, JSON.stringify(userObj));
-            localStorage.setItem('garet_registered_account', JSON.stringify(userObj));
-        }
-
-        function openWalletModal() {
-            document.getElementById('wallet-modal').style.display = 'flex';
-        }
-
-        function closeWalletModal() {
-            document.getElementById('wallet-modal').style.display = 'none';
-        }
-
-        async function selectWallet(walletName) {
-            closeWalletModal();
-            alert(`Membuka otorisasi koneksi dengan ${walletName} (BNB Smart Chain)...`);
-
-            if (window.ethereum && walletName === 'MetaMask') {
-                try {
-                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    document.getElementById('wallet-address').value = accounts[0];
-                    alert("Berhasil terhubung ke MetaMask: " + accounts[0]);
-                    return;
-                } catch (error) {
-                    alert("Koneksi dompet dibatalkan pengguna.");
-                    return;
-                }
-            }
-
-            setTimeout(() => {
-                const randomHex = "0x" + Array.from({length: 40}, () => Math.floor(Math.random()*16).toString(16)).join('');
-                document.getElementById('wallet-address').value = randomHex;
-                alert(`✅ Berhasil terhubung ke ${walletName}!\nWallet: ${randomHex}`);
-            }, 1000);
-        }
-
-        function copyRefLink() {
-            const copyText = document.getElementById("ref-link-input");
-            copyText.select();
-            copyText.setSelectionRange(0, 99999);
-            navigator.clipboard.writeText(copyText.value);
-            alert("Tautan Referral Berhasil Disalin!");
-        }
-
-        function claimTGE() {
-            const walletInput = document.getElementById('wallet-address').value;
-            const total = miningBalance + refBonus;
-
-            if (kycStatus !== "VERIFIED") {
-                alert("Akses Ditolak: Anda wajib Lolos KYC sebelum klaim TGE!");
-            } else if (!walletInput.startsWith("0x") || walletInput.length < 40) {
-                alert("Silakan hubungkan Web3 Wallet BEP-20 terlebih dahulu!");
-            } else {
-                alert(`Sukses! Alokasi ${total.toFixed(2)} $GARET berhasil diajukan untuk diklaim ke wallet ${walletInput}.`);
-            }
-        }
-
-        function handleHeaderBtn() {
-            if (isLoggedIn) {
-                saveCurrentUserData();
-                if (miningTimer) clearInterval(miningTimer);
-                localStorage.removeItem('garet_active_session');
-                isLoggedIn = false;
-                document.getElementById('auth-section').style.display = 'block';
-                document.getElementById('app-dashboard').style.display = 'none';
-                document.getElementById('auth-header-btn').innerText = 'Masuk';
-            }
-        }
-
-        function toggleMining() {
-            const circle = document.getElementById('mining-btn');
-            const statusText = document.getElementById('mining-status-text');
-            
-            if (!isMining) {
-                isMining = true;
-                targetEndTime = Date.now() + (24 * 3600 * 1000);
-                circle.classList.add('active');
-                statusText.innerText = "MINING AKTIF";
-                
-                startMiningInterval();
-                saveCurrentUserData();
-                alert(`Sesi Node Mining Aktif! Otomatis berjalan 24 jam.`);
-            } else {
-                alert("Sesi mining Anda sedang berjalan secara otomatis!");
-            }
-        }
-
-        function startMiningInterval() {
-            const circle = document.getElementById('mining-btn');
-            const statusText = document.getElementById('mining-status-text');
-            
-            circle.classList.add('active');
-            statusText.innerText = "MINING AKTIF";
-
-            if (miningTimer) clearInterval(miningTimer);
-
-            miningTimer = setInterval(() => {
-                const now = Date.now();
-                const timeLeftSec = Math.floor((targetEndTime - now) / 1000);
-
-                if (timeLeftSec > 0) {
-                    miningBalance += ratePerSecond;
-                    updateTotalBalance();
-                    saveCurrentUserData();
-                    
-                    let hrs = Math.floor(timeLeftSec / 3600);
-                    let mins = Math.floor((timeLeftSec % 3600) / 60);
-                    let secs = timeLeftSec % 60;
-                    document.getElementById('timer-text').innerText = 
-                        `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-                } else {
-                    clearInterval(miningTimer);
-                    isMining = false;
-                    resetMiningUI();
-                    saveCurrentUserData();
-                    alert("Sesi Penambangan 24 Jam Selesai!");
-                }
-            }, 1000);
-        }
-
-        function resetMiningUI() {
-            const circle = document.getElementById('mining-btn');
-            const statusText = document.getElementById('mining-status-text');
-            circle.classList.remove('active');
-            statusText.innerText = "MULAI MINING";
-            document.getElementById('timer-text').innerText = "24:00:00";
-        }
-    </script>
-</body>
-</html>
+                        scanIcon.innerText = "
