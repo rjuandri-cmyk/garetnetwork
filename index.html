@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GARET NETWORK | Official Web3 Mining & Airdrop Portal</title>
+    <title>GARET NETWORK | Official Web3 Mining & Social Portal</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,7 +25,7 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; user-select: none; -webkit-user-select: none; }
-        input { user-select: auto; -webkit-user-select: auto; }
+        input, textarea { user-select: auto; -webkit-user-select: auto; }
 
         body { 
             background-color: var(--bg-color); 
@@ -48,8 +48,8 @@
         
         .form-group { margin-bottom: 12px; text-align: left; }
         .form-group label { display: block; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 500; }
-        .form-group input, .form-group select { width: 100%; padding: 11px 13px; border-radius: 10px; border: 1px solid var(--card-border); background: rgba(11, 19, 43, 0.7); color: white; font-size: 0.88rem; outline: none; transition: border-color 0.2s; }
-        .form-group input:focus, .form-group select:focus { border-color: var(--accent-cyan); }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 11px 13px; border-radius: 10px; border: 1px solid var(--card-border); background: rgba(11, 19, 43, 0.7); color: white; font-size: 0.88rem; outline: none; transition: border-color 0.2s; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--accent-cyan); }
         
         .btn-submit { width: 100%; padding: 13px; background: linear-gradient(135deg, #2563eb, #06b6d4); border: none; border-radius: 10px; color: white; font-weight: 700; cursor: pointer; margin-top: 6px; font-size: 0.9rem; box-shadow: 0 4px 15px rgba(37,99,235,0.4); }
         .btn-biometric { width: 100%; padding: 11px; background: rgba(6, 182, 212, 0.1); border: 1px solid var(--accent-cyan); border-radius: 10px; color: var(--accent-cyan); font-weight: 600; cursor: pointer; margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.82rem; }
@@ -97,6 +97,14 @@
         .wallet-modal-card { background: #111827; border: 1px solid var(--card-border); width: 90%; max-width: 360px; border-radius: 20px; padding: 20px; text-align: center; }
         .wallet-option { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 12px 16px; border-radius: 12px; margin: 10px 0; cursor: pointer; border: 1px solid rgba(255,255,255,0.08); transition: all 0.2s; font-weight: 600; font-size: 0.9rem; text-align: left; }
         .wallet-option:hover { border-color: var(--accent-cyan); background: rgba(56,189,248,0.1); }
+
+        .garet-wallet-card { background: linear-gradient(135deg, rgba(37, 99, 235, 0.2), rgba(6, 182, 212, 0.15)); border: 1px solid var(--accent-cyan); border-radius: 18px; padding: 16px; text-align: left; margin-bottom: 15px; }
+        .garet-address-box { background: rgba(11, 19, 43, 0.8); border: 1px solid var(--card-border); border-radius: 10px; padding: 8px 12px; font-family: monospace; font-size: 0.72rem; color: var(--accent-cyan); margin-top: 8px; word-break: break-all; display: flex; justify-content: space-between; align-items: center; }
+
+        /* SOSIAL CHAT STYLES */
+        .chat-container { background: rgba(11, 19, 43, 0.8); border: 1px solid var(--card-border); border-radius: 14px; padding: 12px; max-height: 260px; overflow-y: auto; text-align: left; display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+        .chat-bubble { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08); padding: 8px 12px; border-radius: 10px; font-size: 0.78rem; }
+        .chat-author { font-weight: 700; color: var(--accent-cyan); font-size: 0.72rem; margin-bottom: 2px; display: flex; justify-content: space-between; }
     </style>
 </head>
 <body>
@@ -111,7 +119,7 @@
         <!-- SECTION AUTHENTICATION -->
         <div id="auth-section" class="auth-card">
             <h2 id="auth-title" style="font-size: 1.25rem; margin-bottom: 4px;">Portal Web3 Garet</h2>
-            <p id="auth-subtitle" style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 14px;">Autentikasi aman dengan PIN & Biometrik terenkripsi lokal.</p>
+            <p id="auth-subtitle" style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 14px;">Portal Mining, Airdrop, & Komunitas Global.</p>
             
             <form id="auth-form" onsubmit="handleAuthSubmit(event)">
                 <div class="form-group" id="group-username" style="display: none;">
@@ -160,11 +168,6 @@
                 </button>
             </div>
 
-            <button type="button" id="btn-biometric-login" class="btn-biometric" onclick="loginBiometric()" style="display:none;">
-                👆 Masuk Cepat (Biometrik / Sidik Jari)
-            </button>
-
-            <!-- FOOTER LINKS VERSI TOMBOL BESAR BEBAS COPY-PASTE POPUP -->
             <div id="auth-footer-links" style="margin-top: 16px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 14px; display: flex; flex-direction: column; gap: 8px;">
                 <button type="button" id="btn-toggle-register" class="btn-action-link btn-link-register" onclick="toggleAuthMode()">
                     ✨ Belum Punya Akun? Daftar Sekarang
@@ -185,8 +188,10 @@
             
             <div class="nav-buttons">
                 <button class="nav-btn active" onclick="switchTab('tab-mining', this)">⛏️ Mining</button>
-                <button class="nav-btn" onclick="switchTab('tab-kyc', this)">🆔 KYC Global</button>
-                <button class="nav-btn" onclick="switchTab('tab-tge', this)">🚀 TGE Claim</button>
+                <button class="nav-btn" onclick="switchTab('tab-wallet', this)">💼 Dompet</button>
+                <button class="nav-btn" onclick="switchTab('tab-social', this)">💬 Sosial</button>
+                <button class="nav-btn" onclick="switchTab('tab-kyc', this)">🆔 KYC</button>
+                <button class="nav-btn" onclick="switchTab('tab-tge', this)">🚀 TGE</button>
                 <button class="nav-btn" onclick="switchTab('tab-ref', this)">👥 Referral</button>
                 <button class="nav-btn" onclick="switchTab('tab-tokenomics', this)">📊 Tokenomics</button>
                 <button class="nav-btn" onclick="switchTab('tab-whitepaper', this)">📄 Whitepaper</button>
@@ -197,7 +202,7 @@
             <div id="tab-mining" class="tab-content active">
                 <div class="section-card">
                     <h2 style="font-size: 1.15rem; margin-bottom: 4px;">Sesi Penambangan 24 Jam</h2>
-                    <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 14px;">Node otomatis berjalan terus meskipun halaman ditutup.</p>
+                    <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 14px;">Alokasi Pool Community Mining (50% dari 1B Pasokan).</p>
 
                     <div class="rate-badge">
                         <span>⚡ Kecepatan:</span>
@@ -221,11 +226,56 @@
                 </div>
             </div>
 
-            <!-- TAB 2: KYC GLOBAL -->
+            <!-- TAB 2: IN-APP WALLET -->
+            <div id="tab-wallet" class="tab-content">
+                <div class="section-card">
+                    <h2 style="font-size: 1.15rem; margin-bottom: 4px;">💳 Garet In-App Web3 Wallet</h2>
+                    <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 15px;">Dompet terenkripsi internal terhubung ke Pool Airdrop 50%.</p>
+
+                    <div class="garet-wallet-card">
+                        <div style="font-size:0.75rem; color:var(--text-muted);">Alamat Dompet $GARET Anda:</div>
+                        <div class="garet-address-box">
+                            <span id="garet-wallet-address-display">0x0000...0000</span>
+                            <button onclick="copyGaretWalletAddress()" style="background:var(--accent-cyan); color:#070d1b; border:none; padding:3px 8px; border-radius:6px; font-weight:700; cursor:pointer;">Salin</button>
+                        </div>
+                        
+                        <div style="margin-top: 14px;">
+                            <div style="font-size: 0.75rem; color: var(--text-muted);">Saldo Tersedia di Wallet:</div>
+                            <div style="font-size: 1.6rem; font-weight: 800; color: #4ade80;" id="wallet-tab-balance">0.0000 GARET</div>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
+                        <button class="btn-submit" onclick="alert('Fitur Deposit Token terbuka setelah Fase TGE!')" style="background: rgba(34, 197, 94, 0.2); border:1px solid #22c55e; color:#4ade80;">📥 Terima Token</button>
+                        <button class="btn-submit" onclick="alert('Fitur Transfer On-Chain diaktifkan saat Listing DEX/CEX!')" style="background: rgba(56, 189, 248, 0.2); border:1px solid var(--accent-cyan); color:var(--accent-cyan);">📤 Kirim Token</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: RUANG SOSIAL & CHAT GLOBAL -->
+            <div id="tab-social" class="tab-content">
+                <div class="section-card" style="text-align: left;">
+                    <h2 style="font-size: 1.15rem; text-align: center; margin-bottom: 4px;">💬 Garet Global Social Feed</h2>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); text-align: center; margin-bottom: 12px;">Diskusikan penambangan dan airdrop bersama miner seluruh dunia.</p>
+
+                    <div class="chat-container" id="social-chat-stream">
+                        <!-- Pesan chat dirender dinamis -->
+                    </div>
+
+                    <form onsubmit="postSocialMessage(event)">
+                        <div class="form-group">
+                            <textarea id="chat-input-msg" rows="2" required placeholder="Tulis pesan atau info airdrop Anda di sini..."></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit" style="margin-top: 0;">Kirim Pesan Komunitas</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- TAB 4: KYC GLOBAL -->
             <div id="tab-kyc" class="tab-content">
                 <div class="section-card" style="text-align: left;">
                     <h2 style="font-size: 1.15rem; text-align: center; margin-bottom: 4px;">Verifikasi KYC Global (Worldwide)</h2>
-                    <p style="font-size: 0.78rem; color: var(--text-muted); text-align: center; margin-bottom: 15px;">Mendukung MyKad Malaysia, KTP, Paspor, & ID Nasional seluruh negara.</p>
+                    <p style="font-size: 0.78rem; color: var(--text-muted); text-align: center; margin-bottom: 15px;">Syarat mutlak pencairan reward Pool Airdrop Tokenomics.</p>
 
                     <div id="kyc-form-container">
                         <form onsubmit="submitKYC(event)">
@@ -275,12 +325,12 @@
                 </div>
             </div>
 
-            <!-- TAB 3: TGE CLAIM -->
+            <!-- TAB 5: TGE CLAIM -->
             <div id="tab-tge" class="tab-content">
                 <div class="section-card">
                     <h2 style="font-size: 1.15rem; margin-bottom: 4px;">Portal Claim TGE $GARET</h2>
                     <div class="chain-badge">🟡 BNB Smart Chain (BEP-20)</div>
-                    <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 14px;">Distribusi token langsung ke wallet BEP-20 Anda.</p>
+                    <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 14px;">Distribusi token dari pool 50% ke wallet BEP-20 luar Anda.</p>
 
                     <div style="padding: 12px; background: rgba(11, 19, 43, 0.6); border-radius: 12px; margin-bottom: 14px; border: 1px solid rgba(255,255,255,0.05);">
                         <div style="font-size: 0.75rem; color: var(--text-muted);">Status Kelayakan:</div>
@@ -295,7 +345,7 @@
                     </div>
 
                     <button class="btn-submit" type="button" onclick="openWalletModal()" style="background: rgba(240, 185, 11, 0.15); border: 1px solid var(--bnb-yellow); color: var(--bnb-yellow); margin-bottom: 8px;">
-                        🟡 Hubungkan Web3 Wallet
+                        🟡 Hubungkan Web3 Wallet Luar
                     </button>
 
                     <button class="btn-submit" id="btn-claim-tge" onclick="claimTGE()" style="opacity: 0.5; cursor: not-allowed;">
@@ -304,13 +354,13 @@
                 </div>
             </div>
 
-            <!-- TAB 4: REFERRAL -->
+            <!-- TAB 6: REFERRAL -->
             <div id="tab-ref" class="tab-content">
                 <div class="section-card" style="text-align: left;">
                     <h2 style="font-size: 1.15rem; text-align: center; margin-bottom: 6px;">Program Undangan & Referral</h2>
                     <div style="background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); padding: 12px; border-radius: 12px; margin: 10px 0; font-size: 0.8rem; color: #4ade80;">
-                        🎁 <strong>Bonus 100 $GARET</strong> per referral global!<br>
-                        <span style="font-size: 0.72rem; color: var(--text-main);">*Otomatis cair setelah teman yang Anda undang Lolos Verifikasi KYC.</span>
+                        🎁 <strong>Bonus 100 $GARET</strong> dari Pool Airdrop per referral!<br>
+                        <span style="font-size: 0.72rem; color: var(--text-main);">*Otomatis masuk Garet Wallet setelah downline lolos KYC.</span>
                     </div>
 
                     <div class="form-group">
@@ -352,7 +402,7 @@
                 </div>
             </div>
 
-            <!-- TAB 5: TOKENOMICS -->
+            <!-- TAB 7: TOKENOMICS -->
             <div id="tab-tokenomics" class="tab-content">
                 <div class="section-card">
                     <h2 style="font-size: 1.15rem; margin-bottom: 4px;">Tokenomics & Contract</h2>
@@ -363,19 +413,19 @@
                         <code>0x4af74098468daaa01f422f6f367e2e09ecf425fc</code>
                     </div>
 
-                    <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px;">Total Pasokan: 1,000,000,000 $GARET</p>
+                    <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px;">Total Pasokan Maksimal: 1,000,000,000 $GARET (1 Miliar)</p>
 
                     <div style="text-align: left; font-size: 0.82rem;">
-                        <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);"><span>⛏️ Community Mining & Airdrop</span><strong>50%</strong></div>
-                        <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);"><span>💧 Liquidity Pool & BNB Listing</span><strong>20%</strong></div>
-                        <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);"><span>🌐 Staking Node & Ecosystem</span><strong>15%</strong></div>
-                        <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);"><span>👥 Core Team & Development</span><strong>10%</strong></div>
-                        <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);"><span>🛡️ Reserve & Security Audit</span><strong>5%</strong></div>
+                        <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);"><span>⛏️ Community Mining & Airdrop</span><strong>50% (500M)</strong></div>
+                        <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);"><span>💧 Liquidity Pool & BNB Listing</span><strong>20% (200M)</strong></div>
+                        <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);"><span>🌐 Staking Node & Ecosystem</span><strong>15% (150M)</strong></div>
+                        <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);"><span>👥 Core Team & Development</span><strong>10% (100M)</strong></div>
+                        <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);"><span>🛡️ Reserve & Security Audit</span><strong>5% (50M)</strong></div>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB 6: WHITEPAPER -->
+            <!-- TAB 8: WHITEPAPER -->
             <div id="tab-whitepaper" class="tab-content">
                 <div class="section-card" style="text-align: left;">
                     <h2 style="font-size: 1.15rem; text-align: center; margin-bottom: 4px;">📖 Whitepaper & Roadmap v2.0</h2>
@@ -383,20 +433,20 @@
 
                     <div style="background: rgba(11, 19, 43, 0.7); padding: 14px; border-radius: 14px; font-size: 0.8rem; line-height: 1.6; max-height: 280px; overflow-y: auto; border: 1px solid rgba(255,255,255,0.08);">
                         <h4 style="color: var(--accent-cyan); margin-bottom: 4px;">1. Ringkasan Eksekutif Global</h4>
-                        <p style="margin-bottom: 10px;">Garet Network adalah platform utilitas Web3 global yang dibangun di atas BNB Smart Chain (BEP-20) dengan Contract Address resmi: <br><code style="color:var(--bnb-yellow); font-size:0.7rem;">0x4af74098468daaa01f422f6f367e2e09ecf425fc</code></p>
+                        <p style="margin-bottom: 10px;">Garet Network adalah platform utilitas Web3 global berstandar BEP-20 dengan Total Pasokan 1.000.000.000 token. Alamat Kontrak: <br><code style="color:var(--bnb-yellow); font-size:0.7rem;">0x4af74098468daaa01f422f6f367e2e09ecf425fc</code></p>
 
                         <h4 style="color: var(--accent-cyan); margin-bottom: 4px;">2. Verifikasi KYC Global & Liveness</h4>
-                        <p style="margin-bottom: 10px;">Mendukung berbagai dokumen identitas internasional (MyKad Malaysia, KTP, Paspor, & National ID) untuk mencakup komunitas lintas negara secara aman dan adil.</p>
+                        <p style="margin-bottom: 10px;">Mendukung MyKad Malaysia, KTP, Paspor, & ID Nasional untuk melindungi alokasi airdrop 50% dari bot dan akun ganda.</p>
 
                         <h4 style="color: var(--accent-cyan); margin-bottom: 4px;">3. Roadmap & Fase Listing DEX/CEX</h4>
-                        <p style="margin-bottom: 6px;"><strong>Fase 1 (Q1 - Q2):</strong> Peluncuran Portal Web3 Global, Mobile Mining 24 Jam, dan Sistem Referral Terverifikasi KYC.</p>
-                        <p style="margin-bottom: 6px;"><strong>Fase 2 (Q3):</strong> Audit Kontrak Pintar BEP-20, Peluncuran TGE Portal, dan Pembukaan Claim Token ke Wallet Pengguna.</p>
-                        <p style="margin-bottom: 6px;"><strong>Fase 3 (Selesai Mining & Pasca-Airdrop):</strong> Penguncian Likuiditas (*Liquidity Locking*) dan Pelaksanaan **Listing Resmi di Bursa DEX (PancakeSwap)** serta CEX Global.</p>
+                        <p style="margin-bottom: 6px;"><strong>Fase 1 (Q1 - Q2):</strong> Peluncuran Portal Web3 Global, Mobile Mining 24 Jam, & Social Feed.</p>
+                        <p style="margin-bottom: 6px;"><strong>Fase 2 (Q3):</strong> Audit Kontrak Pintar BEP-20, TGE Portal, dan Claim Token ke Wallet Eksternal.</p>
+                        <p style="margin-bottom: 6px;"><strong>Fase 3:</strong> Penguncian Likuiditas (*Liquidity Locking*) dan Listing Resmi di **PancakeSwap** serta CEX Global.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB 7: ADMIN PANEL -->
+            <!-- TAB 9: ADMIN PANEL -->
             <div id="tab-admin" class="tab-content">
                 <div class="section-card" id="admin-card-content" style="border-color: #22c55e; text-align: left;">
                     <!-- Konten Admin Monitoring dirender otomatis -->
@@ -445,9 +495,18 @@
         let kycStatus = "UNVERIFIED";
         let biometricDone = false;
         let generatedOTP = "";
+        let garetWalletAddress = "";
+
+        function generateGaretWalletAddress(email) {
+            let hash = 0;
+            for (let i = 0; i < email.length; i++) {
+                hash = email.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            let hex = Math.abs(hash).toString(16).padStart(8, '0');
+            return "0x7a8b" + hex + "c9d2e1f34567890a" + hex.substring(0, 4);
+        }
 
         window.onload = function() {
-            // Inisialisasi Akun Admin Permanen
             let adminObj = JSON.parse(localStorage.getItem('garet_user_' + ADMIN_EMAIL.toLowerCase()) || '{}');
             if (!adminObj.email) {
                 adminObj = {
@@ -459,9 +518,19 @@
                     referredBy: null,
                     username: "admin",
                     isMining: false,
-                    targetEndTime: 0
+                    targetEndTime: 0,
+                    walletAddress: generateGaretWalletAddress(ADMIN_EMAIL.toLowerCase())
                 };
                 localStorage.setItem('garet_user_' + ADMIN_EMAIL.toLowerCase(), JSON.stringify(adminObj));
+            }
+
+            // Inisialisasi Pesan Sosial Global Default jika belum ada
+            if (!localStorage.getItem('garet_social_posts')) {
+                const defaultPosts = [
+                    { author: "admin@garet.network", text: "Selamat datang di Garet Social Feed! Mari bangun komunitas Web3 global yang solid bersama-sama. 🚀", time: "Baru saja" },
+                    { author: "pioneer99@gmail.com", text: "Node mining sudah berjalan lancar hari ini. Siap siap menyambut TGE Q3! 🟡", time: "5 menit lalu" }
+                ];
+                localStorage.setItem('garet_social_posts', JSON.stringify(defaultPosts));
             }
 
             const savedSession = localStorage.getItem('garet_active_session');
@@ -487,7 +556,7 @@
                 btnRegister.innerText = "← Sudah Punya Akun? Masuk Di Sini";
             } else {
                 title.innerText = "Portal Web3 Garet";
-                subtitle.innerText = "Autentikasi aman dengan PIN & Biometrik terenkripsi lokal.";
+                subtitle.innerText = "Portal Mining, Airdrop, & Komunitas Global.";
                 submitBtn.innerText = "Masuk Dengan PIN";
                 groupUsername.style.display = "none";
                 btnRegister.innerText = "✨ Belum Punya Akun? Daftar Sekarang";
@@ -509,7 +578,7 @@
             document.getElementById('auth-footer-links').style.display = 'flex';
             document.getElementById('otp-verification-group').style.display = 'none';
             document.getElementById('auth-title').innerText = "Portal Web3 Garet";
-            document.getElementById('auth-subtitle').innerText = "Autentikasi aman dengan PIN & Biometrik terenkripsi lokal.";
+            document.getElementById('auth-subtitle').innerText = "Portal Mining, Airdrop, & Komunitas Global.";
         }
 
         function sendOTPCode() {
@@ -575,7 +644,8 @@
                     referredBy: getUrlParam('ref') || null,
                     username: usernameInput,
                     isMining: false,
-                    targetEndTime: 0
+                    targetEndTime: 0,
+                    walletAddress: generateGaretWalletAddress(email)
                 };
                 localStorage.setItem('garet_user_' + email, JSON.stringify(accountData));
                 alert("Pendaftaran Berhasil! Akun otomatis masuk.");
@@ -626,6 +696,9 @@
             const username = userObj.username || email.split('@')[0];
             document.getElementById('ref-link-input').value = `https://rjuandri-cmyk.github.io/garetnetwork/?ref=${username}`;
 
+            garetWalletAddress = userObj.walletAddress || generateGaretWalletAddress(email);
+            document.getElementById('garet-wallet-address-display').innerText = garetWalletAddress;
+
             kycStatus = userObj.kyc || (isAdmin ? "VERIFIED" : "UNVERIFIED");
             miningBalance = userObj.miningBalance || 0;
             refBonus = userObj.refBonus !== undefined ? userObj.refBonus : 200;
@@ -635,6 +708,7 @@
             updateKYCUI();
             updateTotalBalance();
             renderUserReferralTable(username);
+            renderSocialChatStream();
 
             if (isMining) {
                 const now = Date.now();
@@ -667,12 +741,61 @@
                 let userObj = JSON.parse(localStorage.getItem('garet_user_' + currentEmail) || '{}');
                 let username = userObj.username || currentEmail.split('@')[0];
                 renderUserReferralTable(username);
+            } else if (tabId === 'tab-social') {
+                renderSocialChatStream();
             }
 
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             btn.classList.add('active');
+        }
+
+        // FUNGSI SOSIAL CHAT FEED
+        function renderSocialChatStream() {
+            const container = document.getElementById('social-chat-stream');
+            let posts = JSON.parse(localStorage.getItem('garet_social_posts') || '[]');
+            let html = "";
+
+            posts.forEach(p => {
+                html += `
+                    <div class="chat-bubble">
+                        <div class="chat-author">
+                            <span>👤 ${p.author}</span>
+                            <span style="color:var(--text-muted); font-size:0.65rem;">${p.time}</span>
+                        </div>
+                        <div style="color:var(--text-main); word-break:break-all;">${p.text}</div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function postSocialMessage(e) {
+            e.preventDefault();
+            const currentEmail = localStorage.getItem('garet_active_session');
+            const msgInput = document.getElementById('chat-input-msg');
+            const text = msgInput.value.trim();
+
+            if (!text) return;
+
+            let posts = JSON.parse(localStorage.getItem('garet_social_posts') || '[]');
+            posts.push({
+                author: currentEmail,
+                text: text,
+                time: "Baru saja"
+            });
+
+            localStorage.setItem('garet_social_posts', JSON.stringify(posts));
+            msgInput.value = "";
+            renderSocialChatStream();
+        }
+
+        function copyGaretWalletAddress() {
+            navigator.clipboard.writeText(garetWalletAddress);
+            alert("Alamat Dompet $GARET Berhasil Disalin!");
         }
 
         function renderUserReferralTable(username) {
@@ -906,6 +1029,7 @@
         function updateTotalBalance() {
             const total = miningBalance + refBonus;
             document.getElementById('user-balance').innerText = total.toFixed(4) + " GARET";
+            document.getElementById('wallet-tab-balance').innerText = total.toFixed(4) + " GARET";
             document.getElementById('mining-part-display').innerText = miningBalance.toFixed(4);
             document.getElementById('ref-bonus-display').innerText = refBonus;
         }
@@ -922,6 +1046,7 @@
             userObj.isMining = isMining;
             userObj.targetEndTime = targetEndTime;
             userObj.lastSavedTime = Date.now();
+            userObj.walletAddress = garetWalletAddress;
 
             localStorage.setItem('garet_user_' + currentEmail, JSON.stringify(userObj));
         }
@@ -974,7 +1099,7 @@
             } else if (!walletInput.startsWith("0x") || walletInput.length < 40) {
                 alert("Silakan hubungkan Web3 Wallet BEP-20 terlebih dahulu!");
             } else {
-                alert(`Sukses! Alokasi ${total.toFixed(2)} $GARET berhasil diajukan untuk diklaim ke wallet ${walletInput}.`);
+                alert(`Sukses! Alokasi ${total.toFixed(2)} $GARET dari alokasi Airdrop Pool berhasil diajukan untuk klaim ke wallet ${walletInput}.`);
             }
         }
 
@@ -1002,7 +1127,7 @@
                 
                 startMiningInterval();
                 saveCurrentUserData();
-                alert(`Sesi Node Mining Aktif! Otomatis berjalan 24 jam.`);
+                alert(`Sesi Node Mining Aktif! Pendapatan masuk ke Garet In-App Wallet.`);
             } else {
                 alert("Sesi mining Anda sedang berjalan secara otomatis!");
             }
@@ -1036,7 +1161,7 @@
                     isMining = false;
                     resetMiningUI();
                     saveCurrentUserData();
-                    alert("Sesi Penambangan 24 Jam Selesai!");
+                    alert("Sesi Penambangan 24 Jam Selesai! Token masuk ke Garet Wallet.");
                 }
             }, 1000);
         }
