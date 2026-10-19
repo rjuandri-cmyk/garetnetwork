@@ -782,3 +782,64 @@
         if (savedNotif) document.getElementById('notif-selector').value = savedNotif;
     });
 </script>
+<!-- KODE TAB / SECTION SEND & RECEIVE tGARET -->
+<div id="tab-transfer" class="tab-content" style="margin-top: 20px;">
+    <div class="section-card" style="text-align: left; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+        <h2 style="font-size: 1.1rem; text-align: center; margin-bottom: 6px;">💸 Kirim & Terima tGARET</h2>
+        <p style="font-size: 0.75rem; color: #a1a1aa; text-align: center; margin-bottom: 15px;">Uji coba transaksi peer-to-peer di Jaringan GARET Testnet.</p>
+
+        <!-- FORM KIRIM KOIN -->
+        <div class="form-group" style="margin-bottom: 12px;">
+            <label style="font-size: 0.85rem; font-weight: bold;">Alamat Dompet Penerima (Recipient Address)</label>
+            <input type="text" id="transfer-address" placeholder="0x..." style="width: 100%; padding: 10px; margin-top: 5px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); background: #121212; color: #fff;">
+        </div>
+
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label style="font-size: 0.85rem; font-weight: bold;">Jumlah (Amount tGARET)</label>
+            <input type="number" id="transfer-amount" placeholder="0.0" step="0.0001" style="width: 100%; padding: 10px; margin-top: 5px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); background: #121212; color: #fff;">
+        </div>
+
+        <button onclick="sendTGaret()" class="btn-submit" style="background: #10b981; width: 100%; padding: 12px; font-weight: bold; cursor: pointer; border-radius: 6px; border: none; color: white;">
+            🚀 Kirim tGARET
+        </button>
+    </div>
+</div>
+
+<script>
+// Fungsi untuk memproses transaksi kirim tGARET via Web3 Wallet
+async function sendTGaret() {
+    const toAddress = document.getElementById('transfer-address').value.trim();
+    const amount = document.getElementById('transfer-amount').value.trim();
+
+    if (!toAddress || !amount || amount <= 0) {
+        alert("⚠️ Silakan isi alamat tujuan dan jumlah tGARET yang valid!");
+        return;
+    }
+
+    if (window.ethereum) {
+        try {
+            // Konversi nilai tGARET ke satuan Wei (Hexadecimal)
+            const parsedAmount = (parseFloat(amount) * 1e18).toString(16);
+            
+            const transactionParameters = {
+                to: toAddress,
+                from: window.ethereum.selectedAddress,
+                value: '0x' + parsedAmount
+            };
+
+            // Mengirim transaksi ke Wallet (MetaMask/Trust Wallet)
+            const txHash = await window.ethereum.request({
+                method: 'eth_sendTransaction',
+                params: [transactionParameters],
+            });
+
+            alert("✅ Transaksi Berhasil Dikirim!\nTx Hash: " + txHash);
+        } catch (error) {
+            console.error("Gagal mengirim transaksi:", error);
+            alert("❌ Transaksi gagal atau dibatalkan oleh pengguna.");
+        }
+    } else {
+        alert("⚠️ Web3 Wallet tidak terdeteksi! Buka dApp ini via MetaMask / Trust Wallet Browser.");
+    }
+}
+</script>
