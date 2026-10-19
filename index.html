@@ -843,3 +843,121 @@ async function sendTGaret() {
     }
 }
 </script>
+<!-- NAV BUTTON FOR TRANSFER (Add this near your main navigation buttons) -->
+<button onclick="showTransferTab()" style="background: #10b981; color: white; padding: 10px 15px; border-radius: 8px; border: none; font-weight: bold; margin: 5px; cursor: pointer;">
+    💸 Transfer tGARET
+</button>
+
+<!-- GARET NETWORK BLOCKCHAIN INTEGRATION -->
+<div class="form-group" style="margin-top: 15px; padding: 12px; background: rgba(255,255,255,0.05); border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+    <label style="font-weight: bold; color: #fff;">🌐 GARET Blockchain Network</label>
+    <button onclick="addGaretNetwork('testnet')" class="btn-submit" style="background: #2563eb; margin-top: 8px; width: 100%; padding: 10px; border-radius: 6px; border: none; color: #fff; font-weight: bold; cursor: pointer;">
+        ➕ Add GARET Testnet to Wallet
+    </button>
+</div>
+
+<!-- TRANSFER SECTION -->
+<div id="tab-transfer" class="tab-content" style="margin-top: 20px;">
+    <div class="section-card" style="text-align: left; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+        <h2 style="font-size: 1.1rem; text-align: center; margin-bottom: 6px; color: #fff;">💸 Send & Receive tGARET</h2>
+        <p style="font-size: 0.75rem; color: #a1a1aa; text-align: center; margin-bottom: 15px;">Peer-to-peer transaction test on GARET Testnet.</p>
+
+        <div class="form-group" style="margin-bottom: 12px;">
+            <label style="font-size: 0.85rem; font-weight: bold; color: #fff;">Recipient Wallet Address</label>
+            <input type="text" id="transfer-address" placeholder="0x..." style="width: 100%; padding: 10px; margin-top: 5px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); background: #121212; color: #fff;">
+        </div>
+
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label style="font-size: 0.85rem; font-weight: bold; color: #fff;">Amount (tGARET)</label>
+            <input type="number" id="transfer-amount" placeholder="0.0" step="0.0001" style="width: 100%; padding: 10px; margin-top: 5px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); background: #121212; color: #fff;">
+        </div>
+
+        <button onclick="sendTGaret()" class="btn-submit" style="background: #10b981; width: 100%; padding: 12px; font-weight: bold; cursor: pointer; border-radius: 6px; border: none; color: white;">
+            🚀 Send tGARET
+        </button>
+    </div>
+</div>
+
+<script>
+// Function to show Transfer Section
+function showTransferTab() {
+    const transferSec = document.getElementById('tab-transfer');
+    if (transferSec) {
+        transferSec.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+// Function to add GARET Network to Web3 Wallet
+async function addGaretNetwork(env = 'testnet') {
+    if (window.ethereum) {
+        const netConfig = env === 'testnet' ? {
+            chainId: '0x22C5',
+            chainName: 'GARET Network Testnet',
+            nativeCurrency: {
+                name: 'tGARET',
+                symbol: 'tGARET',
+                decimals: 18
+            },
+            rpcUrls: ['https://rpc-testnet.garet.network'],
+            blockExplorerUrls: ['https://testnet.garetscan.io']
+        } : {
+            chainId: '0x1830',
+            chainName: 'GARET Mainnet',
+            nativeCurrency: {
+                name: 'GARET',
+                symbol: 'GARET',
+                decimals: 18
+            },
+            rpcUrls: ['https://rpc.garet.network'],
+            blockExplorerUrls: ['https://garetscan.io']
+        };
+
+        try {
+            await window.ethereum.request({
+                method: 'wallet_addEthereumChain',
+                params: [netConfig],
+            });
+            alert("✅ Successfully added " + netConfig.chainName + " to your wallet!");
+        } catch (error) {
+            console.error("Failed to add network:", error);
+            alert("❌ Failed to connect to wallet.");
+        }
+    } else {
+        alert("⚠️ Web3 Wallet not detected! Please open this dApp using MetaMask or Trust Wallet browser.");
+    }
+}
+
+// Function to handle transfer transaction
+async function sendTGaret() {
+    const toAddress = document.getElementById('transfer-address').value.trim();
+    const amount = document.getElementById('transfer-amount').value.trim();
+
+    if (!toAddress || !amount || amount <= 0) {
+        alert("⚠️ Please enter a valid recipient address and amount!");
+        return;
+    }
+
+    if (window.ethereum) {
+        try {
+            const parsedAmount = (parseFloat(amount) * 1e18).toString(16);
+            const transactionParameters = {
+                to: toAddress,
+                from: window.ethereum.selectedAddress,
+                value: '0x' + parsedAmount
+            };
+
+            const txHash = await window.ethereum.request({
+                method: 'eth_sendTransaction',
+                params: [transactionParameters],
+            });
+
+            alert("✅ Transaction Sent Successfully!\nTx Hash: " + txHash);
+        } catch (error) {
+            console.error("Transaction failed:", error);
+            alert("❌ Transaction failed or rejected by user.");
+        }
+    } else {
+        alert("⚠️ Web3 Wallet not detected! Please open this dApp using MetaMask or Trust Wallet browser.");
+    }
+}
+</script>
