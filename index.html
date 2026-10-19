@@ -1,928 +1,804 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GARET NETWORK - Decentralized Ecosystem & Layer-1 dApp</title>
-    <style>
-        :root {
-            --bg-main: #060911;
-            --bg-card: rgba(15, 23, 42, 0.78);
-            --bg-card-border: rgba(255, 255, 255, 0.08);
-            --bg-input: #0a0f1d;
-            --primary: #2563eb;
-            --primary-hover: #3b82f6;
-            --accent-green: #10b981;
-            --accent-cyan: #38bdf8;
-            --accent-purple: #a855f7;
-            --accent-gold: #fbbf24;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --text-dim: #64748b;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            padding: 12px;
-            display: flex;
-            justify-content: center;
-            min-height: 100vh;
-            background-image: radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.18), transparent 70%);
-        }
-
-        .app-container {
-            width: 100%;
-            max-width: 480px;
-            background: var(--bg-card);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-radius: 20px;
-            border: 1px solid var(--bg-card-border);
-            padding: 18px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        /* Header */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        }
-        .logo {
-            font-size: 1.15rem;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            letter-spacing: 0.5px;
-        }
-        .logo span {
-            background: linear-gradient(135deg, #60a5fa, #a855f7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .user-badge {
-            font-size: 0.68rem;
-            background: rgba(16, 185, 129, 0.15);
-            color: var(--accent-green);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .account-info {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            background: rgba(255, 255, 255, 0.02);
-            padding: 10px 14px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        /* Navigation Grid - 13 menu */
-        .nav-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-        }
-        .nav-btn {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            padding: 10px 4px;
-            border-radius: 12px;
-            color: var(--text-muted);
-            font-size: 0.72rem;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-        }
-        .nav-btn:hover,
-        .nav-btn.active {
-            background: var(--primary);
-            color: #ffffff;
-            border-color: var(--primary-hover);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-            transform: translateY(-1px);
-        }
-        .nav-btn.admin-btn {
-            border-color: rgba(16, 185, 129, 0.3);
-            color: var(--accent-green);
-        }
-        .nav-btn.admin-btn.active {
-            background: var(--accent-green);
-            color: #fff;
-            border-color: var(--accent-green);
-        }
-
-        /* Tab Panels */
-        .tab-panel {
-            display: none;
-            animation: fadeIn 0.3s ease-in-out;
-        }
-        .tab-panel.active {
-            display: block;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 16px;
-            padding: 18px;
-            margin-bottom: 14px;
-        }
-
-        h2 {
-            font-size: 1.05rem;
-            margin-bottom: 4px;
-            text-align: center;
-            color: var(--text-main);
-            font-weight: 700;
-        }
-        p.subtitle {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-align: center;
-            margin-bottom: 16px;
-        }
-
-        /* Mining Circle */
-        .mining-status { text-align: center; padding: 10px 0; }
-        .circle-btn {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(37, 99, 235, 0.2) 0%, rgba(15, 23, 42, 0.8) 100%);
-            border: 3px solid var(--primary-hover);
-            margin: 0 auto 15px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 0 25px rgba(59, 130, 246, 0.4);
-            animation: pulse 2s infinite alternate;
-        }
-        @keyframes pulse {
-            0% { box-shadow: 0 0 15px rgba(59, 130, 246, 0.3); }
-            100% { box-shadow: 0 0 30px rgba(59, 130, 246, 0.6); }
-        }
-        .circle-btn span {
-            font-size: 0.75rem;
-            font-weight: 800;
-            color: var(--accent-cyan);
-            letter-spacing: 0.5px;
-        }
-
-        /* Forms */
-        .form-group { margin-bottom: 14px; text-align: left; }
-        .form-group label {
-            display: block;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            margin-bottom: 6px;
-        }
-        .input-field {
-            width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: var(--bg-input);
-            color: #fff;
-            font-size: 0.85rem;
-            outline: none;
-            transition: border 0.2s;
-        }
-        .input-field:focus { border-color: var(--primary-hover); }
-
-        /* Buttons */
-        .btn-action {
-            width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            border: none;
-            font-weight: 700;
-            font-size: 0.85rem;
-            cursor: pointer;
-            color: #fff;
-            transition: all 0.2s;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 6px;
-        }
-        .btn-blue { background: var(--primary); }
-        .btn-blue:hover { background: var(--primary-hover); }
-        .btn-green { background: var(--accent-green); }
-        .btn-green:hover { background: #059669; }
-        .btn-gray { background: #334155; }
-        .btn-gray:hover { background: #475569; }
-        .btn-purple { background: var(--accent-purple); }
-        .btn-purple:hover { background: #9333ea; }
-        .btn-gold { background: var(--accent-gold); color: #1e293b; }
-        .btn-gold:hover { background: #f59e0b; }
-
-        .addr-box {
-            background: var(--bg-input);
-            border: 1px dashed rgba(255, 255, 255, 0.15);
-            padding: 12px;
-            border-radius: 10px;
-            font-family: monospace;
-            font-size: 0.75rem;
-            color: var(--accent-cyan);
-            word-break: break-all;
-            margin-bottom: 12px;
-            text-align: center;
-        }
-
-        /* Tokenomics rows */
-        .token-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.8rem;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-        }
-        .token-row:last-child { border-bottom: none; }
-
-        /* Whitepaper box */
-        .wp-box {
-            background: var(--bg-input);
-            padding: 16px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            line-height: 1.6;
-            color: #cbd5e1;
-            text-align: left;
-            max-height: 420px;
-            overflow-y: auto;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        .wp-box::-webkit-scrollbar { width: 4px; }
-        .wp-box::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
-        }
-        .wp-box h3 {
-            font-size: 0.88rem;
-            color: var(--accent-cyan);
-            margin: 16px 0 6px 0;
-            border-bottom: 1px solid rgba(56, 189, 248, 0.2);
-            padding-bottom: 4px;
-        }
-        .wp-box h3:first-child { margin-top: 0; }
-        .wp-box p { margin-bottom: 10px; text-align: justify; }
-
-        /* Data table */
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-            font-size: 0.75rem;
-        }
-        .data-table th,
-        .data-table td {
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 8px;
-            text-align: left;
-        }
-        .data-table th {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--accent-cyan);
-        }
-
-        /* Stat cards */
-        .stat-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 14px;
-        }
-        .stat-box {
-            background: rgba(0, 0, 0, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 12px;
-            padding: 12px;
-            text-align: center;
-        }
-        .stat-box .label {
-            font-size: 0.68rem;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-        }
-        .stat-box .value {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: var(--accent-cyan);
-        }
-
-        /* Social / chat style */
-        .chat-list {
-            max-height: 280px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .chat-item {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            padding: 10px 12px;
-            font-size: 0.78rem;
-        }
-        .chat-item .meta {
-            font-size: 0.68rem;
-            color: var(--text-dim);
-            margin-bottom: 4px;
-        }
-
-        /* Progress bar */
-        .progress-bar {
-            height: 8px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 4px;
-            overflow: hidden;
-            margin: 8px 0;
-        }
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--accent-cyan));
-            border-radius: 4px;
-            transition: width 0.3s;
-        }
-
-        /* Toast notification */
-        .toast {
-            position: fixed;
-            bottom: 24px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: #1e293b;
-            color: #fff;
-            padding: 12px 20px;
-            border-radius: 10px;
-            font-size: 0.85rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-            opacity: 0;
-            transition: all 0.3s ease;
-            z-index: 999;
-            max-width: 90%;
-            text-align: center;
-        }
-        .toast.show {
-            transform: translateX(-50%) translateY(0);
-            opacity: 1;
-        }
-        .toast.success { border-color: var(--accent-green); }
-        .toast.error { border-color: #ef4444; }
-
-        /* Responsive tweak */
-        @media (max-width: 380px) {
-            .nav-btn { font-size: 0.65rem; padding: 8px 2px; }
-            .stat-grid { grid-template-columns: 1fr; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>JARINGAN GARET — Layer-1 dApp</title>
+<meta name="description" content="GARET Network - Ekosistem terdesentralisasi Layer-1 dengan penambangan komunitas">
+<style>
+:root {
+  --bg: #060911;
+  --card: rgba(12,18,32,.94);
+  --border: rgba(255,255,255,.07);
+  --input: #0a0f1d;
+  --blue: #2563eb;
+  --blue-h: #3b82f6;
+  --green: #10b981;
+  --cyan: #38bdf8;
+  --purple: #a855f7;
+  --gold: #fbbf24;
+  --red: #ef4444;
+  --text: #f1f5f9;
+  --muted: #94a3b8;
+  --dim: #64748b;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  padding:10px;display:flex;justify-content:center;min-height:100vh;
+  background-image:
+    radial-gradient(ellipse at 50% -10%,rgba(37,99,235,.22),transparent 55%),
+    radial-gradient(ellipse at 80% 90%,rgba(168,85,247,.07),transparent 40%);
+}
+.app{
+  width:100%;max-width:420px;background:var(--card);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-radius:22px;border:1px solid var(--border);padding:16px;
+  box-shadow:0 25px 60px rgba(0,0,0,.55);
+  display:flex;flex-direction:column;gap:13px;
+}
+.header{display:flex;justify-content:space-between;align-items:center;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.05)}
+.logo{font-size:1.05rem;font-weight:800;display:flex;align-items:center;gap:6px}
+.logo .bolt{color:var(--gold);font-size:1.15rem}
+.logo span{background:linear-gradient(135deg,#60a5fa,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.badge{font-size:.62rem;background:rgba(16,185,129,.12);color:var(--green);border:1px solid rgba(16,185,129,.28);padding:4px 10px;border-radius:20px;font-weight:700;letter-spacing:.4px;text-transform:uppercase}
+.userbar{font-size:.72rem;color:var(--muted);background:rgba(255,255,255,.025);padding:9px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.04);display:flex;justify-content:space-between;align-items:center}
+.userbar b{color:#fff;font-weight:600}
+.online{color:var(--green);font-weight:600;font-size:.7rem}
+.nav{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.nb{
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.055);
+  padding:11px 3px 9px;border-radius:12px;color:var(--muted);font-size:.67rem;font-weight:600;
+  cursor:pointer;text-align:center;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:4px;line-height:1.2
+}
+.nb .i{font-size:1.05rem;line-height:1}
+.nb:hover{background:rgba(37,99,235,.15);border-color:rgba(37,99,235,.3);color:#fff}
+.nb.on{background:var(--blue);color:#fff;border-color:var(--blue-h);box-shadow:0 4px 14px rgba(37,99,235,.35)}
+.nb.adm{border-color:rgba(16,185,129,.25);color:var(--green);grid-column:1}
+.nb.adm.on{background:var(--green);color:#fff;border-color:var(--green)}
+.panel{display:none;animation:up .28s ease}
+.panel.on{display:block}
+@keyframes up{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.card{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.055);border-radius:16px;padding:16px}
+.card h2{font-size:1rem;font-weight:700;text-align:center;margin-bottom:3px}
+.card .sub{font-size:.7rem;color:var(--muted);text-align:center;margin-bottom:14px}
+.mw{text-align:center;padding:4px 0}
+.mc{
+  width:118px;height:118px;border-radius:50%;margin:0 auto 14px;
+  border:3px solid var(--blue-h);
+  background:radial-gradient(circle at 40% 35%,rgba(37,99,235,.25),rgba(10,15,29,.9));
+  box-shadow:0 0 28px rgba(59,130,246,.35);
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  animation:glow 2.2s ease-in-out infinite alternate;position:relative
+}
+@keyframes glow{from{box-shadow:0 0 16px rgba(59,130,246,.25)}to{box-shadow:0 0 32px rgba(59,130,246,.55)}}
+.mc .run{font-size:.72rem;font-weight:800;color:var(--cyan);letter-spacing:.6px;display:flex;align-items:center;gap:4px}
+.mc .tm{font-size:.68rem;color:#fff;margin-top:3px;font-weight:500}
+.rate{font-size:.78rem;color:var(--cyan);font-weight:700;margin-bottom:12px}
+.bbox{background:rgba(0,0,0,.32);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:12px;text-align:center;margin-bottom:12px}
+.bbox .l{font-size:.68rem;color:var(--muted)}
+.bbox .v{font-size:1.55rem;font-weight:800;color:var(--cyan);margin:4px 0;letter-spacing:-.5px}
+.bbox .m{font-size:.65rem;color:var(--dim)}
+.fg{margin-bottom:12px;text-align:left}
+.fg label{display:block;font-size:.7rem;font-weight:600;color:var(--muted);margin-bottom:5px}
+.inp{
+  width:100%;padding:11px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.1);
+  background:var(--input);color:#fff;font-size:.82rem;outline:none;transition:border .2s
+}
+.inp:focus{border-color:var(--blue-h)}
+.inp::placeholder{color:#475569}
+.btn{
+  width:100%;padding:12px;border-radius:11px;border:none;font-weight:700;font-size:.82rem;
+  cursor:pointer;color:#fff;transition:all .18s;display:flex;justify-content:center;align-items:center;gap:6px
+}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.bb{background:var(--blue)}.bb:hover{background:var(--blue-h)}
+.bg{background:var(--green)}.bg:hover{background:#059669}
+.bgy{background:#334155}.bgy:hover{background:#475569}
+.bp{background:var(--purple)}.bp:hover{background:#9333ea}
+.bgd{background:var(--gold);color:#1e293b}.bgd:hover{background:#f59e0b}
+.br{background:var(--red)}.br:hover{background:#dc2626}
+.addr{
+  background:var(--input);border:1px dashed rgba(255,255,255,.14);padding:11px;border-radius:10px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.72rem;color:var(--cyan);
+  word-break:break-all;text-align:center;margin-bottom:10px
+}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.st{background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.05);border-radius:11px;padding:11px;text-align:center}
+.st .l{font-size:.64rem;color:var(--muted);margin-bottom:3px}
+.st .v{font-size:1rem;font-weight:700;color:var(--cyan)}
+.row{display:flex;justify-content:space-between;align-items:center;font-size:.78rem;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.row:last-child{border-bottom:none}
+.row .r{color:var(--muted)}.row .g{color:var(--green);font-weight:600}
+.prog{height:7px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden;margin:8px 0 6px}
+.pf{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--blue),var(--cyan));transition:width .4s}
+.tbl{width:100%;border-collapse:collapse;margin-top:10px;font-size:.72rem}
+.tbl th,.tbl td{border:1px solid rgba(255,255,255,.07);padding:7px 8px;text-align:left}
+.tbl th{background:rgba(255,255,255,.04);color:var(--cyan);font-weight:600}
+.feed{max-height:240px;overflow-y:auto;display:flex;flex-direction:column;gap:8px}
+.feed::-webkit-scrollbar{width:3px}.feed::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:3px}
+.post{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.045);border-radius:10px;padding:10px 11px;font-size:.76rem}
+.post .meta{font-size:.65rem;color:var(--dim);margin-bottom:3px}
+.wp{background:var(--input);padding:14px;border-radius:12px;font-size:.76rem;line-height:1.55;color:#cbd5e1;max-height:360px;overflow-y:auto;border:1px solid rgba(255,255,255,.07)}
+.wp::-webkit-scrollbar{width:3px}.wp::-webkit-scrollbar-thumb{background:rgba(255,255,255,.2);border-radius:3px}
+.wp h3{font-size:.84rem;color:var(--cyan);margin:14px 0 5px;padding-bottom:3px;border-bottom:1px solid rgba(56,189,248,.18)}
+.wp h3:first-child{margin-top:0}
+.wp p{margin-bottom:8px;text-align:justify}
+.hist{max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.hist::-webkit-scrollbar{width:3px}.hist::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:3px}
+.hitem{background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.05);border-radius:10px;padding:9px 11px;font-size:.74rem;display:flex;justify-content:space-between;align-items:center}
+.hitem .t{color:var(--dim);font-size:.65rem}
+.hitem .amt{font-weight:700}
+.hitem .amt.in{color:var(--green)}.hitem .amt.out{color:var(--red)}
+.tbar{display:flex;height:18px;border-radius:6px;overflow:hidden;margin:12px 0 8px}
+.tbar div{height:100%}
+.tleg{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:.68rem;color:var(--muted);margin-bottom:10px}
+.tleg span{display:flex;align-items:center;gap:4px}
+.tleg i{width:8px;height:8px;border-radius:2px;display:inline-block}
+.qr{background:#fff;padding:10px;display:inline-block;border-radius:10px;margin-bottom:10px}
+.qr img{display:block;width:120px;height:120px}
+.av{width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#a855f7);margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:1.7rem;font-weight:700;color:#fff}
+.stabs{display:flex;gap:6px;margin-bottom:12px}
+.stab{flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:var(--muted);font-size:.72rem;font-weight:600;cursor:pointer;text-align:center}
+.stab.on{background:var(--blue);color:#fff;border-color:var(--blue-h)}
+.toast{
+  position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);
+  background:#1e293b;color:#fff;padding:11px 18px;border-radius:11px;font-size:.8rem;
+  border:1px solid rgba(255,255,255,.1);box-shadow:0 10px 28px rgba(0,0,0,.45);
+  opacity:0;transition:all .28s ease;z-index:999;max-width:88%;text-align:center;pointer-events:none
+}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.toast.ok{border-color:rgba(16,185,129,.5)}.toast.err{border-color:rgba(239,68,68,.5)}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .6s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media(max-width:360px){
+  .nb{font-size:.6rem;padding:9px 2px 8px}
+  .stats{grid-template-columns:1fr}
+}
+</style>
 </head>
 <body>
+<div class="app">
+  <div class="header">
+    <div class="logo"><span class="bolt">⚡</span> <span>JARINGAN GARET</span></div>
+    <div class="badge" id="kyc-badge">KYC TERVERIFIKASI</div>
+  </div>
+  <div class="userbar">
+    <span>Pengguna: <b id="uname">rjuandri@gmail.com</b></span>
+    <span class="online">● Online</span>
+  </div>
 
-<div class="app-container">
-    <!-- Header -->
-    <div class="header">
-        <div class="logo">⚡ <span>GARET NETWORK</span></div>
-        <div class="user-badge">KYC Verified</div>
-    </div>
+  <div class="nav">
+    <button class="nb on" onclick="go('mining',this)"><span class="i">⛏️</span>Pertambangan</button>
+    <button class="nb" onclick="go('wallet',this)"><span class="i">💼</span>Dompet</button>
+    <button class="nb" onclick="go('send',this)"><span class="i">💸</span>Mengirim</button>
+    <button class="nb" onclick="go('receive',this)"><span class="i">📥</span>Menerima</button>
+    <button class="nb" onclick="go('network',this)"><span class="i">🌐</span>Jaringan</button>
+    <button class="nb" onclick="go('social',this)"><span class="i">💬</span>Sosial</button>
+    <button class="nb" onclick="go('profile',this)"><span class="i">👤</span>Profil</button>
+    <button class="nb" onclick="go('kyc',this)"><span class="i">🆔</span>KYC</button>
+    <button class="nb" onclick="go('tge',this)"><span class="i">🚀</span>TGE</button>
+    <button class="nb" onclick="go('referral',this)"><span class="i">👥</span>Rujukan</button>
+    <button class="nb" onclick="go('tokenomics',this)"><span class="i">📊</span>Tokenomics</button>
+    <button class="nb" onclick="go('whitepaper',this)"><span class="i">📄</span>Makalah Putih</button>
+    <button class="nb adm" onclick="go('admin',this)"><span class="i">⚙️</span>Admin</button>
+  </div>
 
-    <div class="account-info">
-        <span>User: <b style="color:#fff;">rjuandri@gmail.com</b></span>
-        <span style="color:var(--accent-green); font-weight:600;">● Online</span>
-    </div>
-
-    <!-- 13-Menu Navigation -->
-    <div class="nav-grid">
-        <button class="nav-btn active" onclick="switchTab('mining', this)"><span>⛏️</span> Mining</button>
-        <button class="nav-btn" onclick="switchTab('wallet', this)"><span>💼</span> Wallet</button>
-        <button class="nav-btn" onclick="switchTab('send', this)"><span>💸</span> Send</button>
-        <button class="nav-btn" onclick="switchTab('receive', this)"><span>📥</span> Receive</button>
-        <button class="nav-btn" onclick="switchTab('network', this)"><span>🌐</span> Network</button>
-        <button class="nav-btn" onclick="switchTab('social', this)"><span>💬</span> Social</button>
-        <button class="nav-btn" onclick="switchTab('profile', this)"><span>👤</span> Profile</button>
-        <button class="nav-btn" onclick="switchTab('kyc', this)"><span>🆔</span> KYC</button>
-        <button class="nav-btn" onclick="switchTab('tge', this)"><span>🚀</span> TGE</button>
-        <button class="nav-btn" onclick="switchTab('referral', this)"><span>👥</span> Referral</button>
-        <button class="nav-btn" onclick="switchTab('tokenomics', this)"><span>📊</span> Tokenomics</button>
-        <button class="nav-btn" onclick="switchTab('whitepaper', this)"><span>📄</span> Whitepaper</button>
-        <button class="nav-btn admin-btn" onclick="switchTab('admin', this)"><span>⚙️</span> Admin</button>
-    </div>
-
-    <!-- 1. MINING -->
-    <div id="tab-mining" class="tab-panel active">
-        <div class="card">
-            <h2>24-Hour Mining Session</h2>
-            <p class="subtitle">Community Node Allocation (50% of 1B Total Supply)</p>
-            <div class="mining-status">
-                <div class="circle-btn">
-                    <span>⚡ RUNNING</span>
-                    <small style="color:#fff; font-size:0.65rem; margin-top:3px;" id="mining-timer">09:47:20</small>
-                </div>
-                <p style="font-size:0.8rem; color:var(--accent-cyan); font-weight:700;">Base Rate: +0.50 $GARET / Hr</p>
-            </div>
-            <div style="background: rgba(0,0,0,0.3); padding: 14px; border-radius: 12px; text-align: center; margin-top: 12px; border: 1px solid rgba(255,255,255,0.05);">
-                <span style="font-size: 0.72rem; color: var(--text-muted);">Current Unlocked Balance</span>
-                <h1 style="font-size: 1.6rem; color: var(--accent-cyan); margin: 6px 0; font-weight: 800;" id="mining-balance">201.2713 GARET</h1>
-                <p style="font-size: 0.68rem; color: var(--text-dim);">Mining Streak: 14 Days Active | +15% Multiplier Active</p>
-            </div>
-            <button onclick="claimMining()" class="btn-action btn-green" style="margin-top:14px;">✅ Claim Mining Reward</button>
+  <!-- 1 MINING -->
+  <div id="p-mining" class="panel on">
+    <div class="card">
+      <h2>Sesi Penambangan 24 Jam</h2>
+      <p class="sub">Alokasi Node Komunitas (50% dari Total Pasokan 1B)</p>
+      <div class="mw">
+        <div class="mc">
+          <div class="run">⚡ <span id="mine-status">BERLARI</span></div>
+          <div class="tm" id="timer">09:44:04</div>
         </div>
+        <div class="rate">Tarif Dasar: <span id="rate-disp">+0,50</span> $GARET / Jam · Pengali: <span id="mult-disp">+15%</span></div>
+      </div>
+      <div class="bbox">
+        <div class="l">Saldo Terbuka Saat Ini</div>
+        <div class="v" id="bal">201.7713 GARET</div>
+        <div class="m">Rentetan: <span id="streak">14</span> Hari · Pending: <span id="pending">0.0000</span> GARET</div>
+      </div>
+      <div class="stats">
+        <div class="st"><div class="l">Hari Ini</div><div class="v" id="today-mined">0.00</div></div>
+        <div class="st"><div class="l">Total Ditambang</div><div class="v" id="total-mined">249.77</div></div>
+      </div>
+      <button class="btn bg" id="btn-claim" onclick="claim()">✅ Klaim Hadiah Penambangan</button>
     </div>
+  </div>
 
-    <!-- 2. WALLET -->
-    <div id="tab-wallet" class="tab-panel">
-        <div class="card">
-            <h2>💳 Encrypted Web3 Wallet</h2>
-            <p class="subtitle">Internal decentralized wallet mapped to Community Airdrop Vault</p>
-            <div class="form-group">
-                <label>Your $GARET Public Wallet Address:</label>
-                <div class="addr-box" id="wallet-addr-display">0x7a8b7c4ae81ec9d2e1f34567890a7c4a</div>
-                <button onclick="copyText('0x7a8b7c4ae81ec9d2e1f34567890a7c4a')" class="btn-action btn-gray">📋 Copy Wallet Address</button>
-            </div>
-            <div class="stat-grid" style="margin-top:14px;">
-                <div class="stat-box">
-                    <div class="label">Available</div>
-                    <div class="value">201.27</div>
-                </div>
-                <div class="stat-box">
-                    <div class="label">Locked</div>
-                    <div class="value">48.50</div>
-                </div>
-            </div>
-            <div style="display: flex; gap: 8px; margin-top: 10px;">
-                <button onclick="showToast('Seed Phrase Export locked until Mainnet TGE.', 'error')" class="btn-action btn-gray" style="font-size: 0.72rem;">🔑 View Seed Phrase</button>
-                <button onclick="showToast('Private Key is safely encrypted locally.', 'success')" class="btn-action btn-gray" style="font-size: 0.72rem;">🔒 Private Key</button>
-            </div>
+  <!-- 2 WALLET -->
+  <div id="p-wallet" class="panel">
+    <div class="card">
+      <h2>💳 Dompet Web3 Terenkripsi</h2>
+      <p class="sub">Dompet terdesentralisasi internal · Vault Airdrop Komunitas</p>
+      <div class="stabs">
+        <div class="stab on" onclick="wTab('info',this)">Info</div>
+        <div class="stab" onclick="wTab('hist',this)">Riwayat</div>
+      </div>
+      <div id="w-info">
+        <div class="fg">
+          <label>Alamat Dompet Publik $GARET</label>
+          <div class="addr" id="w-addr">0x7a8b7c4ae81ec9d2e1f34567890a7c4a</div>
+          <button class="btn bgy" onclick="copy(S.addr)">📋 Salin Alamat Dompet</button>
         </div>
-    </div>
-
-    <!-- 3. SEND -->
-    <div id="tab-send" class="tab-panel">
-        <div class="card">
-            <h2>💸 Send tGARET</h2>
-            <p class="subtitle">Execute peer-to-peer testnet transaction on GARET Chain</p>
-            <div class="form-group">
-                <label>Recipient Address (EVM Compatible)</label>
-                <input type="text" id="transfer-address" class="input-field" placeholder="0x...">
-            </div>
-            <div class="form-group">
-                <label>Amount (tGARET)</label>
-                <input type="number" id="transfer-amount" class="input-field" placeholder="0.00" step="0.0001" min="0">
-            </div>
-            <button onclick="sendTGaret()" class="btn-action btn-green">🚀 Broadcast Transaction</button>
+        <div class="stats" style="margin-top:12px">
+          <div class="st"><div class="l">Tersedia</div><div class="v" id="w-avail">201.77</div></div>
+          <div class="st"><div class="l">Terkunci</div><div class="v" id="w-lock">48.50</div></div>
         </div>
-    </div>
-
-    <!-- 4. RECEIVE -->
-    <div id="tab-receive" class="tab-panel">
-        <div class="card" style="text-align: center;">
-            <h2>📥 Receive tGARET</h2>
-            <p class="subtitle">Scan or copy your wallet address to accept incoming funds</p>
-            <div style="background: white; padding: 12px; display: inline-block; border-radius: 10px; margin-bottom: 12px;">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=0x7a8b7c4ae81ec9d2e1f34567890a7c4a" alt="QR Code" width="120" height="120" style="display:block;">
-            </div>
-            <div class="addr-box" id="receive-addr-display">0x7a8b7c4ae81ec9d2e1f34567890a7c4a</div>
-            <button onclick="copyText('0x7a8b7c4ae81ec9d2e1f34567890a7c4a')" class="btn-action btn-blue">📋 Copy Address</button>
+        <div style="display:flex;gap:7px;margin-top:8px">
+          <button class="btn bgy" style="font-size:.7rem" onclick="toast('Ekspor Seed Phrase dikunci sampai Mainnet TGE.','err')">🔑 Seed Phrase</button>
+          <button class="btn bgy" style="font-size:.7rem" onclick="toast('Private Key terenkripsi aman di perangkat.','ok')">🔒 Private Key</button>
         </div>
+      </div>
+      <div id="w-hist" style="display:none">
+        <div class="hist" id="hist-list"></div>
+        <p style="font-size:.68rem;color:var(--dim);text-align:center;margin-top:8px" id="hist-empty">Belum ada transaksi</p>
+      </div>
     </div>
+  </div>
 
-    <!-- 5. NETWORK -->
-    <div id="tab-network" class="tab-panel">
-        <div class="card">
-            <h2>🌐 GARET Network Status</h2>
-            <p class="subtitle">Real-time Layer-1 network metrics (Testnet)</p>
-            <div class="stat-grid">
-                <div class="stat-box">
-                    <div class="label">Block Height</div>
-                    <div class="value" id="block-height">1,248,392</div>
-                </div>
-                <div class="stat-box">
-                    <div class="label">TPS</div>
-                    <div class="value">42.8</div>
-                </div>
-                <div class="stat-box">
-                    <div class="label">Active Nodes</div>
-                    <div class="value">1,847</div>
-                </div>
-                <div class="stat-box">
-                    <div class="label">Gas Price</div>
-                    <div class="value">0.8 Gwei</div>
-                </div>
-            </div>
-            <div class="token-row">
-                <span>Network Status</span>
-                <span style="color:var(--accent-green); font-weight:700;">● Healthy</span>
-            </div>
-            <div class="token-row">
-                <span>Consensus</span>
-                <span>Proof-of-Stake + PoA</span>
-            </div>
-            <div class="token-row">
-                <span>Chain ID</span>
-                <span style="font-family:monospace;">0x47A7 (GARET Testnet)</span>
-            </div>
-            <div class="token-row">
-                <span>Last Block</span>
-                <span id="last-block-time">~2.1s ago</span>
-            </div>
-            <button onclick="refreshNetwork()" class="btn-action btn-blue" style="margin-top:12px;">🔄 Refresh Network Data</button>
+  <!-- 3 SEND -->
+  <div id="p-send" class="panel">
+    <div class="card">
+      <h2>💸 Kirim tGARET</h2>
+      <p class="sub">Transaksi peer-to-peer testnet di GARET Chain</p>
+      <div class="fg">
+        <label>Alamat Penerima (EVM)</label>
+        <input type="text" id="tx-to" class="inp" placeholder="0x...">
+      </div>
+      <div class="fg">
+        <label>Jumlah (tGARET)</label>
+        <input type="number" id="tx-amt" class="inp" placeholder="0.00" step="0.0001" min="0">
+        <div style="font-size:.65rem;color:var(--dim);margin-top:4px">Saldo tersedia: <span id="send-bal">201.77</span> GARET</div>
+      </div>
+      <div class="fg">
+        <label>Catatan (opsional)</label>
+        <input type="text" id="tx-note" class="inp" placeholder="Pesan singkat...">
+      </div>
+      <button class="btn bg" id="btn-send" onclick="sendTx()">🚀 Siarkan Transaksi</button>
+    </div>
+  </div>
+
+  <!-- 4 RECEIVE -->
+  <div id="p-receive" class="panel">
+    <div class="card" style="text-align:center">
+      <h2>📥 Terima tGARET</h2>
+      <p class="sub">Pindai QR atau salin alamat untuk menerima dana</p>
+      <div class="qr">
+        <img id="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=0x7a8b7c4ae81ec9d2e1f34567890a7c4a" alt="QR" width="120" height="120">
+      </div>
+      <div class="addr" id="r-addr">0x7a8b7c4ae81ec9d2e1f34567890a7c4a</div>
+      <button class="btn bb" onclick="copy(S.addr)">📋 Salin Alamat</button>
+      <button class="btn bgy" style="margin-top:8px" onclick="simReceive()">⬇️ Simulasi Terima 5 GARET</button>
+    </div>
+  </div>
+
+  <!-- 5 NETWORK -->
+  <div id="p-network" class="panel">
+    <div class="card">
+      <h2>🌐 Status Jaringan GARET</h2>
+      <p class="sub">Metrik Layer-1 real-time (Testnet)</p>
+      <div class="stats">
+        <div class="st"><div class="l">Tinggi Blok</div><div class="v" id="blk">1.248.392</div></div>
+        <div class="st"><div class="l">TPS</div><div class="v" id="tps">42,8</div></div>
+        <div class="st"><div class="l">Node Aktif</div><div class="v" id="nodes">1.847</div></div>
+        <div class="st"><div class="l">Harga Gas</div><div class="v" id="gas">0,8 Gwei</div></div>
+      </div>
+      <div class="row"><span>Status Jaringan</span><span class="g" id="net-status">● Sehat</span></div>
+      <div class="row"><span>Konsensus</span><span class="r">Proof-of-Stake + PoA</span></div>
+      <div class="row"><span>Chain ID</span><span class="r" style="font-family:monospace;font-size:.72rem">0x47A7 (GARET Testnet)</span></div>
+      <div class="row"><span>Blok Terakhir</span><span class="r" id="lastblk">~2,1 dtk lalu</span></div>
+      <div class="row"><span>Uptime</span><span class="r" id="uptime">99,97%</span></div>
+      <button class="btn bb" style="margin-top:10px" onclick="refreshNet()">🔄 Segarkan Data Jaringan</button>
+    </div>
+  </div>
+
+  <!-- 6 SOCIAL -->
+  <div id="p-social" class="panel">
+    <div class="card">
+      <h2>💬 Feed Komunitas</h2>
+      <p class="sub">Pembaruan terbaru dari komunitas GARET</p>
+      <div class="feed" id="feed"></div>
+      <div class="fg" style="margin-top:12px">
+        <input type="text" id="sos-msg" class="inp" placeholder="Tulis pesan..." maxlength="280">
+      </div>
+      <button class="btn bp" onclick="postMsg()">📤 Kirim ke Feed</button>
+    </div>
+  </div>
+
+  <!-- 7 PROFILE -->
+  <div id="p-profile" class="panel">
+    <div class="card">
+      <h2>👤 Profil Pengguna</h2>
+      <p class="sub">Identitas & statistik GARET Anda</p>
+      <div style="text-align:center;margin-bottom:14px">
+        <div class="av" id="avatar">R</div>
+        <div style="font-weight:700;font-size:.95rem" id="prof-name">rjuandri@gmail.com</div>
+        <div style="font-size:.7rem;color:var(--muted);margin-top:3px">Anggota sejak: Okt 2025</div>
+      </div>
+      <div class="stats">
+        <div class="st"><div class="l">Total Ditambang</div><div class="v" id="p-total">249,77</div></div>
+        <div class="st"><div class="l">Rujukan</div><div class="v" id="p-ref">5</div></div>
+        <div class="st"><div class="l">Rentetan</div><div class="v" id="p-streak">14 hari</div></div>
+        <div class="st"><div class="l">Peringkat</div><div class="v" id="p-rank">#1.248</div></div>
+      </div>
+      <div class="row"><span>Status KYC</span><span class="g">✅ Terverifikasi</span></div>
+      <div class="row"><span>Dompet Terikat</span><span class="r" style="font-family:monospace;font-size:.68rem" id="p-addr">0x7a8b...a7c4a</span></div>
+      <div class="fg" style="margin-top:10px">
+        <label>Ubah Nama Tampilan</label>
+        <input type="text" id="disp-name" class="inp" placeholder="Nama tampilan">
+      </div>
+      <button class="btn bb" onclick="saveProfile()">💾 Simpan Profil</button>
+    </div>
+  </div>
+
+  <!-- 8 KYC -->
+  <div id="p-kyc" class="panel">
+    <div class="card">
+      <h2>🆔 Verifikasi KYC</h2>
+      <p class="sub">Status verifikasi identitas</p>
+      <div style="text-align:center;padding:14px 0">
+        <div style="font-size:2.4rem;margin-bottom:6px">✅</div>
+        <div style="font-weight:700;color:var(--green);font-size:1.05rem">Terverifikasi</div>
+        <p style="font-size:.72rem;color:var(--muted);margin-top:5px">Identitas Anda berhasil diverifikasi.</p>
+      </div>
+      <div class="row"><span>Jenis Dokumen</span><span class="r">KTP / National ID</span></div>
+      <div class="row"><span>Diverifikasi Pada</span><span class="r">12 Okt 2025</span></div>
+      <div class="row"><span>Tingkat Risiko</span><span class="g">Rendah</span></div>
+      <div class="row"><span>Negara</span><span class="r">Indonesia</span></div>
+      <button class="btn bgy" style="margin-top:10px" onclick="toast('Verifikasi ulang tidak diperlukan.','ok')">🔄 Minta Pemeriksaan Ulang</button>
+    </div>
+  </div>
+
+  <!-- 9 TGE -->
+  <div id="p-tge" class="panel">
+    <div class="card">
+      <h2>🚀 Token Generation Event</h2>
+      <p class="sub">Hitung mundur peluncuran mainnet & distribusi token</p>
+      <div style="text-align:center;padding:10px 0">
+        <div style="font-size:.7rem;color:var(--muted);margin-bottom:4px">Perkiraan Tanggal TGE</div>
+        <div style="font-size:1.35rem;font-weight:800;color:var(--gold)">Q1 2027</div>
+      </div>
+      <div class="prog"><div class="pf" id="tge-prog" style="width:68%"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:.68rem;color:var(--muted);margin-bottom:12px">
+        <span>Testnet Live</span><span id="tge-pct">68% menuju Mainnet</span>
+      </div>
+      <div class="row"><span>Target Penggalangan</span><span class="r">$4.200.000</span></div>
+      <div class="row"><span>Token untuk Dijual</span><span class="r">150.000.000 GARET</span></div>
+      <div class="row"><span>Harga Listing</span><span class="r">$0,028</span></div>
+      <div class="row"><span>Status Whitelist</span><span class="g" id="wl-status">✅ Terdaftar</span></div>
+      <button class="btn bgd" style="margin-top:10px" id="btn-wl" onclick="joinWL()">⭐ Gabung Whitelist</button>
+    </div>
+  </div>
+
+  <!-- 10 REFERRAL -->
+  <div id="p-referral" class="panel">
+    <div class="card">
+      <h2>👥 Program Rujukan</h2>
+      <p class="sub">Undang teman & dapatkan pengali penambangan ekstra</p>
+      <div class="fg">
+        <label>Tautan Rujukan Anda</label>
+        <div class="addr" id="ref-link">https://garet.network/ref/rjuandri</div>
+        <button class="btn bb" onclick="copy(S.refLink)">📋 Salin Tautan Rujukan</button>
+      </div>
+      <div class="stats" style="margin-top:12px">
+        <div class="st"><div class="l">Total Undangan</div><div class="v" id="ref-count">5</div></div>
+        <div class="st"><div class="l">Bonus Diperoleh</div><div class="v" id="ref-bonus">12,5 G</div></div>
+      </div>
+      <div class="row"><span>Pengali Saat Ini</span><span class="g" id="ref-mult">+15%</span></div>
+      <div class="row"><span>Milestone Berikutnya</span><span class="r" id="ref-next">10 undangan → +25%</span></div>
+      <div class="prog"><div class="pf" id="ref-prog" style="width:50%"></div></div>
+      <table class="tbl">
+        <thead><tr><th>Pengguna</th><th>Bergabung</th><th>Status</th></tr></thead>
+        <tbody id="ref-table">
+          <tr><td>user***@gmail.com</td><td>14 Okt</td><td style="color:var(--green)">Aktif</td></tr>
+          <tr><td>node***@yahoo.com</td><td>11 Okt</td><td style="color:var(--green)">Aktif</td></tr>
+          <tr><td>mine***@outlook.com</td><td>09 Okt</td><td style="color:var(--dim)">Menunggu</td></tr>
+        </tbody>
+      </table>
+      <button class="btn bp" style="margin-top:10px" onclick="simInvite()">➕ Simulasi Undang Teman</button>
+    </div>
+  </div>
+
+  <!-- 11 TOKENOMICS -->
+  <div id="p-tokenomics" class="panel">
+    <div class="card">
+      <h2>📊 Tokenomics $GARET</h2>
+      <p class="sub">Total Pasokan: 1.000.000.000 GARET</p>
+      <div class="tbar">
+        <div style="width:50%;background:var(--cyan)" title="Komunitas 50%"></div>
+        <div style="width:20%;background:var(--blue)" title="Ekosistem 20%"></div>
+        <div style="width:15%;background:var(--purple)" title="Tim 15%"></div>
+        <div style="width:10%;background:var(--gold)" title="TGE 10%"></div>
+        <div style="width:5%;background:var(--dim)" title="Treasury 5%"></div>
+      </div>
+      <div class="tleg">
+        <span><i style="background:var(--cyan)"></i>Komunitas 50%</span>
+        <span><i style="background:var(--blue)"></i>Ekosistem 20%</span>
+        <span><i style="background:var(--purple)"></i>Tim 15%</span>
+        <span><i style="background:var(--gold)"></i>TGE 10%</span>
+        <span><i style="background:var(--dim)"></i>Treasury 5%</span>
+      </div>
+      <div class="row"><span>Penambangan Komunitas (50%)</span><span style="color:var(--cyan)">500.000.000</span></div>
+      <div class="row"><span>Ekosistem & Likuiditas (20%)</span><span class="r">200.000.000</span></div>
+      <div class="row"><span>Tim & Penasihat (15%)</span><span class="r">150.000.000</span></div>
+      <div class="row"><span>Penjualan Publik / TGE (10%)</span><span class="r">100.000.000</span></div>
+      <div class="row"><span>Perbendaharaan & Cadangan (5%)</span><span class="r">50.000.000</span></div>
+      <div style="margin-top:14px;padding:11px;background:rgba(0,0,0,.28);border-radius:10px;font-size:.74rem;color:var(--muted)">
+        <strong style="color:var(--gold)">Vesting:</strong> Token tim dikunci 12 bulan, lalu dibuka linear 24 bulan. Penambangan komunitas dibuka setiap hari setelah sesi 24 jam.
+      </div>
+    </div>
+  </div>
+
+  <!-- 12 WHITEPAPER -->
+  <div id="p-whitepaper" class="panel">
+    <div class="card">
+      <h2>📄 Makalah Putih</h2>
+      <p class="sub">Ikhtisar Teknis Jaringan GARET v2.1</p>
+      <div class="wp">
+        <h3>1. Pendahuluan</h3>
+        <p>Jaringan GARET adalah blockchain Layer-1 yang dirancang untuk aplikasi terdesentralisasi berkecepatan tinggi dengan fokus pada penambangan berbasis komunitas dan distribusi token yang berkelanjutan. Dibangun dengan kompatibilitas EVM, memungkinkan migrasi smart contract yang sudah ada sambil memperkenalkan model konsensus hybrid.</p>
+        <h3>2. Visi</h3>
+        <p>Menciptakan ekonomi digital inklusif di mana setiap peserta dapat menyumbangkan daya komputasi dan memperoleh imbalan yang adil melalui mekanisme on-chain yang transparan tanpa memerlukan perangkat keras penambangan yang mahal.</p>
+        <h3>3. Mekanisme Konsensus</h3>
+        <p>GARET menggunakan model hybrid Proof-of-Stake + Proof-of-Authority. Validator dipilih berdasarkan stake dan skor reputasi. Node komunitas berpartisipasi dalam sesi penambangan ringan yang mengalokasikan porsi komunitas dari total pasokan.</p>
+        <h3>4. Utilitas Token</h3>
+        <p>$GARET digunakan untuk biaya gas, staking, voting tata kelola, dan akses fitur dApp premium di dalam ekosistem. Sebagian biaya transaksi dibakar untuk menciptakan tekanan deflasi jangka panjang.</p>
+        <h3>5. Peta Jalan</h3>
+        <p>• Q4 2025 – Peluncuran Testnet & penambangan komunitas<br>• Q1 2026 – Audit keamanan & bug bounty<br>• Q3 2026 – Persiapan Mainnet<br>• Q1 2027 – Token Generation Event & Mainnet</p>
+        <h3>6. Keamanan</h3>
+        <p>Semua smart contract menjalani beberapa audit independen. Sistem dompet menggunakan enkripsi sisi klien. Private key tidak pernah meninggalkan perangkat pengguna dalam bentuk plaintext.</p>
+        <h3>7. Tokenomics Ringkas</h3>
+        <p>Total supply 1 miliar GARET. 50% dialokasikan untuk penambangan komunitas, 20% ekosistem, 15% tim (vesting), 10% TGE, dan 5% treasury.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 13 ADMIN -->
+  <div id="p-admin" class="panel">
+    <div class="card">
+      <h2>⚙️ Panel Admin</h2>
+      <p class="sub">Akses terbatas – kontrol sistem</p>
+      <div id="adm-login">
+        <div class="fg">
+          <label>Kata Sandi Admin</label>
+          <input type="password" id="adm-pass" class="inp" placeholder="Masukkan kata sandi admin">
         </div>
-    </div>
-
-    <!-- 6. SOCIAL -->
-    <div id="tab-social" class="tab-panel">
-        <div class="card">
-            <h2>💬 Community Feed</h2>
-            <p class="subtitle">Latest updates from GARET community</p>
-            <div class="chat-list">
-                <div class="chat-item">
-                    <div class="meta">@GaretOfficial · 12m ago</div>
-                    <div>Testnet v0.9.2 is live! Mining rate boost active for the next 48 hours. 🚀</div>
-                </div>
-                <div class="chat-item">
-                    <div class="meta">@NodeMaster42 · 1h ago</div>
-                    <div>Just hit 200 GARET unlocked. Streak multiplier is real! Who else is still mining?</div>
-                </div>
-                <div class="chat-item">
-                    <div class="meta">@CryptoAndi · 3h ago</div>
-                    <div>Referral program is fire. Already invited 7 friends and got the bonus multiplier.</div>
-                </div>
-                <div class="chat-item">
-                    <div class="meta">@GaretOfficial · 5h ago</div>
-                    <div>Whitepaper v2.1 published. Check the Tokenomics tab for the updated allocation.</div>
-                </div>
-            </div>
-            <div class="form-group" style="margin-top:14px;">
-                <input type="text" id="social-msg" class="input-field" placeholder="Write a message...">
-            </div>
-            <button onclick="postSocial()" class="btn-action btn-purple">📤 Post to Feed</button>
+        <button class="btn bg" onclick="admLogin()">🔓 Buka Alat Admin</button>
+      </div>
+      <div id="adm-tools" style="display:none">
+        <div class="row"><span>Total Pengguna</span><span class="r" id="a-users">12.847</span></div>
+        <div class="row"><span>Penambang Aktif (24j)</span><span class="r" id="a-miners">3.214</span></div>
+        <div class="row"><span>Total Ditambang (Semua)</span><span class="r" id="a-total">48.291.003 GARET</span></div>
+        <div class="row"><span>Tarif Mining Saat Ini</span><span class="r" id="a-rate">0,50 / jam</span></div>
+        <div class="fg" style="margin-top:10px">
+          <label>Ubah Tarif Mining (GARET/jam)</label>
+          <input type="number" id="new-rate" class="inp" placeholder="0.50" step="0.01" min="0.1" max="5">
         </div>
+        <button class="btn bb" onclick="setRate()">⚡ Terapkan Tarif Baru</button>
+        <button class="btn bp" style="margin-top:7px" onclick="broadcast()">📢 Kirim Pengumuman Global</button>
+        <button class="btn bgy" style="margin-top:7px" onclick="toggleMaint()">🛠️ Mode Pemeliharaan</button>
+        <button class="btn br" style="margin-top:7px" onclick="resetData()">🗑️ Reset Data Lokal</button>
+        <button class="btn bgy" style="margin-top:7px" onclick="admLogout()">🔒 Kunci Panel</button>
+      </div>
     </div>
-
-    <!-- 7. PROFILE -->
-    <div id="tab-profile" class="tab-panel">
-        <div class="card">
-            <h2>👤 User Profile</h2>
-            <p class="subtitle">Your GARET identity & statistics</p>
-            <div style="text-align:center; margin-bottom:16px;">
-                <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#a855f7);margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">R</div>
-                <div style="font-weight:700;font-size:1rem;">rjuandri@gmail.com</div>
-                <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">Member since: Oct 2025</div>
-            </div>
-            <div class="stat-grid">
-                <div class="stat-box">
-                    <div class="label">Total Mined</div>
-                    <div class="value">249.77</div>
-                </div>
-                <div class="stat-box">
-                    <div class="label">Referrals</div>
-                    <div class="value">5</div>
-                </div>
-                <div class="stat-box">
-                    <div class="label">Streak</div>
-                    <div class="value">14 days</div>
-                </div>
-                <div class="stat-box">
-                    <div class="label">Rank</div>
-                    <div class="value">#1,248</div>
-                </div>
-            </div>
-            <div class="token-row">
-                <span>KYC Status</span>
-                <span style="color:var(--accent-green);">✅ Verified</span>
-            </div>
-            <div class="token-row">
-                <span>Wallet Bound</span>
-                <span style="font-family:monospace;font-size:0.7rem;">0x7a8b...a7c4a</span>
-            </div>
-            <button onclick="showToast('Profile updated successfully.', 'success')" class="btn-action btn-blue" style="margin-top:12px;">💾 Save Profile</button>
-        </div>
-    </div>
-
-    <!-- 8. KYC -->
-    <div id="tab-kyc" class="tab-panel">
-        <div class="card">
-            <h2>🆔 KYC Verification</h2>
-            <p class="subtitle">Identity verification status</p>
-            <div style="text-align:center;padding:16px 0;">
-                <div style="font-size:2.5rem;margin-bottom:8px;">✅</div>
-                <div style="font-weight:700;color:var(--accent-green);font-size:1.1rem;">Verified</div>
-                <p style="font-size:0.75rem;color:var(--text-muted);margin-top:6px;">Your identity has been successfully verified.</p>
-            </div>
-            <div class="token-row">
-                <span>Document Type</span>
-                <span>National ID</span>
-            </div>
-            <div class="token-row">
-                <span>Verified On</span>
-                <span>12 Oct 2025</span>
-            </div>
-            <div class="token-row">
-                <span>Risk Level</span>
-                <span style="color:var(--accent-green);">Low</span>
-            </div>
-            <button onclick="showToast('Re-verification is not required.', 'success')" class="btn-action btn-gray" style="margin-top:12px;">🔄 Request Re-check</button>
-        </div>
-    </div>
-
-    <!-- 9. TGE -->
-    <div id="tab-tge" class="tab-panel">
-        <div class="card">
-            <h2>🚀 Token Generation Event</h2>
-            <p class="subtitle">Mainnet launch & token distribution countdown</p>
-            <div style="text-align:center;padding:12px 0;">
-                <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:6px;">Estimated TGE Date</div>
-                <div style="font-size:1.4rem;font-weight:800;color:var(--accent-gold);">Q1 2027</div>
-            </div>
-            <div class="progress-bar">
-                <div class="progress-fill" style="width:68%;"></div>
-            </div>
-            <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--text-muted);margin-bottom:14px;">
-                <span>Testnet Live</span>
-                <span>68% to Mainnet</span>
-            </div>
-            <div class="token-row">
-                <span>Total Raise Target</span>
-                <span>$4,200,000</span>
-            </div>
-            <div class="token-row">
-                <span>Tokens for Sale</span>
-                <span>150,000,000 GARET</span>
-            </div>
-            <div class="token-row">
-                <span>Listing Price</span>
-                <span>$0.028</span>
-            </div>
-            <button onclick="showToast('You are already on the TGE whitelist.', 'success')" class="btn-action btn-gold" style="margin-top:12px;">⭐ Join Whitelist</button>
-        </div>
-    </div>
-
-    <!-- 10. REFERRAL -->
-    <div id="tab-referral" class="tab-panel">
-        <div class="card">
-            <h2>👥 Referral Program</h2>
-            <p class="subtitle">Invite friends & earn extra mining multiplier</p>
-            <div class="form-group">
-                <label>Your Referral Link</label>
-                <div class="addr-box" id="ref-link">https://garet.network/ref/rjuandri</div>
-                <button onclick="copyText('https://garet.network/ref/rjuandri')" class="btn-action btn-blue">📋 Copy Referral Link</button>
-            </div>
-            <div class="stat-grid" style="margin-top:14px;">
-                <div class="stat-box">
-                    <div class="label">Total Invites</div>
-                    <div class="value">5</div>
-                </div>
-                <div class="stat-box">
-                    <div class="label">Bonus Earned</div>
-                    <div class="value">12.5 G</div>
-                </div>
-            </div>
-            <div class="token-row">
-                <span>Current Multiplier</span>
-                <span style="color:var(--accent-green);">+15%</span>
-            </div>
-            <div class="token-row">
-                <span>Next Milestone (10 invites)</span>
-                <span>+25% Multiplier</span>
-            </div>
-            <table class="data-table">
-                <thead>
-                    <tr><th>User</th><th>Joined</th><th>Status</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>user***@gmail.com</td><td>14 Oct</td><td style="color:var(--accent-green);">Active</td></tr>
-                    <tr><td>node***@yahoo.com</td><td>11 Oct</td><td style="color:var(--accent-green);">Active</td></tr>
-                    <tr><td>mine***@outlook.com</td><td>09 Oct</td><td style="color:var(--text-dim);">Pending</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- 11. TOKENOMICS -->
-    <div id="tab-tokenomics" class="tab-panel">
-        <div class="card">
-            <h2>📊 $GARET Tokenomics</h2>
-            <p class="subtitle">Total Supply: 1,000,000,000 GARET</p>
-            <div class="token-row">
-                <span>Community Mining (50%)</span>
-                <span style="color:var(--accent-cyan);">500,000,000</span>
-            </div>
-            <div class="token-row">
-                <span>Ecosystem & Liquidity (20%)</span>
-                <span>200,000,000</span>
-            </div>
-            <div class="token-row">
-                <span>Team & Advisors (15%)</span>
-                <span>150,000,000</span>
-            </div>
-            <div class="token-row">
-                <span>Public Sale / TGE (10%)</span>
-                <span>100,000,000</span>
-            </div>
-            <div class="token-row">
-                <span>Treasury & Reserve (5%)</span>
-                <span>50,000,000</span>
-            </div>
-            <div style="margin-top:16px;padding:12px;background:rgba(0,0,0,0.25);border-radius:10px;font-size:0.78rem;color:var(--text-muted);">
-                <strong style="color:var(--accent-gold);">Vesting:</strong> Team tokens locked 12 months, then linear unlock over 24 months. Community mining unlocked daily after 24h session.
-            </div>
-        </div>
-    </div>
-
-    <!-- 12. WHITEPAPER -->
-    <div id="tab-whitepaper" class="tab-panel">
-        <div class="card">
-            <h2>📄 Whitepaper</h2>
-            <p class="subtitle">GARET Network Technical Overview</p>
-            <div class="wp-box">
-                <h3>1. Introduction</h3>
-                <p>GARET Network is a Layer-1 blockchain designed for high-throughput decentralized applications with a focus on community-driven mining and sustainable token distribution. Built with EVM compatibility, it enables seamless migration of existing smart contracts while introducing a hybrid consensus model.</p>
-
-                <h3>2. Vision</h3>
-                <p>To create an inclusive digital economy where every participant can contribute computing power and earn fair rewards through transparent, on-chain mechanisms without the need for expensive mining hardware.</p>
-
-                <h3>3. Consensus Mechanism</h3>
-                <p>GARET uses a hybrid Proof-of-Stake + Proof-of-Authority model. Validators are elected based on stake and reputation score. Community nodes participate in lightweight mining sessions that allocate the community portion of the supply.</p>
-
-                <h3>4. Token Utility</h3>
-                <p>$GARET is used for gas fees, staking, governance voting, and accessing premium dApp features within the ecosystem. A portion of transaction fees is burned to create long-term deflationary pressure.</p>
-
-                <h3>5. Roadmap</h3>
-                <p>• Q4 2025 – Testnet launch & community mining<br>
-                • Q1 2026 – Security audit & bug bounty<br>
-                • Q3 2026 – Mainnet preparation<br>
-                • Q1 2027 – Token Generation Event & Mainnet</p>
-
-                <h3>6. Security</h3>
-                <p>All smart contracts undergo multiple independent audits. The wallet system uses client-side encryption. Private keys never leave the user’s device in plaintext.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- 13. ADMIN -->
-    <div id="tab-admin" class="tab-panel">
-        <div class="card">
-            <h2>⚙️ Admin Panel</h2>
-            <p class="subtitle">Restricted access – system controls</p>
-            <div class="form-group">
-                <label>Admin Password</label>
-                <input type="password" id="admin-pass" class="input-field" placeholder="Enter admin password">
-            </div>
-            <button onclick="adminLogin()" class="btn-action btn-green">🔓 Unlock Admin Tools</button>
-            <div id="admin-tools" style="display:none; margin-top:16px;">
-                <div class="token-row">
-                    <span>Total Users</span>
-                    <span>12,847</span>
-                </div>
-                <div class="token-row">
-                    <span>Active Miners (24h)</span>
-                    <span>3,214</span>
-                </div>
-                <div class="token-row">
-                    <span>Total Mined (All-time)</span>
-                    <span>48,291,003 GARET</span>
-                </div>
-                <button onclick="showToast('Mining rate updated to 0.55 GARET/hr', 'success')" class="btn-action btn-blue" style="margin-top:10px;">⚡ Adjust Mining Rate</button>
-                <button onclick="showToast('Broadcast sent to all users.', 'success')" class="btn-action btn-purple" style="margin-top:8px;">📢 Send Global Announcement</button>
-                <button onclick="showToast('Maintenance mode enabled.', 'error')" class="btn-action btn-gray" style="margin-top:8px;">🛠️ Enable Maintenance</button>
-            </div>
-        </div>
-    </div>
+  </div>
 </div>
 
-<!-- Toast -->
 <div id="toast" class="toast"></div>
 
 <script>
-    // ===== Tab Switching =====
-    function switchTab(tabId, btn) {
-        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById('tab-' + tabId).classList.add('active');
-        if (btn) btn.classList.add('active');
-    }
+const KEY = 'garet_v2';
+const defaultS = {
+  addr: '0x7a8b7c4ae81ec9d2e1f34567890a7c4a',
+  balance: 201.7713,
+  locked: 48.50,
+  pending: 0,
+  totalMined: 249.77,
+  todayMined: 0,
+  streak: 14,
+  rate: 0.50,
+  mult: 0.15,
+  refs: 5,
+  refBonus: 12.5,
+  whitelist: true,
+  displayName: '',
+  hist: [],
+  posts: [
+    {u:'@GaretOfficial',t:'12 mnt lalu',m:'Testnet v0.9.2 sudah live! Boost tarif penambangan aktif 48 jam ke depan. 🚀'},
+    {u:'@NodeMaster42',t:'1 jam lalu',m:'Baru saja tembus 200 GARET terbuka. Pengali rentetan benar-benar bekerja!'},
+    {u:'@CryptoAndi',t:'3 jam lalu',m:'Program rujukan mantap. Sudah undang 7 teman dan dapat bonus pengali.'},
+    {u:'@GaretOfficial',t:'5 jam lalu',m:'Makalah Putih v2.1 sudah diterbitkan. Cek tab Tokenomics untuk alokasi terbaru.'}
+  ],
+  block: 1248392,
+  secLeft: 9*3600+44*60+4,
+  maint: false,
+  refLink: 'https://garet.network/ref/rjuandri'
+};
 
-    // ===== Toast =====
-    function showToast(msg, type = 'success') {
-        const t = document.getElementById('toast');
-        t.textContent = msg;
-        t.className = 'toast ' + type + ' show';
-        setTimeout(() => t.classList.remove('show'), 2800);
-    }
+let S = load();
+function load(){
+  try{
+    const r = localStorage.getItem(KEY);
+    if(r){ const o = JSON.parse(r); return Object.assign({}, defaultS, o); }
+  }catch(e){}
+  return Object.assign({}, defaultS);
+}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
 
-    // ===== Copy helper =====
-    function copyText(text) {
-        navigator.clipboard.writeText(text).then(() => {
-            showToast('Copied to clipboard!', 'success');
-        }).catch(() => {
-            showToast('Failed to copy', 'error');
-        });
-    }
+function fmt(n,d){ d=d===undefined?4:d; return Number(n).toLocaleString('id-ID',{minimumFractionDigits:d,maximumFractionDigits:d}); }
+function fmt0(n){ return Number(n).toLocaleString('id-ID'); }
+function shortAddr(a){ return a.slice(0,6)+'...'+a.slice(-5); }
+function now(){ return new Date().toLocaleString('id-ID',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}); }
 
-    // ===== Send =====
-    function sendTGaret() {
-        const addr = document.getElementById('transfer-address').value.trim();
-        const amount = document.getElementById('transfer-amount').value;
-        if (!addr || !addr.startsWith('0x') || addr.length < 10) {
-            showToast('Invalid recipient address', 'error');
-            return;
-        }
-        if (!amount || parseFloat(amount) <= 0) {
-            showToast('Enter a valid amount', 'error');
-            return;
-        }
-        showToast(`Transaction broadcast: ${amount} tGARET → ${addr.slice(0, 8)}...`, 'success');
-        document.getElementById('transfer-address').value = '';
-        document.getElementById('transfer-amount').value = '';
-    }
+function toast(msg, type){
+  type = type || 'ok';
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast '+type+' show';
+  clearTimeout(t._tm);
+  t._tm = setTimeout(function(){ t.classList.remove('show'); }, 2800);
+}
 
-    // ===== Mining Claim =====
-    function claimMining() {
-        showToast('Reward claimed! +0.50 GARET added to balance.', 'success');
-        const el = document.getElementById('mining-balance');
-        let val = parseFloat(el.textContent);
-        el.textContent = (val + 0.5).toFixed(4) + ' GARET';
-    }
+function copy(txt){
+  navigator.clipboard.writeText(txt).then(function(){ toast('Disalin ke clipboard!','ok'); })
+    .catch(function(){ toast('Gagal menyalin','err'); });
+}
 
-    // ===== Social Post =====
-    function postSocial() {
-        const msg = document.getElementById('social-msg').value.trim();
-        if (!msg) {
-            showToast('Write something first', 'error');
-            return;
-        }
-        showToast('Message posted to community feed!', 'success');
-        document.getElementById('social-msg').value = '';
-    }
+function go(id, btn){
+  document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('on'); });
+  document.querySelectorAll('.nb').forEach(function(b){ b.classList.remove('on'); });
+  document.getElementById('p-'+id).classList.add('on');
+  if(btn) btn.classList.add('on');
+  if(id==='wallet') renderHist();
+  if(id==='social') renderFeed();
+  if(id==='profile') syncProfile();
+}
 
-    // ===== Network Refresh =====
-    function refreshNetwork() {
-        const h = document.getElementById('block-height');
-        let n = parseInt(h.textContent.replace(/,/g, '')) + Math.floor(Math.random() * 5) + 1;
-        h.textContent = n.toLocaleString();
-        document.getElementById('last-block-time').textContent = '~1.8s ago';
-        showToast('Network data refreshed', 'success');
-    }
+function syncUI(){
+  document.getElementById('bal').textContent = fmt(S.balance)+' GARET';
+  document.getElementById('pending').textContent = fmt(S.pending);
+  document.getElementById('streak').textContent = S.streak;
+  document.getElementById('today-mined').textContent = fmt(S.todayMined,2);
+  document.getElementById('total-mined').textContent = fmt(S.totalMined,2);
+  document.getElementById('rate-disp').textContent = '+'+fmt(S.rate,2);
+  document.getElementById('mult-disp').textContent = '+'+(S.mult*100).toFixed(0)+'%';
+  document.getElementById('w-avail').textContent = fmt(S.balance,2);
+  document.getElementById('w-lock').textContent = fmt(S.locked,2);
+  document.getElementById('send-bal').textContent = fmt(S.balance,2);
+  document.getElementById('w-addr').textContent = S.addr;
+  document.getElementById('r-addr').textContent = S.addr;
+  document.getElementById('ref-link').textContent = S.refLink;
+  document.getElementById('ref-count').textContent = S.refs;
+  document.getElementById('ref-bonus').textContent = fmt(S.refBonus,1)+' G';
+  document.getElementById('ref-mult').textContent = '+'+(S.mult*100).toFixed(0)+'%';
+  var next = S.refs < 10 ? 10 : (S.refs < 25 ? 25 : 50);
+  var nextM = S.refs < 10 ? 25 : (S.refs < 25 ? 40 : 50);
+  document.getElementById('ref-next').textContent = next+' undangan → +'+nextM+'%';
+  document.getElementById('ref-prog').style.width = Math.min(100, (S.refs/next)*100)+'%';
+  document.getElementById('blk').textContent = fmt0(S.block);
+  document.getElementById('p-total').textContent = fmt(S.totalMined,2);
+  document.getElementById('p-ref').textContent = S.refs;
+  document.getElementById('p-streak').textContent = S.streak+' hari';
+  document.getElementById('p-addr').textContent = shortAddr(S.addr);
+  if(S.whitelist){
+    document.getElementById('wl-status').textContent = '✅ Terdaftar';
+    document.getElementById('btn-wl').textContent = '⭐ Sudah di Whitelist';
+    document.getElementById('btn-wl').disabled = true;
+  }
+  document.getElementById('a-rate').textContent = fmt(S.rate,2)+' / jam';
+  document.getElementById('mine-status').textContent = S.maint ? 'PAUSE' : 'BERLARI';
+}
 
-    // ===== Admin =====
-    function adminLogin() {
-        const pass = document.getElementById('admin-pass').value;
-        if (pass === 'garetadmin' || pass === 'admin') {
-            document.getElementById('admin-tools').style.display = 'block';
-            showToast('Admin access granted', 'success');
-        } else {
-            showToast('Incorrect password', 'error');
-        }
-    }
+function renderHist(){
+  var list = document.getElementById('hist-list');
+  var empty = document.getElementById('hist-empty');
+  list.innerHTML = '';
+  if(!S.hist.length){ empty.style.display='block'; return; }
+  empty.style.display='none';
+  S.hist.slice().reverse().forEach(function(h){
+    var d = document.createElement('div');
+    d.className = 'hitem';
+    d.innerHTML = '<div><div>'+h.desc+'</div><div class="t">'+h.time+'</div></div><div class="amt '+h.type+'">'+(h.type==='in'?'+':'-')+fmt(h.amt,4)+'</div>';
+    list.appendChild(d);
+  });
+}
 
-    // ===== Mining Timer (simple countdown simulation) =====
-    let totalSeconds = 9 * 3600 + 47 * 60 + 20;
-    setInterval(() => {
-        if (totalSeconds <= 0) totalSeconds = 24 * 3600;
-        totalSeconds--;
-        const h = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
-        const m = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
-        const s = String(totalSeconds % 60).padStart(2, '0');
-        const timer = document.getElementById('mining-timer');
-        if (timer) timer.textContent = `${h}:${m}:${s}`;
-    }, 1000);
+function renderFeed(){
+  var feed = document.getElementById('feed');
+  feed.innerHTML = '';
+  S.posts.forEach(function(p){
+    var d = document.createElement('div');
+    d.className = 'post';
+    d.innerHTML = '<div class="meta">'+p.u+' · '+p.t+'</div><div>'+p.m+'</div>';
+    feed.appendChild(d);
+  });
+}
+
+function syncProfile(){
+  document.getElementById('prof-name').textContent = S.displayName || 'rjuandri@gmail.com';
+  document.getElementById('avatar').textContent = (S.displayName || 'R')[0].toUpperCase();
+  document.getElementById('disp-name').value = S.displayName || '';
+}
+
+function wTab(id, el){
+  document.querySelectorAll('.stab').forEach(function(s){ s.classList.remove('on'); });
+  el.classList.add('on');
+  document.getElementById('w-info').style.display = id==='info'?'block':'none';
+  document.getElementById('w-hist').style.display = id==='hist'?'block':'none';
+  if(id==='hist') renderHist();
+}
+
+function effectiveRate(){ return S.rate * (1 + S.mult); }
+
+function tickMining(){
+  if(S.maint) return;
+  var perSec = effectiveRate() / 3600;
+  S.pending += perSec;
+  S.todayMined += perSec;
+  var pe = document.getElementById('pending');
+  if(pe) pe.textContent = fmt(S.pending);
+}
+
+function claim(){
+  if(S.pending < 0.0001){ toast('Belum ada hadiah untuk diklaim','err'); return; }
+  var amt = S.pending;
+  S.balance += amt;
+  S.totalMined += amt;
+  S.hist.push({desc:'Klaim Mining', amt: amt, type:'in', time: now()});
+  S.pending = 0;
+  save(); syncUI();
+  toast('Hadiah diklaim! +'+fmt(amt)+' GARET','ok');
+}
+
+function sendTx(){
+  var to = document.getElementById('tx-to').value.trim();
+  var amt = parseFloat(document.getElementById('tx-amt').value);
+  var note = document.getElementById('tx-note').value.trim();
+  if(!to || !to.startsWith('0x') || to.length < 10){ toast('Alamat penerima tidak valid','err'); return; }
+  if(!amt || amt <= 0){ toast('Masukkan jumlah yang valid','err'); return; }
+  if(amt > S.balance){ toast('Saldo tidak cukup','err'); return; }
+
+  var btn = document.getElementById('btn-send');
+  btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Menyiar...';
+
+  setTimeout(function(){
+    S.balance -= amt;
+    S.hist.push({desc: 'Kirim ke '+shortAddr(to)+(note?' · '+note:''), amt: amt, type:'out', time: now()});
+    save(); syncUI();
+    document.getElementById('tx-to').value = '';
+    document.getElementById('tx-amt').value = '';
+    document.getElementById('tx-note').value = '';
+    btn.disabled = false; btn.innerHTML = '🚀 Siarkan Transaksi';
+    toast('Transaksi berhasil: '+fmt(amt)+' → '+shortAddr(to),'ok');
+  }, 1200);
+}
+
+function simReceive(){
+  var amt = 5;
+  S.balance += amt;
+  S.hist.push({desc:'Terima dari 0xsim...demo', amt: amt, type:'in', time: now()});
+  save(); syncUI();
+  toast('Diterima +5.0000 GARET','ok');
+}
+
+function postMsg(){
+  var m = document.getElementById('sos-msg').value.trim();
+  if(!m){ toast('Tulis pesan terlebih dahulu','err'); return; }
+  S.posts.unshift({u:'@'+(S.displayName || 'rjuandri'), t:'baru saja', m: m.replace(/</g,'&lt;')});
+  if(S.posts.length > 30) S.posts.pop();
+  document.getElementById('sos-msg').value = '';
+  save(); renderFeed();
+  toast('Pesan dikirim ke feed!','ok');
+}
+
+function refreshNet(){
+  S.block += Math.floor(Math.random()*8)+1;
+  document.getElementById('blk').textContent = fmt0(S.block);
+  document.getElementById('tps').textContent = (38+Math.random()*12).toFixed(1).replace('.',',');
+  document.getElementById('nodes').textContent = fmt0(1800+Math.floor(Math.random()*100));
+  document.getElementById('gas').textContent = (0.5+Math.random()*0.8).toFixed(1).replace('.',',')+' Gwei';
+  document.getElementById('lastblk').textContent = '~'+(1.5+Math.random()).toFixed(1).replace('.',',')+' dtk lalu';
+  save();
+  toast('Data jaringan disegarkan','ok');
+}
+
+function saveProfile(){
+  var n = document.getElementById('disp-name').value.trim();
+  S.displayName = n;
+  save(); syncProfile();
+  toast('Profil berhasil disimpan','ok');
+}
+
+function joinWL(){
+  S.whitelist = true;
+  save(); syncUI();
+  toast('Berhasil bergabung whitelist TGE!','ok');
+}
+
+function simInvite(){
+  S.refs += 1;
+  S.refBonus += 2.5;
+  if(S.refs >= 50) S.mult = 0.50;
+  else if(S.refs >= 25) S.mult = 0.40;
+  else if(S.refs >= 10) S.mult = 0.25;
+  else S.mult = 0.15;
+  S.balance += 2.5;
+  S.hist.push({desc:'Bonus rujukan', amt: 2.5, type:'in', time: now()});
+  var tb = document.getElementById('ref-table');
+  var tr = document.createElement('tr');
+  tr.innerHTML = '<td>user***@new.com</td><td>'+new Date().toLocaleDateString('id-ID',{day:'2-digit',month:'short'})+'</td><td style="color:var(--green)">Aktif</td>';
+  tb.insertBefore(tr, tb.firstChild);
+  save(); syncUI();
+  toast('Teman berhasil diundang! +2,5 GARET bonus','ok');
+}
+
+function admLogin(){
+  var p = document.getElementById('adm-pass').value;
+  if(p==='garetadmin' || p==='admin'){
+    document.getElementById('adm-login').style.display = 'none';
+    document.getElementById('adm-tools').style.display = 'block';
+    toast('Akses admin diberikan','ok');
+  } else toast('Kata sandi salah','err');
+}
+function admLogout(){
+  document.getElementById('adm-login').style.display = 'block';
+  document.getElementById('adm-tools').style.display = 'none';
+  document.getElementById('adm-pass').value = '';
+  toast('Panel dikunci','ok');
+}
+function setRate(){
+  var r = parseFloat(document.getElementById('new-rate').value);
+  if(!r || r < 0.1 || r > 5){ toast('Tarif harus 0.1 – 5','err'); return; }
+  S.rate = r;
+  save(); syncUI();
+  toast('Tarif diubah ke '+fmt(r,2)+' GARET/jam','ok');
+}
+function broadcast(){
+  var msg = prompt('Pesan pengumuman global:');
+  if(!msg) return;
+  S.posts.unshift({u:'@GaretOfficial', t:'baru saja', m: msg.replace(/</g,'&lt;')});
+  save();
+  toast('Pengumuman dikirim ke semua pengguna','ok');
+}
+function toggleMaint(){
+  S.maint = !S.maint;
+  save(); syncUI();
+  toast(S.maint ? 'Mode pemeliharaan AKTIF' : 'Mode pemeliharaan NONAKTIF', S.maint?'err':'ok');
+}
+function resetData(){
+  if(!confirm('Hapus semua data lokal dan kembali ke default?')) return;
+  localStorage.removeItem(KEY);
+  S = Object.assign({}, defaultS);
+  save(); syncUI(); renderFeed(); renderHist();
+  toast('Data lokal direset','ok');
+}
+
+function tickTimer(){
+  if(S.secLeft <= 0) S.secLeft = 24*3600;
+  if(!S.maint) S.secLeft--;
+  var h = String(Math.floor(S.secLeft/3600)).padStart(2,'0');
+  var m = String(Math.floor((S.secLeft%3600)/60)).padStart(2,'0');
+  var s = String(S.secLeft%60).padStart(2,'0');
+  var el = document.getElementById('timer');
+  if(el) el.textContent = h+':'+m+':'+s;
+}
+
+syncUI();
+renderFeed();
+
+setInterval(function(){
+  tickTimer();
+  tickMining();
+  if(Math.random() < 0.15){ S.block++; document.getElementById('blk').textContent = fmt0(S.block); }
+}, 1000);
+
+setInterval(function(){ save(); }, 10000);
 </script>
 </body>
 </html>
