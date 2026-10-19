@@ -1,52 +1,417 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GARET NETWORK dApp</title>
+    <title>GARET NETWORK - Decentralized Ecosystem & Layer-1 dApp</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-        body { background-color: #080c14; color: #ffffff; padding: 15px; display: flex; justify-content: center; }
-        .app-container { width: 100%; max-width: 480px; background: #0f172a; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); padding: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        
-        /* Header */
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .logo { font-size: 1.1rem; font-weight: 800; color: #3b82f6; display: flex; align-items: center; gap: 6px; letter-spacing: 0.5px; }
-        .user-badge { font-size: 0.7rem; background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); padding: 4px 10px; border-radius: 20px; font-weight: 600; }
-        .account-info { font-size: 0.75rem; color: #94a3b8; margin-bottom: 15px; background: rgba(255,255,255,0.03); padding: 8px 12px; border-radius: 8px; display: flex; justify-content: space-between; }
-        
-        /* Grid Navigation */
-        .nav-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px; }
-        .nav-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); padding: 10px 4px; border-radius: 10px; color: #cbd5e1; font-size: 0.75rem; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.2s ease; }
-        .nav-btn:hover, .nav-btn.active { background: #2563eb; color: #ffffff; border-color: #3b82f6; }
-        .nav-btn.admin-btn { border-color: rgba(16, 185, 129, 0.4); color: #34d399; }
+        :root {
+            --bg-main: #060911;
+            --bg-card: rgba(15, 23, 42, 0.78);
+            --bg-card-border: rgba(255, 255, 255, 0.08);
+            --bg-input: #0a0f1d;
+            --primary: #2563eb;
+            --primary-hover: #3b82f6;
+            --accent-green: #10b981;
+            --accent-cyan: #38bdf8;
+            --accent-purple: #a855f7;
+            --accent-gold: #fbbf24;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+        }
 
-        /* Panels */
-        .tab-panel { display: none; }
-        .tab-panel.active { display: block; }
-        .card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 16px; margin-bottom: 15px; }
-        
-        h2 { font-size: 1rem; margin-bottom: 6px; text-align: center; }
-        p.subtitle { font-size: 0.75rem; color: #94a3b8; text-align: center; margin-bottom: 15px; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            padding: 12px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            background-image: radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.18), transparent 70%);
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 20px;
+            border: 1px solid var(--bg-card-border);
+            padding: 18px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .logo {
+            font-size: 1.15rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 0.5px;
+        }
+        .logo span {
+            background: linear-gradient(135deg, #60a5fa, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .user-badge {
+            font-size: 0.68rem;
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .account-info {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.02);
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Navigation Grid - 13 menu */
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 10px 4px;
+            border-radius: 12px;
+            color: var(--text-muted);
+            font-size: 0.72rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        .nav-btn:hover,
+        .nav-btn.active {
+            background: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary-hover);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            transform: translateY(-1px);
+        }
+        .nav-btn.admin-btn {
+            border-color: rgba(16, 185, 129, 0.3);
+            color: var(--accent-green);
+        }
+        .nav-btn.admin-btn.active {
+            background: var(--accent-green);
+            color: #fff;
+            border-color: var(--accent-green);
+        }
+
+        /* Tab Panels */
+        .tab-panel {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        .tab-panel.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 14px;
+        }
+
+        h2 {
+            font-size: 1.05rem;
+            margin-bottom: 4px;
+            text-align: center;
+            color: var(--text-main);
+            font-weight: 700;
+        }
+        p.subtitle {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 16px;
+        }
 
         /* Mining Circle */
-        .mining-status { text-align: center; padding: 15px 0; }
-        .circle-btn { width: 110px; height: 110px; border-radius: 50%; background: radial-gradient(circle, #1e3a8a 0%, #0f172a 100%); border: 3px solid #3b82f6; margin: 0 auto 15px; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); }
-        .circle-btn span { font-size: 0.7rem; font-weight: bold; color: #60a5fa; }
+        .mining-status { text-align: center; padding: 10px 0; }
+        .circle-btn {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.2) 0%, rgba(15, 23, 42, 0.8) 100%);
+            border: 3px solid var(--primary-hover);
+            margin: 0 auto 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.4);
+            animation: pulse 2s infinite alternate;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 15px rgba(59, 130, 246, 0.3); }
+            100% { box-shadow: 0 0 30px rgba(59, 130, 246, 0.6); }
+        }
+        .circle-btn span {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--accent-cyan);
+            letter-spacing: 0.5px;
+        }
 
-        /* Form & Inputs */
-        .form-group { margin-bottom: 12px; text-align: left; }
-        .form-group label { display: block; font-size: 0.75rem; font-weight: 600; color: #cbd5e1; margin-bottom: 5px; }
-        .input-field { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: #090d16; color: #fff; font-size: 0.85rem; outline: none; }
-        
-        /* Action Buttons */
-        .btn-action { width: 100%; padding: 11px; border-radius: 8px; border: none; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: 0.2s; color: #fff; }
-        .btn-blue { background: #2563eb; }
-        .btn-green { background: #10b981; }
+        /* Forms */
+        .form-group { margin-bottom: 14px; text-align: left; }
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--bg-input);
+            color: #fff;
+            font-size: 0.85rem;
+            outline: none;
+            transition: border 0.2s;
+        }
+        .input-field:focus { border-color: var(--primary-hover); }
+
+        /* Buttons */
+        .btn-action {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: #fff;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-blue { background: var(--primary); }
+        .btn-blue:hover { background: var(--primary-hover); }
+        .btn-green { background: var(--accent-green); }
+        .btn-green:hover { background: #059669; }
         .btn-gray { background: #334155; }
-        
-        /* Address Box */
-        .addr-box { background: #090d16; border: 1px dashed rgba(255,255,255,0.2); padding: 10px; border-radius: 8px; font-family: monospace; font-size: 0.75rem; color: #60a5fa; word-break: break-all; margin-bottom: 10px; text-align: center; }
+        .btn-gray:hover { background: #475569; }
+        .btn-purple { background: var(--accent-purple); }
+        .btn-purple:hover { background: #9333ea; }
+        .btn-gold { background: var(--accent-gold); color: #1e293b; }
+        .btn-gold:hover { background: #f59e0b; }
+
+        .addr-box {
+            background: var(--bg-input);
+            border: 1px dashed rgba(255, 255, 255, 0.15);
+            padding: 12px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: var(--accent-cyan);
+            word-break: break-all;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        /* Tokenomics rows */
+        .token-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .token-row:last-child { border-bottom: none; }
+
+        /* Whitepaper box */
+        .wp-box {
+            background: var(--bg-input);
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            line-height: 1.6;
+            color: #cbd5e1;
+            text-align: left;
+            max-height: 420px;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .wp-box::-webkit-scrollbar { width: 4px; }
+        .wp-box::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        .wp-box h3 {
+            font-size: 0.88rem;
+            color: var(--accent-cyan);
+            margin: 16px 0 6px 0;
+            border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+            padding-bottom: 4px;
+        }
+        .wp-box h3:first-child { margin-top: 0; }
+        .wp-box p { margin-bottom: 10px; text-align: justify; }
+
+        /* Data table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.75rem;
+        }
+        .data-table th,
+        .data-table td {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 8px;
+            text-align: left;
+        }
+        .data-table th {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--accent-cyan);
+        }
+
+        /* Stat cards */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .stat-box {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+        }
+        .stat-box .label {
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+        .stat-box .value {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+        }
+
+        /* Social / chat style */
+        .chat-list {
+            max-height: 280px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .chat-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 10px 12px;
+            font-size: 0.78rem;
+        }
+        .chat-item .meta {
+            font-size: 0.68rem;
+            color: var(--text-dim);
+            margin-bottom: 4px;
+        }
+
+        /* Progress bar */
+        .progress-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 8px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent-cyan));
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #1e293b;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 999;
+            max-width: 90%;
+            text-align: center;
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+        .toast.success { border-color: var(--accent-green); }
+        .toast.error { border-color: #ef4444; }
+
+        /* Responsive tweak */
+        @media (max-width: 380px) {
+            .nav-btn { font-size: 0.65rem; padding: 8px 2px; }
+            .stat-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
@@ -54,184 +419,510 @@
 <div class="app-container">
     <!-- Header -->
     <div class="header">
-        <div class="logo">⚡ GARET NETWORK</div>
-        <div class="user-badge">KYC Passed</div>
+        <div class="logo">⚡ <span>GARET NETWORK</span></div>
+        <div class="user-badge">KYC Verified</div>
     </div>
-    
+
     <div class="account-info">
-        <span>Account: <b style="color:#fff;">rjuandri@gmail.com</b></span>
-        <span style="color:#10b981;">Connected</span>
+        <span>User: <b style="color:#fff;">rjuandri@gmail.com</b></span>
+        <span style="color:var(--accent-green); font-weight:600;">● Online</span>
     </div>
 
-    <!-- Main Navigation Grid -->
+    <!-- 13-Menu Navigation -->
     <div class="nav-grid">
-        <button class="nav-btn active" onclick="switchTab('mining', this)">⛏️ Mining</button>
-        <button class="nav-btn" onclick="switchTab('wallet', this)">💼 Wallet</button>
-        <button class="nav-btn" onclick="switchTab('send', this)">💸 Send</button>
-        <button class="nav-btn" onclick="switchTab('receive', this)">📥 Receive</button>
-        <button class="nav-btn" onclick="switchTab('network', this)">🌐 Network</button>
-        <button class="nav-btn" onclick="switchTab('social', this)">💬 Social</button>
-        <button class="nav-btn" onclick="switchTab('profile', this)">👤 Profile</button>
-        <button class="nav-btn" onclick="switchTab('kyc', this)">🆔 KYC</button>
-        <button class="nav-btn" onclick="switchTab('tge', this)">🚀 TGE</button>
-        <button class="nav-btn" onclick="switchTab('referral', this)">👥 Referral</button>
-        <button class="nav-btn" onclick="switchTab('tokenomics', this)">📊 Tokenomics</button>
-        <button class="nav-btn admin-btn" onclick="switchTab('admin', this)">⚙️ Admin</button>
+        <button class="nav-btn active" onclick="switchTab('mining', this)"><span>⛏️</span> Mining</button>
+        <button class="nav-btn" onclick="switchTab('wallet', this)"><span>💼</span> Wallet</button>
+        <button class="nav-btn" onclick="switchTab('send', this)"><span>💸</span> Send</button>
+        <button class="nav-btn" onclick="switchTab('receive', this)"><span>📥</span> Receive</button>
+        <button class="nav-btn" onclick="switchTab('network', this)"><span>🌐</span> Network</button>
+        <button class="nav-btn" onclick="switchTab('social', this)"><span>💬</span> Social</button>
+        <button class="nav-btn" onclick="switchTab('profile', this)"><span>👤</span> Profile</button>
+        <button class="nav-btn" onclick="switchTab('kyc', this)"><span>🆔</span> KYC</button>
+        <button class="nav-btn" onclick="switchTab('tge', this)"><span>🚀</span> TGE</button>
+        <button class="nav-btn" onclick="switchTab('referral', this)"><span>👥</span> Referral</button>
+        <button class="nav-btn" onclick="switchTab('tokenomics', this)"><span>📊</span> Tokenomics</button>
+        <button class="nav-btn" onclick="switchTab('whitepaper', this)"><span>📄</span> Whitepaper</button>
+        <button class="nav-btn admin-btn" onclick="switchTab('admin', this)"><span>⚙️</span> Admin</button>
     </div>
 
-    <!-- 1. MINING PANEL -->
+    <!-- 1. MINING -->
     <div id="tab-mining" class="tab-panel active">
         <div class="card">
             <h2>24-Hour Mining Session</h2>
-            <p class="subtitle">Community Mining Pool (50% of 1B Supply)</p>
+            <p class="subtitle">Community Node Allocation (50% of 1B Total Supply)</p>
             <div class="mining-status">
                 <div class="circle-btn">
-                    <span>⚡ ACTIVE</span>
-                    <small style="color:#fff; font-size:0.65rem; margin-top:2px;">09:47:20</small>
+                    <span>⚡ RUNNING</span>
+                    <small style="color:#fff; font-size:0.65rem; margin-top:3px;" id="mining-timer">09:47:20</small>
                 </div>
-                <p style="font-size:0.8rem; color:#60a5fa; font-weight:600;">Speed: 0.50 $GARET / Hour</p>
+                <p style="font-size:0.8rem; color:var(--accent-cyan); font-weight:700;">Base Rate: +0.50 $GARET / Hr</p>
             </div>
-            <div style="background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px; text-align: center; margin-top: 10px;">
-                <span style="font-size: 0.75rem; color: #94a3b8;">Mining Balance</span>
-                <h1 style="font-size: 1.5rem; color: #38bdf8; margin: 4px 0;">201.2713 GARET</h1>
+            <div style="background: rgba(0,0,0,0.3); padding: 14px; border-radius: 12px; text-align: center; margin-top: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                <span style="font-size: 0.72rem; color: var(--text-muted);">Current Unlocked Balance</span>
+                <h1 style="font-size: 1.6rem; color: var(--accent-cyan); margin: 6px 0; font-weight: 800;" id="mining-balance">201.2713 GARET</h1>
+                <p style="font-size: 0.68rem; color: var(--text-dim);">Mining Streak: 14 Days Active | +15% Multiplier Active</p>
             </div>
+            <button onclick="claimMining()" class="btn-action btn-green" style="margin-top:14px;">✅ Claim Mining Reward</button>
         </div>
     </div>
 
-    <!-- 2. WALLET PANEL -->
+    <!-- 2. WALLET -->
     <div id="tab-wallet" class="tab-panel">
         <div class="card">
-            <h2>💳 In-App Web3 Wallet</h2>
-            <p class="subtitle">Internal encrypted wallet connected to Airdrop Pool</p>
+            <h2>💳 Encrypted Web3 Wallet</h2>
+            <p class="subtitle">Internal decentralized wallet mapped to Community Airdrop Vault</p>
             <div class="form-group">
-                <label>Your $GARET Wallet Address:</label>
+                <label>Your $GARET Public Wallet Address:</label>
                 <div class="addr-box" id="wallet-addr-display">0x7a8b7c4ae81ec9d2e1f34567890a7c4a</div>
-                <button onclick="copyWalletAddr()" class="btn-action btn-gray">📋 Copy Address</button>
+                <button onclick="copyText('0x7a8b7c4ae81ec9d2e1f34567890a7c4a')" class="btn-action btn-gray">📋 Copy Wallet Address</button>
+            </div>
+            <div class="stat-grid" style="margin-top:14px;">
+                <div class="stat-box">
+                    <div class="label">Available</div>
+                    <div class="value">201.27</div>
+                </div>
+                <div class="stat-box">
+                    <div class="label">Locked</div>
+                    <div class="value">48.50</div>
+                </div>
+            </div>
+            <div style="display: flex; gap: 8px; margin-top: 10px;">
+                <button onclick="showToast('Seed Phrase Export locked until Mainnet TGE.', 'error')" class="btn-action btn-gray" style="font-size: 0.72rem;">🔑 View Seed Phrase</button>
+                <button onclick="showToast('Private Key is safely encrypted locally.', 'success')" class="btn-action btn-gray" style="font-size: 0.72rem;">🔒 Private Key</button>
             </div>
         </div>
     </div>
 
-    <!-- 3. SEND PANEL -->
+    <!-- 3. SEND -->
     <div id="tab-send" class="tab-panel">
         <div class="card">
             <h2>💸 Send tGARET</h2>
-            <p class="subtitle">Transfer testnet tokens peer-to-peer</p>
+            <p class="subtitle">Execute peer-to-peer testnet transaction on GARET Chain</p>
             <div class="form-group">
-                <label>Recipient Address</label>
+                <label>Recipient Address (EVM Compatible)</label>
                 <input type="text" id="transfer-address" class="input-field" placeholder="0x...">
             </div>
             <div class="form-group">
                 <label>Amount (tGARET)</label>
-                <input type="number" id="transfer-amount" class="input-field" placeholder="0.0" step="0.0001">
+                <input type="number" id="transfer-amount" class="input-field" placeholder="0.00" step="0.0001" min="0">
             </div>
-            <button onclick="sendTGaret()" class="btn-action btn-green">🚀 Send Transaction</button>
+            <button onclick="sendTGaret()" class="btn-action btn-green">🚀 Broadcast Transaction</button>
         </div>
     </div>
 
-    <!-- 4. RECEIVE PANEL -->
+    <!-- 4. RECEIVE -->
     <div id="tab-receive" class="tab-panel">
         <div class="card" style="text-align: center;">
             <h2>📥 Receive tGARET</h2>
-            <p class="subtitle">Share your wallet address to receive funds</p>
-            <div class="addr-box" id="receive-addr-display" style="padding: 14px;">
-                0x7a8b7c4ae81ec9d2e1f34567890a7c4a
+            <p class="subtitle">Scan or copy your wallet address to accept incoming funds</p>
+            <div style="background: white; padding: 12px; display: inline-block; border-radius: 10px; margin-bottom: 12px;">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=0x7a8b7c4ae81ec9d2e1f34567890a7c4a" alt="QR Code" width="120" height="120" style="display:block;">
             </div>
-            <button onclick="copyReceiveAddr()" class="btn-action btn-blue">📋 Copy Receive Address</button>
+            <div class="addr-box" id="receive-addr-display">0x7a8b7c4ae81ec9d2e1f34567890a7c4a</div>
+            <button onclick="copyText('0x7a8b7c4ae81ec9d2e1f34567890a7c4a')" class="btn-action btn-blue">📋 Copy Address</button>
         </div>
     </div>
 
-    <!-- 5. NETWORK PANEL -->
+    <!-- 5. NETWORK -->
     <div id="tab-network" class="tab-panel">
         <div class="card">
-            <h2>🌐 GARET Blockchain Network</h2>
-            <p class="subtitle">Connect your Web3 Wallet to GARET RPC</p>
-            <button onclick="addGaretNetwork('testnet')" class="btn-action btn-blue">➕ Add GARET Testnet to Wallet</button>
+            <h2>🌐 GARET Network Status</h2>
+            <p class="subtitle">Real-time Layer-1 network metrics (Testnet)</p>
+            <div class="stat-grid">
+                <div class="stat-box">
+                    <div class="label">Block Height</div>
+                    <div class="value" id="block-height">1,248,392</div>
+                </div>
+                <div class="stat-box">
+                    <div class="label">TPS</div>
+                    <div class="value">42.8</div>
+                </div>
+                <div class="stat-box">
+                    <div class="label">Active Nodes</div>
+                    <div class="value">1,847</div>
+                </div>
+                <div class="stat-box">
+                    <div class="label">Gas Price</div>
+                    <div class="value">0.8 Gwei</div>
+                </div>
+            </div>
+            <div class="token-row">
+                <span>Network Status</span>
+                <span style="color:var(--accent-green); font-weight:700;">● Healthy</span>
+            </div>
+            <div class="token-row">
+                <span>Consensus</span>
+                <span>Proof-of-Stake + PoA</span>
+            </div>
+            <div class="token-row">
+                <span>Chain ID</span>
+                <span style="font-family:monospace;">0x47A7 (GARET Testnet)</span>
+            </div>
+            <div class="token-row">
+                <span>Last Block</span>
+                <span id="last-block-time">~2.1s ago</span>
+            </div>
+            <button onclick="refreshNetwork()" class="btn-action btn-blue" style="margin-top:12px;">🔄 Refresh Network Data</button>
         </div>
     </div>
 
-    <!-- OTHER PANELS (PLACEHOLDERS) -->
-    <div id="tab-social" class="tab-panel"><div class="card"><h2>💬 Social Tasks</h2><p class="subtitle">Complete community tasks to earn extra rewards.</p></div></div>
-    <div id="tab-profile" class="tab-panel"><div class="card"><h2>👤 User Profile</h2><p class="subtitle">Manage account security and settings.</p></div></div>
-    <div id="tab-kyc" class="tab-panel"><div class="card"><h2>🆔 KYC Verification</h2><p class="subtitle">Status: Verified Curator Level 1</p></div></div>
-    <div id="tab-tge" class="tab-panel"><div class="card"><h2>🚀 Token Generation Event</h2><p class="subtitle">Mainnet Listing Countdown: Q4 2026</p></div></div>
-    <div id="tab-referral" class="tab-panel"><div class="card"><h2>👥 Referral Program</h2><p class="subtitle">Invite friends to boost mining rate.</p></div></div>
-    <div id="tab-tokenomics" class="tab-panel"><div class="card"><h2>📊 Tokenomics</h2><p class="subtitle">Total Supply: 1,000,000,000 GARET</p></div></div>
-    <div id="tab-admin" class="tab-panel"><div class="card"><h2>⚙️ Admin Panel</h2><p class="subtitle">Ecosystem management suite.</p></div></div>
+    <!-- 6. SOCIAL -->
+    <div id="tab-social" class="tab-panel">
+        <div class="card">
+            <h2>💬 Community Feed</h2>
+            <p class="subtitle">Latest updates from GARET community</p>
+            <div class="chat-list">
+                <div class="chat-item">
+                    <div class="meta">@GaretOfficial · 12m ago</div>
+                    <div>Testnet v0.9.2 is live! Mining rate boost active for the next 48 hours. 🚀</div>
+                </div>
+                <div class="chat-item">
+                    <div class="meta">@NodeMaster42 · 1h ago</div>
+                    <div>Just hit 200 GARET unlocked. Streak multiplier is real! Who else is still mining?</div>
+                </div>
+                <div class="chat-item">
+                    <div class="meta">@CryptoAndi · 3h ago</div>
+                    <div>Referral program is fire. Already invited 7 friends and got the bonus multiplier.</div>
+                </div>
+                <div class="chat-item">
+                    <div class="meta">@GaretOfficial · 5h ago</div>
+                    <div>Whitepaper v2.1 published. Check the Tokenomics tab for the updated allocation.</div>
+                </div>
+            </div>
+            <div class="form-group" style="margin-top:14px;">
+                <input type="text" id="social-msg" class="input-field" placeholder="Write a message...">
+            </div>
+            <button onclick="postSocial()" class="btn-action btn-purple">📤 Post to Feed</button>
+        </div>
+    </div>
 
+    <!-- 7. PROFILE -->
+    <div id="tab-profile" class="tab-panel">
+        <div class="card">
+            <h2>👤 User Profile</h2>
+            <p class="subtitle">Your GARET identity & statistics</p>
+            <div style="text-align:center; margin-bottom:16px;">
+                <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#a855f7);margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">R</div>
+                <div style="font-weight:700;font-size:1rem;">rjuandri@gmail.com</div>
+                <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">Member since: Oct 2025</div>
+            </div>
+            <div class="stat-grid">
+                <div class="stat-box">
+                    <div class="label">Total Mined</div>
+                    <div class="value">249.77</div>
+                </div>
+                <div class="stat-box">
+                    <div class="label">Referrals</div>
+                    <div class="value">5</div>
+                </div>
+                <div class="stat-box">
+                    <div class="label">Streak</div>
+                    <div class="value">14 days</div>
+                </div>
+                <div class="stat-box">
+                    <div class="label">Rank</div>
+                    <div class="value">#1,248</div>
+                </div>
+            </div>
+            <div class="token-row">
+                <span>KYC Status</span>
+                <span style="color:var(--accent-green);">✅ Verified</span>
+            </div>
+            <div class="token-row">
+                <span>Wallet Bound</span>
+                <span style="font-family:monospace;font-size:0.7rem;">0x7a8b...a7c4a</span>
+            </div>
+            <button onclick="showToast('Profile updated successfully.', 'success')" class="btn-action btn-blue" style="margin-top:12px;">💾 Save Profile</button>
+        </div>
+    </div>
+
+    <!-- 8. KYC -->
+    <div id="tab-kyc" class="tab-panel">
+        <div class="card">
+            <h2>🆔 KYC Verification</h2>
+            <p class="subtitle">Identity verification status</p>
+            <div style="text-align:center;padding:16px 0;">
+                <div style="font-size:2.5rem;margin-bottom:8px;">✅</div>
+                <div style="font-weight:700;color:var(--accent-green);font-size:1.1rem;">Verified</div>
+                <p style="font-size:0.75rem;color:var(--text-muted);margin-top:6px;">Your identity has been successfully verified.</p>
+            </div>
+            <div class="token-row">
+                <span>Document Type</span>
+                <span>National ID</span>
+            </div>
+            <div class="token-row">
+                <span>Verified On</span>
+                <span>12 Oct 2025</span>
+            </div>
+            <div class="token-row">
+                <span>Risk Level</span>
+                <span style="color:var(--accent-green);">Low</span>
+            </div>
+            <button onclick="showToast('Re-verification is not required.', 'success')" class="btn-action btn-gray" style="margin-top:12px;">🔄 Request Re-check</button>
+        </div>
+    </div>
+
+    <!-- 9. TGE -->
+    <div id="tab-tge" class="tab-panel">
+        <div class="card">
+            <h2>🚀 Token Generation Event</h2>
+            <p class="subtitle">Mainnet launch & token distribution countdown</p>
+            <div style="text-align:center;padding:12px 0;">
+                <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:6px;">Estimated TGE Date</div>
+                <div style="font-size:1.4rem;font-weight:800;color:var(--accent-gold);">Q1 2027</div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width:68%;"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--text-muted);margin-bottom:14px;">
+                <span>Testnet Live</span>
+                <span>68% to Mainnet</span>
+            </div>
+            <div class="token-row">
+                <span>Total Raise Target</span>
+                <span>$4,200,000</span>
+            </div>
+            <div class="token-row">
+                <span>Tokens for Sale</span>
+                <span>150,000,000 GARET</span>
+            </div>
+            <div class="token-row">
+                <span>Listing Price</span>
+                <span>$0.028</span>
+            </div>
+            <button onclick="showToast('You are already on the TGE whitelist.', 'success')" class="btn-action btn-gold" style="margin-top:12px;">⭐ Join Whitelist</button>
+        </div>
+    </div>
+
+    <!-- 10. REFERRAL -->
+    <div id="tab-referral" class="tab-panel">
+        <div class="card">
+            <h2>👥 Referral Program</h2>
+            <p class="subtitle">Invite friends & earn extra mining multiplier</p>
+            <div class="form-group">
+                <label>Your Referral Link</label>
+                <div class="addr-box" id="ref-link">https://garet.network/ref/rjuandri</div>
+                <button onclick="copyText('https://garet.network/ref/rjuandri')" class="btn-action btn-blue">📋 Copy Referral Link</button>
+            </div>
+            <div class="stat-grid" style="margin-top:14px;">
+                <div class="stat-box">
+                    <div class="label">Total Invites</div>
+                    <div class="value">5</div>
+                </div>
+                <div class="stat-box">
+                    <div class="label">Bonus Earned</div>
+                    <div class="value">12.5 G</div>
+                </div>
+            </div>
+            <div class="token-row">
+                <span>Current Multiplier</span>
+                <span style="color:var(--accent-green);">+15%</span>
+            </div>
+            <div class="token-row">
+                <span>Next Milestone (10 invites)</span>
+                <span>+25% Multiplier</span>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr><th>User</th><th>Joined</th><th>Status</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>user***@gmail.com</td><td>14 Oct</td><td style="color:var(--accent-green);">Active</td></tr>
+                    <tr><td>node***@yahoo.com</td><td>11 Oct</td><td style="color:var(--accent-green);">Active</td></tr>
+                    <tr><td>mine***@outlook.com</td><td>09 Oct</td><td style="color:var(--text-dim);">Pending</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 11. TOKENOMICS -->
+    <div id="tab-tokenomics" class="tab-panel">
+        <div class="card">
+            <h2>📊 $GARET Tokenomics</h2>
+            <p class="subtitle">Total Supply: 1,000,000,000 GARET</p>
+            <div class="token-row">
+                <span>Community Mining (50%)</span>
+                <span style="color:var(--accent-cyan);">500,000,000</span>
+            </div>
+            <div class="token-row">
+                <span>Ecosystem & Liquidity (20%)</span>
+                <span>200,000,000</span>
+            </div>
+            <div class="token-row">
+                <span>Team & Advisors (15%)</span>
+                <span>150,000,000</span>
+            </div>
+            <div class="token-row">
+                <span>Public Sale / TGE (10%)</span>
+                <span>100,000,000</span>
+            </div>
+            <div class="token-row">
+                <span>Treasury & Reserve (5%)</span>
+                <span>50,000,000</span>
+            </div>
+            <div style="margin-top:16px;padding:12px;background:rgba(0,0,0,0.25);border-radius:10px;font-size:0.78rem;color:var(--text-muted);">
+                <strong style="color:var(--accent-gold);">Vesting:</strong> Team tokens locked 12 months, then linear unlock over 24 months. Community mining unlocked daily after 24h session.
+            </div>
+        </div>
+    </div>
+
+    <!-- 12. WHITEPAPER -->
+    <div id="tab-whitepaper" class="tab-panel">
+        <div class="card">
+            <h2>📄 Whitepaper</h2>
+            <p class="subtitle">GARET Network Technical Overview</p>
+            <div class="wp-box">
+                <h3>1. Introduction</h3>
+                <p>GARET Network is a Layer-1 blockchain designed for high-throughput decentralized applications with a focus on community-driven mining and sustainable token distribution. Built with EVM compatibility, it enables seamless migration of existing smart contracts while introducing a hybrid consensus model.</p>
+
+                <h3>2. Vision</h3>
+                <p>To create an inclusive digital economy where every participant can contribute computing power and earn fair rewards through transparent, on-chain mechanisms without the need for expensive mining hardware.</p>
+
+                <h3>3. Consensus Mechanism</h3>
+                <p>GARET uses a hybrid Proof-of-Stake + Proof-of-Authority model. Validators are elected based on stake and reputation score. Community nodes participate in lightweight mining sessions that allocate the community portion of the supply.</p>
+
+                <h3>4. Token Utility</h3>
+                <p>$GARET is used for gas fees, staking, governance voting, and accessing premium dApp features within the ecosystem. A portion of transaction fees is burned to create long-term deflationary pressure.</p>
+
+                <h3>5. Roadmap</h3>
+                <p>• Q4 2025 – Testnet launch & community mining<br>
+                • Q1 2026 – Security audit & bug bounty<br>
+                • Q3 2026 – Mainnet preparation<br>
+                • Q1 2027 – Token Generation Event & Mainnet</p>
+
+                <h3>6. Security</h3>
+                <p>All smart contracts undergo multiple independent audits. The wallet system uses client-side encryption. Private keys never leave the user’s device in plaintext.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 13. ADMIN -->
+    <div id="tab-admin" class="tab-panel">
+        <div class="card">
+            <h2>⚙️ Admin Panel</h2>
+            <p class="subtitle">Restricted access – system controls</p>
+            <div class="form-group">
+                <label>Admin Password</label>
+                <input type="password" id="admin-pass" class="input-field" placeholder="Enter admin password">
+            </div>
+            <button onclick="adminLogin()" class="btn-action btn-green">🔓 Unlock Admin Tools</button>
+            <div id="admin-tools" style="display:none; margin-top:16px;">
+                <div class="token-row">
+                    <span>Total Users</span>
+                    <span>12,847</span>
+                </div>
+                <div class="token-row">
+                    <span>Active Miners (24h)</span>
+                    <span>3,214</span>
+                </div>
+                <div class="token-row">
+                    <span>Total Mined (All-time)</span>
+                    <span>48,291,003 GARET</span>
+                </div>
+                <button onclick="showToast('Mining rate updated to 0.55 GARET/hr', 'success')" class="btn-action btn-blue" style="margin-top:10px;">⚡ Adjust Mining Rate</button>
+                <button onclick="showToast('Broadcast sent to all users.', 'success')" class="btn-action btn-purple" style="margin-top:8px;">📢 Send Global Announcement</button>
+                <button onclick="showToast('Maintenance mode enabled.', 'error')" class="btn-action btn-gray" style="margin-top:8px;">🛠️ Enable Maintenance</button>
+            </div>
+        </div>
+    </div>
 </div>
 
+<!-- Toast -->
+<div id="toast" class="toast"></div>
+
 <script>
-// Switch Navigation Tabs
-function switchTab(tabId, btnElement) {
-    document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
-    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-    
-    document.getElementById('tab-' + tabId).classList.add('active');
-    btnElement.classList.add('active');
-}
+    // ===== Tab Switching =====
+    function switchTab(tabId, btn) {
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('tab-' + tabId).classList.add('active');
+        if (btn) btn.classList.add('active');
+    }
 
-// Copy Address Functions
-function copyWalletAddr() {
-    const addr = document.getElementById('wallet-addr-display').innerText;
-    navigator.clipboard.writeText(addr);
-    alert("✅ Wallet address copied: " + addr);
-}
+    // ===== Toast =====
+    function showToast(msg, type = 'success') {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.className = 'toast ' + type + ' show';
+        setTimeout(() => t.classList.remove('show'), 2800);
+    }
 
-function copyReceiveAddr() {
-    const addr = document.getElementById('receive-addr-display').innerText;
-    navigator.clipboard.writeText(addr);
-    alert("✅ Receive address copied: " + addr);
-}
+    // ===== Copy helper =====
+    function copyText(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            showToast('Copied to clipboard!', 'success');
+        }).catch(() => {
+            showToast('Failed to copy', 'error');
+        });
+    }
 
-// Web3 Integration: Add Garet Network to MetaMask / Trust Wallet
-async function addGaretNetwork(env = 'testnet') {
-    if (window.ethereum) {
-        const netConfig = {
-            chainId: '0x22C5', // Chain ID Testnet 8901
-            chainName: 'GARET Network Testnet',
-            nativeCurrency: { name: 'tGARET', symbol: 'tGARET', decimals: 18 },
-            rpcUrls: ['https://rpc-testnet.garet.network'],
-            blockExplorerUrls: ['https://testnet.garetscan.io']
-        };
-        try {
-            await window.ethereum.request({ method: 'wallet_addEthereumChain', params: [netConfig] });
-            alert("✅ Successfully added " + netConfig.chainName + " to your wallet!");
-        } catch (error) {
-            console.error(error);
-            alert("❌ Failed to add network to wallet.");
+    // ===== Send =====
+    function sendTGaret() {
+        const addr = document.getElementById('transfer-address').value.trim();
+        const amount = document.getElementById('transfer-amount').value;
+        if (!addr || !addr.startsWith('0x') || addr.length < 10) {
+            showToast('Invalid recipient address', 'error');
+            return;
         }
-    } else {
-        alert("⚠️ Web3 Wallet not detected! Please open this dApp using MetaMask or Trust Wallet browser.");
-    }
-}
-
-// Web3 Integration: Send tGARET
-async function sendTGaret() {
-    const toAddress = document.getElementById('transfer-address').value.trim();
-    const amount = document.getElementById('transfer-amount').value.trim();
-
-    if (!toAddress || !amount || amount <= 0) {
-        alert("⚠️ Please enter a valid recipient address and amount!");
-        return;
-    }
-
-    if (window.ethereum) {
-        try {
-            const parsedAmount = (parseFloat(amount) * 1e18).toString(16);
-            const txHash = await window.ethereum.request({
-                method: 'eth_sendTransaction',
-                params: [{ to: toAddress, from: window.ethereum.selectedAddress, value: '0x' + parsedAmount }]
-            });
-            alert("✅ Transaction Sent Successfully!\nTx Hash: " + txHash);
-        } catch (error) {
-            console.error(error);
-            alert("❌ Transaction failed or rejected by user.");
+        if (!amount || parseFloat(amount) <= 0) {
+            showToast('Enter a valid amount', 'error');
+            return;
         }
-    } else {
-        alert("⚠️ Web3 Wallet not detected! Open this dApp via Web3 Browser.");
+        showToast(`Transaction broadcast: ${amount} tGARET → ${addr.slice(0, 8)}...`, 'success');
+        document.getElementById('transfer-address').value = '';
+        document.getElementById('transfer-amount').value = '';
     }
-}
+
+    // ===== Mining Claim =====
+    function claimMining() {
+        showToast('Reward claimed! +0.50 GARET added to balance.', 'success');
+        const el = document.getElementById('mining-balance');
+        let val = parseFloat(el.textContent);
+        el.textContent = (val + 0.5).toFixed(4) + ' GARET';
+    }
+
+    // ===== Social Post =====
+    function postSocial() {
+        const msg = document.getElementById('social-msg').value.trim();
+        if (!msg) {
+            showToast('Write something first', 'error');
+            return;
+        }
+        showToast('Message posted to community feed!', 'success');
+        document.getElementById('social-msg').value = '';
+    }
+
+    // ===== Network Refresh =====
+    function refreshNetwork() {
+        const h = document.getElementById('block-height');
+        let n = parseInt(h.textContent.replace(/,/g, '')) + Math.floor(Math.random() * 5) + 1;
+        h.textContent = n.toLocaleString();
+        document.getElementById('last-block-time').textContent = '~1.8s ago';
+        showToast('Network data refreshed', 'success');
+    }
+
+    // ===== Admin =====
+    function adminLogin() {
+        const pass = document.getElementById('admin-pass').value;
+        if (pass === 'garetadmin' || pass === 'admin') {
+            document.getElementById('admin-tools').style.display = 'block';
+            showToast('Admin access granted', 'success');
+        } else {
+            showToast('Incorrect password', 'error');
+        }
+    }
+
+    // ===== Mining Timer (simple countdown simulation) =====
+    let totalSeconds = 9 * 3600 + 47 * 60 + 20;
+    setInterval(() => {
+        if (totalSeconds <= 0) totalSeconds = 24 * 3600;
+        totalSeconds--;
+        const h = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+        const m = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+        const s = String(totalSeconds % 60).padStart(2, '0');
+        const timer = document.getElementById('mining-timer');
+        if (timer) timer.textContent = `${h}:${m}:${s}`;
+    }, 1000);
 </script>
-
 </body>
 </html>
