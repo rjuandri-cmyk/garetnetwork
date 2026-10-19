@@ -961,3 +961,202 @@ async function sendTGaret() {
     }
 }
 </script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GARET Network dApp</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #0b0f19; color: #fff; padding: 15px; display: flex; flex-direction: column; align-items: center; }
+        .container { width: 100%; max-width: 480px; }
+        
+        /* Header */
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
+        .logo { font-size: 1.2rem; font-weight: bold; color: #3b82f6; display: flex; align-items: center; gap: 5px; }
+        
+        /* Navigation Menu Grid */
+        .nav-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+        .nav-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 12px 8px; border-radius: 10px; color: #fff; font-size: 0.8rem; font-weight: bold; cursor: pointer; text-align: center; transition: 0.2s; }
+        .nav-btn:hover, .nav-btn.active { background: #3b82f6; border-color: #3b82f6; }
+
+        /* Sections / Tabs */
+        .section-panel { display: none; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 20px; margin-bottom: 20px; }
+        .section-panel.active { display: block; }
+        
+        h2 { font-size: 1.1rem; margin-bottom: 8px; color: #f3f4f6; }
+        p.desc { font-size: 0.8rem; color: #9ca3af; margin-bottom: 15px; }
+
+        /* Form Controls */
+        .form-group { margin-bottom: 15px; text-align: left; }
+        .form-group label { display: block; font-size: 0.8rem; font-weight: bold; margin-bottom: 5px; color: #d1d5db; }
+        .form-control { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: #121826; color: #fff; font-size: 0.9rem; }
+        
+        /* Buttons */
+        .btn-primary { background: #3b82f6; color: white; width: 100%; padding: 12px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; margin-top: 5px; }
+        .btn-success { background: #10b981; color: white; width: 100%; padding: 12px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; margin-top: 5px; }
+        
+        /* Receive Card Box */
+        .wallet-box { background: #121826; border: 1px dashed rgba(255,255,255,0.2); padding: 12px; border-radius: 8px; word-break: break-all; font-family: monospace; font-size: 0.85rem; color: #60a5fa; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">⚡ GARET NETWORK</div>
+        <div id="user-status" style="font-size: 0.75rem; background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 4px 10px; border-radius: 20px;">Connected</div>
+    </div>
+
+    <!-- Main Navigation Menu -->
+    <div class="nav-grid">
+        <button class="nav-btn active" onclick="switchTab('home', this)">🏠 Home</button>
+        <button class="nav-btn" onclick="switchTab('wallet', this)">👛 Wallet</button>
+        <button class="nav-btn" onclick="switchTab('transfer', this)">💸 Send</button>
+        <button class="nav-btn" onclick="switchTab('receive', this)">📥 Receive</button>
+        <button class="nav-btn" onclick="switchTab('network', this)">🌐 Network</button>
+        <button class="nav-btn" onclick="switchTab('mining', this)">⛏️ Mining</button>
+    </div>
+
+    <!-- 1. HOME SECTION -->
+    <div id="tab-home" class="section-panel active">
+        <h2>🏠 Garet Dashboard</h2>
+        <p class="desc">Welcome to the official Garet Network decentralized ecosystem.</p>
+        <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); padding: 15px; border-radius: 10px; text-align: center;">
+            <p style="font-size: 0.8rem; color: #93c5fd;">Total Balance</p>
+            <h1 style="font-size: 1.8rem; margin: 5px 0; color: #60a5fa;">201.2247 tGARET</h1>
+            <p style="font-size: 0.75px; color: #9ca3af;">Status: Testnet Active Phase</p>
+        </div>
+    </div>
+
+    <!-- 2. WALLET SECTION -->
+    <div id="tab-wallet" class="section-panel">
+        <h2>👛 In-App Web3 Wallet</h2>
+        <p class="desc">Manage your decentralized assets securely.</p>
+        <div class="form-group">
+            <label>Your Wallet Address</label>
+            <div class="wallet-box" id="my-wallet-addr">0x7a8b7c4ae81ec9d2e1f34567890a7c4a</div>
+            <button onclick="copyAddress()" class="btn-primary" style="background: #4b5563; padding: 8px;">📋 Copy Address</button>
+        </div>
+    </div>
+
+    <!-- 3. SEND SECTION (TRANSFER) -->
+    <div id="tab-transfer" class="section-panel">
+        <h2>💸 Send tGARET</h2>
+        <p class="desc">Transfer coins securely to another network participant.</p>
+        <div class="form-group">
+            <label>Recipient Address</label>
+            <input type="text" id="transfer-address" class="form-control" placeholder="0x...">
+        </div>
+        <div class="form-group">
+            <label>Amount (tGARET)</label>
+            <input type="number" id="transfer-amount" class="form-control" placeholder="0.0" step="0.0001">
+        </div>
+        <button onclick="sendTGaret()" class="btn-success">🚀 Send Transaction</button>
+    </div>
+
+    <!-- 4. RECEIVE SECTION (TERIMA) -->
+    <div id="tab-receive" class="section-panel" style="text-align: center;">
+        <h2>📥 Receive tGARET</h2>
+        <p class="desc">Share your wallet address to receive funds from others.</p>
+        <div class="wallet-box" style="padding: 15px; margin-top: 10px;" id="receive-addr-box">
+            0x7a8b7c4ae81ec9d2e1f34567890a7c4a
+        </div>
+        <button onclick="copyReceiveAddress()" class="btn-primary">📋 Copy Receive Address</button>
+    </div>
+
+    <!-- 5. NETWORK SECTION -->
+    <div id="tab-network" class="section-panel">
+        <h2>🌐 Garet Blockchain Network</h2>
+        <p class="desc">Connect your Web3 wallet directly to Garet Network Testnet.</p>
+        <button onclick="addGaretNetwork('testnet')" class="btn-primary">➕ Add Garet Testnet to MetaMask</button>
+    </div>
+
+    <!-- 6. MINING SECTION -->
+    <div id="tab-mining" class="section-panel" style="text-align: center;">
+        <h2>⛏️ Node Mining Streak</h2>
+        <p class="desc">Active mining session to earn testnet rewards.</p>
+        <div style="padding: 20px; background: rgba(16, 185, 129, 0.1); border-radius: 10px; border: 1px solid rgba(16, 185, 129, 0.3);">
+            <p style="font-size: 0.85rem; color: #34d399; font-weight: bold;">Mining Status: Running</p>
+            <button class="btn-success" style="margin-top: 15px;">Claim Reward</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+// Tab Switcher Logic
+function switchTab(tabId, btnElement) {
+    document.querySelectorAll('.section-panel').forEach(panel => {
+        panel.classList.remove('active');
+    });
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    document.getElementById('tab-' + tabId).classList.add('active');
+    btnElement.classList.add('active');
+}
+
+// Copy Functions
+function copyAddress() {
+    navigator.clipboard.writeText("0x7a8b7c4ae81ec9d2e1f34567890a7c4a");
+    alert("✅ Wallet address copied to clipboard!");
+}
+function copyReceiveAddress() {
+    navigator.clipboard.writeText("0x7a8b7c4ae81ec9d2e1f34567890a7c4a");
+    alert("✅ Receive address copied!");
+}
+
+// Add Network to Web3 Wallet
+async function addGaretNetwork(env = 'testnet') {
+    if (window.ethereum) {
+        const netConfig = {
+            chainId: '0x22C5',
+            chainName: 'GARET Network Testnet',
+            nativeCurrency: { name: 'tGARET', symbol: 'tGARET', decimals: 18 },
+            rpcUrls: ['https://rpc-testnet.garet.network'],
+            blockExplorerUrls: ['https://testnet.garetscan.io']
+        };
+        try {
+            await window.ethereum.request({ method: 'wallet_addEthereumChain', params: [netConfig] });
+            alert("✅ Successfully added GARET Testnet to your wallet!");
+        } catch (error) {
+            alert("❌ Failed to connect to wallet.");
+        }
+    } else {
+        alert("⚠️ Web3 Wallet not detected! Please open via MetaMask/Trust Wallet browser.");
+    }
+}
+
+// Send tGARET Logic
+async function sendTGaret() {
+    const toAddress = document.getElementById('transfer-address').value.trim();
+    const amount = document.getElementById('transfer-amount').value.trim();
+
+    if (!toAddress || !amount || amount <= 0) {
+        alert("⚠️ Please enter a valid recipient address and amount!");
+        return;
+    }
+
+    if (window.ethereum) {
+        try {
+            const parsedAmount = (parseFloat(amount) * 1e18).toString(16);
+            const txHash = await window.ethereum.request({
+                method: 'eth_sendTransaction',
+                params: [{ to: toAddress, from: window.ethereum.selectedAddress, value: '0x' + parsedAmount }]
+            });
+            alert("✅ Transaction Sent Successfully!\nTx Hash: " + txHash);
+        } catch (error) {
+            alert("❌ Transaction failed or rejected by user.");
+        }
+    } else {
+        alert("⚠️ Web3 Wallet not detected!");
+    }
+}
+</script>
+
+</body>
+</html>
